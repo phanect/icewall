@@ -1,7 +1,5 @@
 # Lucia
 
-**This repository is for archiving the changelog - most of the code has been moved to lucia dir**
-
 A simple authentication library for SvelteKit
 
 **[Documentation](https://lucia-sveltekit.vercel.app)**
