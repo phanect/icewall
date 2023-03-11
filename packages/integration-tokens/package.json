@@ -1,52 +1,42 @@
 {
-	"name": "@lucia-auth/adapter-prisma",
-	"version": "0.5.3",
-	"description": "Prisma adapter for Lucia",
+	"name": "@lucia-auth/tokens",
+	"version": "0.1.0",
+	"description": "Tokens integration for Lucia",
 	"main": "index.js",
 	"types": "index.d.ts",
 	"module": "index.js",
+	"svelte": "index.js",
 	"type": "module",
 	"files": [
 		"**/*"
 	],
 	"scripts": {
 		"build": "shx rm -rf ./dist/* && tsc && shx cp ./package.json ./dist && shx cp ./README.md ./dist && shx cp .npmignore dist",
-		"test": "npx ts-node --esm -T test/index.ts",
 		"auri.publish": "pnpm build && cd dist && pnpm install --no-frozen-lockfile && pnpm publish --no-git-checks --access public && cd ../"
 	},
 	"keywords": [
 		"lucia",
-		"prisma",
 		"lucia-auth",
-		"auth",
-		"postgres",
-		"mysql",
-		"sqlite",
 		"authentication",
-		"adapter",
-		"sql",
-		"postgresql"
+		"auth",
+		"tokens"
 	],
+	"exports": {
+		"./package.json": "./package.json",
+		".": "./index.js"
+	},
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/pilcrowOnPaper/lucia",
-		"directory": "packages/adapter-prisma"
+		"directory": "packages/lucia-auth"
 	},
 	"author": "pilcrowonpaper",
 	"license": "MIT",
-	"exports": {
-		".": "./index.js"
+	"dependencies": {
+		"lucia-auth": "workspace:*",
+		"nanoid": "^4.0.0"
 	},
 	"peerDependencies": {
 		"lucia-auth": "0.9.x"
-	},
-	"devDependencies": {
-		"@lucia-auth/adapter-test": "workspace:*",
-		"@prisma/client": "^4.9.0",
-		"prisma": "^4.9.0",
-		"ts-node": "^10.9.1"
-	},
-	"dependencies": {
-		"lucia-auth": "workspace:*"
 	}
 }
