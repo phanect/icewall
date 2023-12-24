@@ -25,9 +25,15 @@
   },
   "devDependencies": {
     "@lucia-auth/adapter-test": "workspace:*",
+    "@phanect/configs": "latest",
     "@prisma/client": "^5.0.0",
     "lucia": "workspace:*",
     "prisma": "^4.9.0",
     "tsx": "^3.12.6"
+  },
+  "engines": {
+    "node": ">=22.x",
+    "npm": ">=9.x",
+    "pnpm": ">=9.x"
   }
 }

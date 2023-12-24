@@ -31,6 +31,7 @@
     ".": "./dist/index.js"
   },
   "devDependencies": {
+    "@phanect/configs": "latest",
     "@types/mocha": "^10.0.1",
     "lucia": "workspace:*"
   },
@@ -40,5 +41,10 @@
   "dependencies": {
     "mocha": "^10.2.0",
     "oslo": "0.28.2"
+  },
+  "engines": {
+    "node": ">=22.x",
+    "npm": ">=9.x",
+    "pnpm": ">=9.x"
   }
 }

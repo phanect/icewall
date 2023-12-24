@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@lucia-auth/adapter-test": "workspace:*",
+    "@phanect/configs": "latest",
     "@types/better-sqlite3": "^7.6.3",
     "better-sqlite3": "^8.4.0",
     "dotenv": "^16.0.3",
@@ -47,5 +48,10 @@
     "mysql2": "^3.2.3",
     "pg": "^8.8.0",
     "tsx": "^3.12.6"
+  },
+  "engines": {
+    "node": ">=22.x",
+    "npm": ">=9.x",
+    "pnpm": ">=9.x"
   }
 }

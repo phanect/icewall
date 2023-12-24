@@ -1,16 +1,17 @@
 {
-  "compilerOptions": {
-    "strict": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "target": "ES2022",
-    "outDir": "./dist",
-    "declaration": true,
-    "skipLibCheck": true,
-
-    "noImplicitAny": true,
-    "allowSyntheticDefaultImports": true
-  },
-  "include": [ "src" ],
-  "exclude": [ "node_modules/", "**/*.test.ts" ]
+  "extends": [
+    "@phanect/configs/ts/nodejs",
+    "@phanect/configs/ts/addons/npm"
+  ],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.mjs",
+    "**/*.jsx"
+  ],
+  "exclude": [
+    "node_modules/",
+    "dist/",
+  ]
 }
