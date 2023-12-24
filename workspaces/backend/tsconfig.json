@@ -1,9 +1,20 @@
 {
+  "extends": "@phanect/configs/ts",
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "strict": true,
-    "skipLibCheck": true
-  }
+    "types": [
+      "@cloudflare/workers-types"
+    ],
+    "jsxImportSource": "hono/jsx"
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.mjs",
+    "**/*.jsx"
+  ],
+  "exclude": [
+    "node_modules/",
+    "dist/"
+  ]
 }

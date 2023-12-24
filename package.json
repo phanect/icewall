@@ -1,17 +1,23 @@
 {
   "name": "lucia-repository",
   "version": "1.0.0",
-  "description": "Authentication, simple and clean",
   "author": "Jumpei Ogawa (https://phanective.org)",
   "contributors": [
     "pilcrowOnPaper"
   ],
   "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "workspaces/*"
+  ],
   "scripts": {
-    "publish-setup": "pnpm i --no-frozen-lockfile && cd packages/lucia && pnpm build && cd ../adapter-test && pnpm build && cd ../../",
-    "format": "pnpm exec prettier --write . --plugin=prettier-plugin-astro",
-    "format:docs": "pnpm exec prettier --write docs --plugin=prettier-plugin-astro",
-    "preinstall": "npx only-allow pnpm"
+    "dev": "lerna run dev --stream --parallel",
+    "build": "lerna run build --stream",
+    "lint": "lerna exec -- tsc --noEmit && eslint",
+    "fix": "eslint --fix",
+    "clean": "git clean -dX --exclude=\"!.env\" --force",
+    "refresh": "pnpm run clean && rm --force ./pnpm-lock.yaml && corepack up && pnpm install && pnpm run build"
   },
   "repository": {
     "type": "git",
@@ -19,19 +25,19 @@
   },
   "keywords": [],
   "devDependencies": {
-    "@types/node": "~18.15.13",
-    "@typescript-eslint/eslint-plugin": "^5.59.6",
-    "@typescript-eslint/parser": "^5.59.6",
-    "eslint": "^8.40.0",
-    "eslint-config-prettier": "^8.8.0",
-    "prettier": "^2.8.8",
-    "prettier-plugin-astro": "^0.10.0",
-    "prettier-plugin-tailwindcss": "^0.2.8",
+    "@lerna-lite/cli": "^3.10.0",
+    "@lerna-lite/exec": "^3.10.0",
+    "@lerna-lite/run": "^3.10.0",
+    "@phanect/configs": "latest",
+    "@phanect/lint": "latest",
+    "@types/node": "^22.0.0",
+    "eslint": "^9.0.0",
     "shx": "^0.3.4",
-    "typescript": "latest"
+    "typescript": "^5.3.3"
   },
   "engines": {
-    "node": "20.x",
-    "pnpm": "*"
-  }
+    "node": "20.x || >=22.x",
+    "pnpm": ">=9.x"
+  },
+  "packageManager": "pnpm@9.14.2+sha512.6e2baf77d06b9362294152c851c4f278ede37ab1eba3a55fda317a4a17b209f4dbb973fb250a77abc463a341fcb1f17f17cfa24091c4eb319cda0d9b84278387"
 }
