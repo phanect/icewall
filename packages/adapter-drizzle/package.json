@@ -1,7 +1,7 @@
 {
-	"name": "@lucia-auth/adapter-prisma",
-	"version": "4.0.0",
-	"description": "Prisma adapter for Lucia",
+	"name": "@lucia-auth/adapter-drizzle",
+	"version": "1.0.0",
+	"description": "Drizzle ORM adapter for Lucia",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"module": "dist/index.js",
@@ -12,27 +12,23 @@
 	],
 	"scripts": {
 		"build": "shx rm -rf ./dist/* && tsc",
-		"test": "tsx tests/prisma.ts",
-		"test-setup": "prisma db push",
-		"auri.build": "pnpm build"
+		"auri.build": "pnpm build",
+		"test.mysql": "tsx tests/mysql.ts",
+		"test.postgresql": "tsx tests/postgresql.ts",
+		"test.sqlite": "tsx tests/sqlite.ts"
 	},
 	"keywords": [
 		"lucia",
-		"prisma",
-		"lucia",
 		"auth",
-		"postgres",
-		"mysql",
-		"sqlite",
 		"authentication",
 		"adapter",
-		"sql",
-		"postgresql"
+		"drizzle",
+		"drizzle-orm"
 	],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/pilcrowOnPaper/lucia",
-		"directory": "packages/adapter-prisma"
+		"directory": "packages/adapter-drizzle"
 	},
 	"author": "pilcrowonpaper",
 	"license": "MIT",
@@ -40,14 +36,17 @@
 		".": "./dist/index.js"
 	},
 	"peerDependencies": {
-		"@prisma/client": "^4.2.0 || ^5.0.0",
 		"lucia": "3.x"
 	},
 	"devDependencies": {
-		"lucia": "workspace:*",
 		"@lucia-auth/adapter-test": "workspace:*",
-		"@prisma/client": "^5.0.0",
-		"prisma": "^4.9.0",
+		"@types/better-sqlite3": "^7.6.3",
+		"better-sqlite3": "^8.4.0",
+		"dotenv": "^16.0.3",
+		"drizzle-orm": "^0.29.0",
+		"lucia": "workspace:*",
+		"mysql2": "^3.2.3",
+		"pg": "^8.8.0",
 		"tsx": "^3.12.6"
 	}
 }
