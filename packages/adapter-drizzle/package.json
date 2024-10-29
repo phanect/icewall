@@ -29,8 +29,6 @@
 		"url": "https://github.com/pilcrowOnPaper/lucia",
 		"directory": "packages/adapter-drizzle"
 	},
-	"author": "pilcrowonpaper",
-	"license": "MIT",
 	"exports": {
 		".": "./dist/index.js"
 	},
