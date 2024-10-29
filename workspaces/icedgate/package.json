@@ -1,6 +1,21 @@
 {
   "name": "github-oauth",
   "version": "1.0.0",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Jumpei Ogawa",
+    "url": "https://phanective.org"
+  },
+  "contributors": [
+    {
+      "name": "pilcrowOnPaper",
+      "url": "https://github.com/pilcrowonpaper"
+    },
+    {
+      "name": "SortedCoding (Chetan Raut)",
+      "url": "https://github.com/SortedCoding"
+    }
+  ],
   "main": "index.js",
   "type": "module",
   "scripts": {
