@@ -26,8 +26,6 @@
 		"url": "https://github.com/pilcrowOnPaper/lucia",
 		"directory": "packages/adapter-test"
 	},
-	"author": "pilcrowonpaper",
-	"license": "MIT",
 	"exports": {
 		".": "./dist/index.js"
 	},

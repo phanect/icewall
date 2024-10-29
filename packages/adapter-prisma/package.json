@@ -33,8 +33,6 @@
 		"url": "https://github.com/pilcrowOnPaper/lucia",
 		"directory": "packages/adapter-prisma"
 	},
-	"author": "pilcrowonpaper",
-	"license": "MIT",
 	"exports": {
 		".": "./dist/index.js"
 	},
