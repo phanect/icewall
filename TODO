@@ -1,0 +1,8 @@
+Google ログインの SPA とのやり取りの方法の確認
+https://www.docswell.com/s/ockeghem/ZM6VNK-phpconf2021-spa-security
+
+このリポジトリーを公開したら、https://github.com/phanect/astro-login/settings/security_analysis で CodeQL analysis の Pull request check failure を Any / Errors and warnings に設定する
+Secret Scanning の Push protection も有効にする
+
+メモ: d1 インスタンス作成コマンド
+npx wrangler d1 create INSTANCE_NAME
