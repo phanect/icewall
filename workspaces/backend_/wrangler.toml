@@ -1,0 +1,6 @@
+name = "astro-login-backend"
+main = "src/index.tsx"
+compatibility_date = "2024-09-02"
+
+account_id = "6c6da1080173b4e8512770e8f9309068"
+zone_id = "247a635bf5a6091a2667ed8c2fa082ec"
