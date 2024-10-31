@@ -2,8 +2,6 @@ import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import { verifyRequestOrigin } from "lucia";
 import { lucia } from "./lib/auth.js";
-
-import { mainRouter } from "./routes/index.js";
 import { logoutRouter } from "./routes/logout.js";
 import { loginRouter } from "./routes/login/index.js";
 
@@ -43,7 +41,7 @@ app.use("*", async (c, next) => {
 	return next();
 });
 
-app.route("/", mainRouter).route("/", loginRouter).route("/", logoutRouter);
+app.route("/", loginRouter).route("/", logoutRouter);
 
 serve({
 	fetch: app.fetch,
