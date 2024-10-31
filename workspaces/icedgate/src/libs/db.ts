@@ -15,8 +15,8 @@ db.exec(`CREATE TABLE IF NOT EXISTS session (
     FOREIGN KEY (user_id) REFERENCES user(id)
 )`);
 
-export interface DatabaseUser {
-	id: string;
-	username: string;
-	github_id: number;
-}
+export type DatabaseUser = {
+  id: string;
+  username: string;
+  github_id: number;
+};
