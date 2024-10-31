@@ -8,10 +8,10 @@ const client = new PrismaClient();
 const adapter = new PrismaAdapter(client.session, client.user);
 
 await client.user.create({
-	data: {
-		id: databaseUser.id,
-		...databaseUser.attributes
-	}
+  data: {
+    id: databaseUser.id,
+    ...databaseUser.attributes,
+  },
 });
 
 await testAdapter(adapter);
@@ -22,9 +22,9 @@ await client.user.deleteMany();
 process.exit(0);
 
 declare module "lucia" {
-	interface Register {
-		DatabaseUserAttributes: {
-			username: string;
-		};
-	}
+  type Register = {
+    DatabaseUserAttributes: {
+      username: string;
+    };
+  };
 }

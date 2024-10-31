@@ -1,160 +1,162 @@
 import type {
-	Adapter,
-	DatabaseSession,
-	RegisteredDatabaseSessionAttributes,
-	DatabaseUser,
-	RegisteredDatabaseUserAttributes,
-	UserId
+  Adapter,
+  DatabaseSession,
+  RegisteredDatabaseSessionAttributes,
+  DatabaseUser,
+  RegisteredDatabaseUserAttributes,
+  UserId,
 } from "lucia";
 
-export class PrismaAdapter<_PrismaClient extends PrismaClient> implements Adapter {
-	private sessionModel: PrismaModel<SessionSchema>;
-	private userModel: PrismaModel<UserSchema>;
-
-	constructor(sessionModel: BasicPrismaModel, userModel: BasicPrismaModel) {
-		this.sessionModel = sessionModel as any as PrismaModel<SessionSchema>;
-		this.userModel = userModel as any as PrismaModel<UserSchema>;
-	}
-
-	public async deleteSession(sessionId: string): Promise<void> {
-		try {
-			await this.sessionModel.delete({
-				where: {
-					id: sessionId
-				}
-			});
-		} catch {
-			// ignore if session id is invalid
-		}
-	}
-
-	public async deleteUserSessions(userId: UserId): Promise<void> {
-		await this.sessionModel.deleteMany({
-			where: {
-				userId
-			}
-		});
-	}
-
-	public async getSessionAndUser(
-		sessionId: string
-	): Promise<[session: DatabaseSession | null, user: DatabaseUser | null]> {
-		const userModelKey = this.userModel.name[0].toLowerCase() + this.userModel.name.slice(1);
-		const result = await this.sessionModel.findUnique({
-			where: {
-				id: sessionId
-			},
-			include: {
-				[userModelKey]: true
-			}
-		});
-		if (!result) return [null, null];
-		const userResult: UserSchema = result[
-			userModelKey as keyof typeof result
-		] as any as UserSchema;
-		delete result[userModelKey as keyof typeof result];
-		return [transformIntoDatabaseSession(result), transformIntoDatabaseUser(userResult)];
-	}
-
-	public async getUserSessions(userId: UserId): Promise<DatabaseSession[]> {
-		const result = await this.sessionModel.findMany({
-			where: {
-				userId
-			}
-		});
-		return result.map(transformIntoDatabaseSession);
-	}
-
-	public async setSession(value: DatabaseSession): Promise<void> {
-		await this.sessionModel.create({
-			data: {
-				id: value.id,
-				userId: value.userId,
-				expiresAt: value.expiresAt,
-				...value.attributes
-			}
-		});
-	}
-
-	public async updateSessionExpiration(sessionId: string, expiresAt: Date): Promise<void> {
-		await this.sessionModel.update({
-			where: {
-				id: sessionId
-			},
-			data: {
-				expiresAt
-			}
-		});
-	}
-
-	public async deleteExpiredSessions(): Promise<void> {
-		await this.sessionModel.deleteMany({
-			where: {
-				expiresAt: {
-					lte: new Date()
-				}
-			}
-		});
-	}
-}
-
-function transformIntoDatabaseSession(raw: SessionSchema): DatabaseSession {
-	const { id, userId, expiresAt, ...attributes } = raw;
-	return {
-		id,
-		userId,
-		expiresAt,
-		attributes
-	};
-}
-
-function transformIntoDatabaseUser(raw: UserSchema): DatabaseUser {
-	const { id, ...attributes } = raw;
-	return {
-		id,
-		attributes
-	};
-}
-
-interface PrismaClient {
-	[K: string]: any;
-	$connect: any;
-	$transaction: any;
-}
-
-interface UserSchema extends RegisteredDatabaseUserAttributes {
-	id: UserId;
-}
-
-interface SessionSchema extends RegisteredDatabaseSessionAttributes {
-	id: string;
-	userId: UserId;
-	expiresAt: Date;
-}
-
-interface BasicPrismaModel {
-	fields: any;
-	findUnique: any;
-	findMany: any;
-}
-
-type PrismaWhere<_Schema extends {}> = {
-	[K in keyof _Schema]?:
-		| _Schema[K]
-		| {
-				lte?: _Schema[K];
-		  };
+const transformIntoDatabaseSession = (raw: Session): DatabaseSession => {
+  const { id, userId, expiresAt, ...attributes } = raw;
+  return {
+    id,
+    userId,
+    expiresAt,
+    attributes,
+  };
 };
 
-interface PrismaModel<_Schema extends {}> {
-	name: string;
-	findUnique: <_Included = {}>(options: {
-		where: PrismaWhere<_Schema>;
-		include?: Record<string, boolean>;
-	}) => Promise<null | (_Schema & _Included)>;
-	findMany: (options?: { where: PrismaWhere<_Schema> }) => Promise<_Schema[]>;
-	create: (options: { data: _Schema }) => Promise<_Schema>;
-	delete: (options: { where: PrismaWhere<_Schema> }) => Promise<void>;
-	deleteMany: (options?: { where: PrismaWhere<_Schema> }) => Promise<void>;
-	update: (options: { data: Partial<_Schema>; where: PrismaWhere<_Schema> }) => Promise<_Schema>;
+const transformIntoDatabaseUser = (raw: User): DatabaseUser => {
+  const { id, ...attributes } = raw;
+  return {
+    id,
+    attributes,
+  };
+};
+
+export class PrismaAdapter<_PrismaClient extends PrismaClient> implements Adapter {
+  private sessionModel: PrismaModel<SessionSchema>;
+  private userModel: PrismaModel<UserSchema>;
+
+  constructor(sessionModel: BasicPrismaModel, userModel: BasicPrismaModel) {
+    this.sessionModel = sessionModel as any as PrismaModel<SessionSchema>;
+    this.userModel = userModel as any as PrismaModel<UserSchema>;
+  }
+
+  public async deleteSession(sessionId: string): Promise<void> {
+    try {
+      await this.sessionModel.delete({
+        where: {
+          id: sessionId,
+        },
+      });
+    } catch {
+      // ignore if session id is invalid
+    }
+  }
+
+  public async deleteUserSessions(userId: UserId): Promise<void> {
+    await this.sessionModel.deleteMany({
+      where: {
+        userId,
+      },
+    });
+  }
+
+  public async getSessionAndUser(
+    sessionId: string
+  ): Promise<[session: DatabaseSession | null, user: DatabaseUser | null]> {
+    const userModelKey = this.userModel.name[0].toLowerCase() + this.userModel.name.slice(1);
+    const result = await this.sessionModel.findUnique({
+      where: {
+        id: sessionId,
+      },
+      include: {
+        [userModelKey]: true,
+      },
+    });
+    if (!result) {
+      return [ null, null ];
+    }
+    const userResult: UserSchema = result[
+      userModelKey as keyof typeof result
+    ] as any as UserSchema;
+    delete result[userModelKey as keyof typeof result];
+    return [ transformIntoDatabaseSession(result), transformIntoDatabaseUser(userResult) ];
+  }
+
+  public async getUserSessions(userId: UserId): Promise<DatabaseSession[]> {
+    const result = await this.sessionModel.findMany({
+      where: {
+        userId,
+      },
+    });
+    return result.map(transformIntoDatabaseSession);
+  }
+
+  public async setSession(value: DatabaseSession): Promise<void> {
+    await this.sessionModel.create({
+      data: {
+        id: value.id,
+        userId: value.userId,
+        expiresAt: value.expiresAt,
+        ...value.attributes,
+      },
+    });
+  }
+
+  public async updateSessionExpiration(sessionId: string, expiresAt: Date): Promise<void> {
+    await this.sessionModel.update({
+      where: {
+        id: sessionId,
+      },
+      data: {
+        expiresAt,
+      },
+    });
+  }
+
+  public async deleteExpiredSessions(): Promise<void> {
+    await this.sessionModel.deleteMany({
+      where: {
+        expiresAt: {
+          lte: new Date(),
+        },
+      },
+    });
+  }
 }
+
+type PrismaClient = {
+  [K: string]: any;
+  $connect: any;
+  $transaction: any;
+};
+
+type UserSchema = {
+  id: UserId;
+} & RegisteredDatabaseUserAttributes;
+
+type SessionSchema = {
+  id: string;
+  userId: UserId;
+  expiresAt: Date;
+} & RegisteredDatabaseSessionAttributes;
+
+type BasicPrismaModel = {
+  fields: any;
+  findUnique: any;
+  findMany: any;
+};
+
+type PrismaWhere<_Schema extends {}> = {
+  [K in keyof _Schema]?:
+    | _Schema[K]
+    | {
+      lte?: _Schema[K];
+    };
+};
+
+type PrismaModel<_Schema extends {}> = {
+  name: string;
+  findUnique: <_Included = {}>(options: {
+    where: PrismaWhere<_Schema>;
+    include?: Record<string, boolean>;
+  }) => Promise<null | (_Schema & _Included)>;
+  findMany: (options?: { where: PrismaWhere<_Schema>; }) => Promise<_Schema[]>;
+  create: (options: { data: _Schema; }) => Promise<_Schema>;
+  delete: (options: { where: PrismaWhere<_Schema>; }) => Promise<void>;
+  deleteMany: (options?: { where: PrismaWhere<_Schema>; }) => Promise<void>;
+  update: (options: { data: Partial<_Schema>; where: PrismaWhere<_Schema>; }) => Promise<_Schema>;
+};
