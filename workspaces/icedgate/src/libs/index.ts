@@ -26,7 +26,7 @@ export type UserId = Register extends {
 export type RegisteredLucia = Register extends {
   Lucia: infer _Lucia;
 }
-  ? _Lucia extends Lucia<any, any>
+  ? _Lucia extends Lucia<object, object>
     ? _Lucia
     : Lucia
   : Lucia;
@@ -35,10 +35,10 @@ export type RegisteredDatabaseUserAttributes = Register extends {
   DatabaseUserAttributes: infer _DatabaseUserAttributes;
 }
   ? _DatabaseUserAttributes
-  : {};
+  : object;
 
 export type RegisteredDatabaseSessionAttributes = Register extends {
   DatabaseSessionAttributes: infer _DatabaseSessionAttributes;
 }
   ? _DatabaseSessionAttributes
-  : {};
+  : object;
