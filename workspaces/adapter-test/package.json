@@ -3,29 +3,13 @@
   "version": "5.0.2",
   "description": "Testing module for Lucia database adapters",
   "license": "Apache-2.0",
+  "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
   "type": "module",
-  "files": [
-    "/dist/",
-    "CHANGELOG.md"
-  ],
   "scripts": {
     "build": "shx rm -rf ./dist/* && tsc"
-  },
-  "keywords": [
-    "lucia",
-    "lucia",
-    "auth",
-    "authentication",
-    "adapter",
-    "test"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/pilcrowOnPaper/lucia",
-    "directory": "packages/adapter-test"
   },
   "exports": {
     ".": "./dist/index.js"

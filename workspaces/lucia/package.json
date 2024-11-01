@@ -3,14 +3,11 @@
   "version": "3.2.2",
   "description": "A simple and flexible authentication library",
   "license": "Apache-2.0",
+  "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
   "type": "module",
-  "files": [
-    "/dist/",
-    "CHANGELOG.md"
-  ],
   "scripts": {
     "build": "shx rm -rf ./dist/* && tsc",
     "test": "vitest run",

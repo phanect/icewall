@@ -3,32 +3,16 @@
   "version": "1.1.0",
   "description": "Drizzle ORM adapter for Lucia",
   "license": "Apache-2.0",
+  "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
   "type": "module",
-  "files": [
-    "/dist/",
-    "CHANGELOG.md"
-  ],
   "scripts": {
     "build": "shx rm -rf ./dist/* && tsc",
     "test.mysql": "tsx tests/mysql.ts",
     "test.postgresql": "tsx tests/postgresql.ts",
     "test.sqlite": "tsx tests/sqlite.ts"
-  },
-  "keywords": [
-    "lucia",
-    "auth",
-    "authentication",
-    "adapter",
-    "drizzle",
-    "drizzle-orm"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/pilcrowOnPaper/lucia",
-    "directory": "packages/adapter-drizzle"
   },
   "exports": {
     ".": "./dist/index.js"
