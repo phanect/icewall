@@ -1,11 +1,11 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import { verifyRequestOrigin } from "lucia";
-import { lucia } from "./lib/auth.js";
-import { logoutRouter } from "./routes/logout.js";
-import { loginRouter } from "./routes/login/index.js";
+import { lucia } from "./lib/auth.ts";
+import { logoutRouter } from "./routes/logout.ts";
+import { loginRouter } from "./routes/login/index.ts";
 
-import type { Context } from "./lib/context.js";
+import type { Context } from "./lib/context.ts";
 
 const app = new Hono<Context>();
 
@@ -30,7 +30,7 @@ app.use("*", async (c, next) => {
   }
 
   const { session, user } = await lucia.validateSession(sessionId);
-  if (session && session.fresh) {
+  if (session?.fresh) {
     c.header("Set-Cookie", lucia.createSessionCookie(session.id).serialize(), { append: true });
   }
   if (!session) {

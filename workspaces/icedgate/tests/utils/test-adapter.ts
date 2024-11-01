@@ -1,4 +1,4 @@
-import assert from "node:assert/strict";
+import { deepStrictEqual } from "node:assert/strict";
 import { generateId } from "lucia";
 import type { Adapter, DatabaseSession, DatabaseUser } from "lucia";
 
@@ -23,24 +23,24 @@ export async function testAdapter(adapter: Adapter) {
 
   await test("getSessionAndUser() returns [null, null] on invalid session id", async () => {
     const result = await adapter.getSessionAndUser(databaseSession.id);
-    assert.deepStrictEqual(result, [ null, null ]);
+    deepStrictEqual(result, [ null, null ]);
   });
 
   await test("getUserSessions() returns empty array on invalid user id", async () => {
     const result = await adapter.getUserSessions(databaseUser.id);
-    assert.deepStrictEqual(result, []);
+    deepStrictEqual(result, []);
   });
 
   await test("setSession() creates session and getSessionAndUser() returns created session and associated user", async () => {
     await adapter.setSession(databaseSession);
     const result = await adapter.getSessionAndUser(databaseSession.id);
-    assert.deepStrictEqual(result, [ databaseSession, databaseUser ]);
+    deepStrictEqual(result, [ databaseSession, databaseUser ]);
   });
 
   await test("deleteSession() deletes session", async () => {
     await adapter.deleteSession(databaseSession.id);
     const result = await adapter.getUserSessions(databaseSession.userId);
-    assert.deepStrictEqual(result, []);
+    deepStrictEqual(result, []);
   });
 
   await test("updateSessionExpiration() updates session", async () => {
@@ -48,7 +48,7 @@ export async function testAdapter(adapter: Adapter) {
     databaseSession.expiresAt = new Date(databaseSession.expiresAt.getTime() + 10_000);
     await adapter.updateSessionExpiration(databaseSession.id, databaseSession.expiresAt);
     const result = await adapter.getSessionAndUser(databaseSession.id);
-    assert.deepStrictEqual(result, [ databaseSession, databaseUser ]);
+    deepStrictEqual(result, [ databaseSession, databaseUser ]);
   });
 
   await test("deleteExpiredSessions() deletes all expired sessions", async () => {
@@ -63,13 +63,13 @@ export async function testAdapter(adapter: Adapter) {
     await adapter.setSession(expiredSession);
     await adapter.deleteExpiredSessions();
     const result = await adapter.getUserSessions(databaseSession.userId);
-    assert.deepStrictEqual(result, [ databaseSession ]);
+    deepStrictEqual(result, [ databaseSession ]);
   });
 
   await test("deleteUserSessions() deletes all user sessions", async () => {
     await adapter.deleteUserSessions(databaseSession.userId);
     const result = await adapter.getUserSessions(databaseSession.userId);
-    assert.deepStrictEqual(result, []);
+    deepStrictEqual(result, []);
   });
 
   console.log("\n\x1B[32;1m[success]  \x1B[0mAdapter passed all tests\n");

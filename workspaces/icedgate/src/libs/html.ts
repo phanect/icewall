@@ -1,10 +1,10 @@
-import fs from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 
 export async function renderHTMLTemplate(
   filePath: string,
   args: Record<any, any>
 ): Promise<string> {
-  const templateFile = await fs.readFile(filePath);
+  const templateFile = await readFile(filePath);
   let template = templateFile.toString("utf-8");
   for (const key in args) {
     template = template.replaceAll(`%${ key }%`, args[key]);

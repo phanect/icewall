@@ -1,4 +1,5 @@
 import { resolve } from "node:path";
+import { env } from "node:process";
 import mysql from "mysql2/promise";
 
 import dotenv from "dotenv";
@@ -15,8 +16,8 @@ dotenv.config({
 const connection = await mysql.createConnection({
   host: "localhost",
   user: "root",
-  database: process.env.MYSQL_DATABASE,
-  password: process.env.MYSQL_PASSWORD,
+  database: env.MYSQL_DATABASE,
+  password: env.MYSQL_PASSWORD,
 });
 
 await connection.execute("DROP TABLE IF EXISTS user_session");
@@ -74,5 +75,3 @@ await testAdapter(adapter);
 
 await connection.execute("DROP TABLE IF EXISTS user_session");
 await connection.execute("DROP TABLE IF EXISTS test_user");
-
-process.exit();

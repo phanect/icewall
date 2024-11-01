@@ -1,4 +1,5 @@
 import { resolve } from "node:path";
+import { env } from "node:process";
 import dotenv from "dotenv";
 import { testAdapter, databaseUser } from "@lucia-auth/adapter-test";
 import pg from "pg";
@@ -11,7 +12,7 @@ dotenv.config({
 });
 
 export const pool = new pg.Pool({
-  connectionString: process.env.POSTGRES_DATABASE_URL,
+  connectionString: env.POSTGRES_DATABASE_URL,
 });
 
 await pool.query("DROP TABLE IF EXISTS public.session");
@@ -61,5 +62,3 @@ await testAdapter(adapter);
 
 await pool.query("DROP TABLE public.session");
 await pool.query("DROP TABLE public.user");
-
-process.exit();

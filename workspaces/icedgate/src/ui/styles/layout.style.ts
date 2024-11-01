@@ -39,202 +39,191 @@ body {
   font-size: 12px;
 }
 
-
 .container a {
-    color: #333;
+  color: #333;
   font-size: 13px;
   text-decoration: none;
   margin: 15px 0 10px;
 }
 
-
 .container button{
-    background-color: orangered;
-    color:#fff;
-    font-size: 12px;
-    padding: 10px 45px;
-    border: 1px solid transparent ;
-    border-radius: 8px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    margin-top: 10px;
-    cursor: pointer ;
-    box-shadow: 0 0 10px rgba(34,31,31,0.3);
-    transition: 0.5s ease;
-    
+  background-color: orangered;
+  color:#fff;
+  font-size: 12px;
+  padding: 10px 45px;
+  border: 1px solid transparent ;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-top: 10px;
+  cursor: pointer ;
+  box-shadow: 0 0 10px rgba(34,31,31,0.3);
+  transition: 0.5s ease;
 }
 
-
 .container button.hidden{
-    background-color: orangered;
-    border-color: #fff;
-    
+  background-color: orangered;
+  border-color: #fff;
 }
 
 .container button:hover{
-    background-color: orangered;
-    transform: scale(1.1);
+  background-color: orangered;
+  transform: scale(1.1);
 }
 
 .container form{
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0  40px;
-    height: 100%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0  40px;
+  height: 100%;
 }
 
 .container input{
-    background-color: #eee;
-    border: none;
-    display: flex;
-    margin: 8px 0;
-    padding: 10px 15px;
-    font-size: 13px;
-    border-radius: 8px;
-    width: 100%;
-    outline: none;
+  background-color: #eee;
+  border: none;
+  display: flex;
+  margin: 8px 0;
+  padding: 10px 15px;
+  font-size: 13px;
+  border-radius: 8px;
+  width: 100%;
+  outline: none;
 }
 
 .form-container{
-    position: absolute;
-    top: 0;
-    height: 100%;
-    transition: all 0.6s ease-in-out;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: all 0.6s ease-in-out;
 }
 
 .sign-in{
-    left: 0;
-    width: 50%;
-    z-index: 2;
+  left: 0;
+  width: 50%;
+  z-index: 2;
 }
 
 .container.active .sign-in{
-    transform: translateX(100%);
-    
+  transform: translateX(100%);
 }
 
 .sign-up{
-    left: 0;
-    width: 50%;
-    opacity: 0;
-    z-index: 1;
+  left: 0;
+  width: 50%;
+  opacity: 0;
+  z-index: 1;
 }
 
-
 .container.active .sign-up{
-    transform: translateX(100%);
-    opacity: 1;
-    z-index: 5;
-    animation: move 0.6s;
+  transform: translateX(100%);
+  opacity: 1;
+  z-index: 5;
+  animation: move 0.6s;
 }
 
 @keyframes move{
-    0%, 49.99%{
-        opacity: 0;
-        z-index: 1;
-    }
-    50%, 100%{
-        opacity: 1;
-        z-index: 5;
-    }
+  0%, 49.99% {
+    opacity: 0;
+    z-index: 1;
+  }
+  50%, 100% {
+    opacity: 1;
+    z-index: 5;
+  }
 }
 
-
 .social-icons{
-    margin: 20px 0;
+  margin: 20px 0;
 }
 
 .social-icons a{
-    border: 1px solid #ccc;
-    border-radius: 20%;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 3px;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(218,59,59,0.3);
-    transition: 0.3s ease;
+  border: 1px solid #ccc;
+  border-radius: 20%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 3px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(218,59,59,0.3);
+  transition: 0.3s ease;
 }
 
 .social-icons a:hover{
-
-    transform: translateY(-25%);
-    background-color: orangered;
+  transform: translateY(-25%);
+  background-color: orangered;
 }
 
 .toggle-container{
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-    transition: all 0.6s ease-in-out;
-    border-radius: 150px 0 0 100px;
-    z-index: 1000;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: all 0.6s ease-in-out;
+  border-radius: 150px 0 0 100px;
+  z-index: 1000;
 }
 
 .container.active .toggle-container{
-    transform: translateX(-100%);
-    border-radius: 0 150px 100px 0;
+  transform: translateX(-100%);
+  border-radius: 0 150px 100px 0;
 }
 
-
 .toggle{
-
-    height: 100%;
-    background: orangered;
-    position: relative;
-    left: -100%;
-    height: 100%;
-    width: 200%;
-    transform: translateX(0);
-    transition: all 0.6s ease-in-out;
+  height: 100%;
+  background: orangered;
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  transition: all 0.6s ease-in-out;
 }
 
 .container.active .toggle{
-    transform: translateX(50%);
+  transform: translateX(50%);
 }
 
 .toggle-panel{
-    position: absolute;
-    color: #fff;
-    width: 50%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 30px;
-    text-align: center;
-    top: 0;
-    transform: translateX(0);
-    transition: all 0.6s ease-in-out;
+  position: absolute;
+  color: #fff;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 30px;
+  text-align: center;
+  top: 0;
+  transform: translateX(0);
+  transition: all 0.6s ease-in-out;
 }
 
 .toggle-left{
-    transform: translateX(-200%);
+  transform: translateX(-200%);
 }
 
 .container.active .toggle-left{
-    transform: translateX(0);
+  transform: translateX(0);
 }
 
 .toggle-right{
-    right: 0;
-    transform: translateX(0);
+  right: 0;
+  transform: translateX(0);
 }
 
 .container.active .toggle-right{
-    transform: translateX(200%);
+  transform: translateX(200%);
 }
 
 .toggle p{
-    color: #fff;
+  color: #fff;
 }
