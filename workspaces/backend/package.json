@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch ./src/index.ts",
-    "build": "pnpm run build:db",
+    "build": "pnpm run build:db && tsup",
     "build:db": "prisma db push && prisma generate",
     "test": "pnpm run build:db && tsx tests/prisma.test.ts && vitest run"
   },
@@ -17,6 +17,7 @@
     "@phanect/configs": "latest",
     "@types/better-sqlite3": "^7.6.8",
     "@types/node": "^22.8.6",
+    "tsup": "^8.3.5",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3"
   },
