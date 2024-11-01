@@ -20,7 +20,7 @@
     "lucia": "workspace:*"
   },
   "peerDependencies": {
-    "lucia": "3.x"
+    "lucia": "workspace:*"
   },
   "dependencies": {
     "mocha": "^10.2.0",
