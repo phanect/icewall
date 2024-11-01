@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { lucia } from "../lib/auth.js";
+import { lucia } from "../lib/auth.ts";
 
 import type { Context } from "../lib/context.js";
 

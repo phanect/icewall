@@ -1,6 +1,6 @@
 import { test, expect } from "vitest";
 import { encodeHexLowerCase } from "@oslojs/encoding";
-import { Scrypt, LegacyScrypt, generateIdFromEntropySize } from "./crypto.js";
+import { Scrypt, LegacyScrypt, generateIdFromEntropySize } from "./crypto.ts";
 
 test("validateScryptHash() validates hashes generated with generateScryptHash()", async () => {
   const password = encodeHexLowerCase(crypto.getRandomValues(new Uint8Array(32)));

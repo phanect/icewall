@@ -1,12 +1,15 @@
 import { OAuth2RequestError, generateState } from "arctic";
+import { Hono } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
 import { generateId } from "lucia";
-import { Hono } from "hono";
-import { db } from "../../lib/db.js";
-import { github, lucia } from "../../lib/auth.js";
+import { github, lucia } from "../../lib/auth.ts";
+import { db, type DatabaseUser } from "../../lib/db.ts";
+import type { Context } from "../../lib/context.ts";
 
-import type { DatabaseUser } from "../../lib/db.js";
-import type { Context } from "../../lib/context.js";
+type GitHubUser = {
+  id: string;
+  login: string;
+};
 
 export const githubLoginRouter = new Hono<Context>();
 
@@ -64,8 +67,3 @@ githubLoginRouter.get("/login/github/callback", async (c) => {
     return c.body(null, 500);
   }
 });
-
-type GitHubUser = {
-  id: string;
-  login: string;
-};

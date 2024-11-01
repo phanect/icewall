@@ -1,4 +1,4 @@
-import fs from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { Hono } from "hono";
 import { githubLoginRouter } from "./github.ts";
 
@@ -13,6 +13,6 @@ loginRouter.get("/login", async (c) => {
   if (session) {
     return c.redirect("/");
   }
-  const htmlFile = await fs.readFile("routes/login/index.html");
+  const htmlFile = await readFile("routes/login/index.html");
   return c.html(htmlFile.toString(), 200);
 });

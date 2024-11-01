@@ -1,15 +1,15 @@
-import { TimeSpan, createDate, isWithinExpirationDate } from "./date.js";
-import { CookieController } from "./cookie.js";
-import { generateIdFromEntropySize } from "./crypto.js";
+import { TimeSpan, createDate, isWithinExpirationDate } from "./date.ts";
+import { CookieController } from "./cookie.ts";
+import { generateIdFromEntropySize } from "./crypto.ts";
 
-import type { Adapter } from "./database.js";
+import type { Adapter } from "./database.ts";
 import type {
   RegisteredDatabaseSessionAttributes,
   RegisteredDatabaseUserAttributes,
   RegisteredLucia,
   UserId,
-} from "./index.js";
-import type { Cookie, CookieAttributes } from "./cookie.js";
+} from "./index.ts";
+import type { Cookie, CookieAttributes } from "./cookie.ts";
 
 type SessionAttributes = RegisteredLucia extends Lucia<infer _SessionAttributes, any>
   ? _SessionAttributes
