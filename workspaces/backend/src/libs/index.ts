@@ -26,7 +26,7 @@ export type UserId = Register extends {
 export type RegisteredLucia = Register extends {
   Lucia: infer _Lucia;
 }
-  ? _Lucia extends Lucia<any, any>
+  ? _Lucia extends Lucia<object, object>
     ? _Lucia
     : Lucia
   : Lucia;
