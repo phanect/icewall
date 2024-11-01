@@ -5,7 +5,7 @@ import type {
   DatabaseUser,
   RegisteredDatabaseUserAttributes,
   UserId,
-} from "lucia";
+} from "./index.ts";
 
 const transformIntoDatabaseSession = (raw: Session): DatabaseSession => {
   const { id, userId, expiresAt, ...attributes } = raw;

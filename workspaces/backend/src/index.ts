@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
-import { verifyRequestOrigin } from "lucia";
+import { verifyRequestOrigin } from "./lib/lucia/index.ts";
 import { lucia } from "./lib/auth.ts";
 import { logoutRouter } from "./routes/logout.ts";
 import { loginRouter } from "./routes/login/index.ts";

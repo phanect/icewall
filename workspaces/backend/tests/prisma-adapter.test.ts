@@ -1,7 +1,6 @@
-import { testAdapter, databaseUser } from "@lucia-auth/adapter-test";
 import { PrismaClient } from "@prisma/client";
-
-import { PrismaAdapter } from "../src/index.ts";
+import { PrismaAdapter } from "../src/lib/lucia/prisma-adapter.ts";
+import { testAdapter, databaseUser } from "./utils/test-adapter.ts";
 
 const client = new PrismaClient();
 
