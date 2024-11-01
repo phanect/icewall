@@ -2,12 +2,7 @@ import { Lucia } from "lucia";
 import { BetterSqlite3Adapter } from "@lucia-auth/adapter-sqlite";
 import { GitHub } from "arctic";
 import dotenv from "dotenv";
-import { db } from "./db.js";
-
-import type { DatabaseUser } from "./db.js";
-
-// import { webcrypto } from "crypto";
-// globalThis.crypto = webcrypto as Crypto;
+import { db, type DatabaseUser } from "./db.ts";
 
 dotenv.config();
 

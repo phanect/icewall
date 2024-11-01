@@ -1,19 +1,19 @@
-export { Lucia } from "./core.js";
-export { Scrypt, LegacyScrypt, generateId, generateIdFromEntropySize } from "./crypto.js";
-export { TimeSpan } from "./date.js";
-export { Cookie, CookieAttributes } from "./cookie.js";
-export { verifyRequestOrigin } from "./request.js";
+export { Lucia } from "./core.ts";
+export { Scrypt, LegacyScrypt, generateId, generateIdFromEntropySize } from "./crypto.ts";
+export { TimeSpan } from "./date.ts";
+export { Cookie, type CookieAttributes } from "./cookie.ts";
+export { verifyRequestOrigin } from "./request.ts";
 
 export type {
   User,
   Session,
   SessionCookieOptions,
   SessionCookieAttributesOptions,
-} from "./core.js";
-export type { DatabaseSession, DatabaseUser, Adapter } from "./database.js";
-export type { PasswordHashingAlgorithm } from "./crypto.js";
+} from "./core.ts";
+export type { DatabaseSession, DatabaseUser, Adapter } from "./database.ts";
+export type { PasswordHashingAlgorithm } from "./crypto.ts";
 
-import type { Lucia } from "./core.js";
+import type { Lucia } from "./core.ts";
 
 export type Register = {};
 

@@ -1,4 +1,4 @@
-import type { TimeSpan } from "./date.js";
+import type { TimeSpan } from "./date.ts";
 
 export type CookieAttributes = {
   secure?: boolean;
