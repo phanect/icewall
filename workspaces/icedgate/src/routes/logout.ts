@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { lucia } from "../lib/auth.ts";
+import { lucia } from "../libs/auth.ts";
 
-import type { Context } from "../lib/context.js";
+import type { Context } from "../types.ts";
 
 export const logoutRouter = new Hono<Context>();
 

@@ -1,11 +1,11 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
-import { verifyRequestOrigin } from "lucia";
-import { lucia } from "./lib/auth.ts";
+import { verifyRequestOrigin } from "./libs/index.ts";
+import { lucia } from "./libs/auth.ts";
 import { logoutRouter } from "./routes/logout.ts";
-import { loginRouter } from "./routes/login/index.ts";
+import { loginRouter } from "./routes/index.tsx";
 
-import type { Context } from "./lib/context.ts";
+import type { Context } from "./types.ts";
 
 const app = new Hono<Context>();
 

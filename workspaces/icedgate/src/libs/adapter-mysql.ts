@@ -1,6 +1,6 @@
 import { eq, lte } from "drizzle-orm";
 
-import type { Adapter, DatabaseSession, DatabaseUser, UserId } from "lucia";
+import type { Adapter, DatabaseSession, DatabaseUser, UserId } from "./index.ts";
 import type { MySqlColumn, MySqlDatabase, MySqlTableWithColumns } from "drizzle-orm/mysql-core";
 import type { InferSelectModel } from "drizzle-orm";
 
