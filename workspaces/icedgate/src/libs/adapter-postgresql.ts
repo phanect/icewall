@@ -1,6 +1,6 @@
 import { eq, lte } from "drizzle-orm";
 
-import type { Adapter, DatabaseSession, DatabaseUser, UserId } from "lucia";
+import type { Adapter, DatabaseSession, DatabaseUser, UserId } from "./index.ts";
 import type { PgColumn, PgDatabase, PgTableWithColumns } from "drizzle-orm/pg-core";
 
 import type { InferSelectModel } from "drizzle-orm";

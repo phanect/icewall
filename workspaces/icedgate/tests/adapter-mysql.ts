@@ -3,11 +3,10 @@ import { env } from "node:process";
 import mysql from "mysql2/promise";
 
 import dotenv from "dotenv";
-import { testAdapter, databaseUser } from "@lucia-auth/adapter-test";
-
 import { mysqlTable, varchar, datetime } from "drizzle-orm/mysql-core";
 import { drizzle } from "drizzle-orm/mysql2";
-import { DrizzleMySQLAdapter } from "../src/drivers/mysql.js";
+import { testAdapter, databaseUser } from "./utils/test-adapter.ts";
+import { DrizzleMySQLAdapter } from "../src/libs/adapter-mysql.ts";
 
 dotenv.config({
   path: resolve(".env"),

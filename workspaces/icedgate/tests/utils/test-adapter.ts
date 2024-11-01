@@ -1,6 +1,6 @@
 import { deepStrictEqual } from "node:assert/strict";
-import { generateId } from "lucia";
-import type { Adapter, DatabaseSession, DatabaseUser } from "lucia";
+import { generateId } from "../../src/libs/crypto.ts";
+import type { Adapter, DatabaseSession, DatabaseUser } from "../../src/libs/database.ts";
 
 export const databaseUser: DatabaseUser = {
   id: generateId(15),

@@ -1,7 +1,7 @@
 import { scryptSync as nodeScrypt } from "node:crypto";
 import { expect, test } from "vitest";
 import { encodeHexLowerCase } from "@oslojs/encoding";
-import { scrypt } from "./index.ts";
+import { scrypt } from "../src/libs/scrypt.ts";
 
 test("scrypt() output matches crypto", async () => {
   const password = "2uY379HYD&@#Uう２雨h";
