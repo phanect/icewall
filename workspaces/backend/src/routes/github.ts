@@ -40,7 +40,7 @@ githubLoginRouter.get("/login/github/callback", async (c) => {
         Authorization: `Bearer ${ tokens.accessToken() }`,
       },
     });
-    const githubUser: GitHubUser = await githubUserResponse.json();
+    const githubUser = await githubUserResponse.json() as GitHubUser;
     const existingUser: DatabaseUser | null = (db
       .prepare("SELECT * FROM user WHERE github_id = ?")
       .get(githubUser.id) ?? null) as DatabaseUser | null;
