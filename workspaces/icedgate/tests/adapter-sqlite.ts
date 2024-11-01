@@ -1,8 +1,8 @@
-import { testAdapter, databaseUser } from "@lucia-auth/adapter-test";
 import sqlite from "better-sqlite3";
 import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { drizzle } from "drizzle-orm/better-sqlite3";
-import { DrizzleSQLiteAdapter } from "../src/drivers/sqlite.js";
+import { testAdapter, databaseUser } from "./utils/test-adapter.ts";
+import { DrizzleSQLiteAdapter } from "../src/libs/adapter-sqlite.ts";
 
 const sqliteDB = sqlite(":memory:");
 

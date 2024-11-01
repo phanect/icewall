@@ -1,10 +1,10 @@
 import { resolve } from "node:path";
 import dotenv from "dotenv";
-import { testAdapter, databaseUser } from "@lucia-auth/adapter-test";
 import pg from "pg";
 import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { drizzle } from "drizzle-orm/node-postgres";
-import { DrizzlePostgreSQLAdapter } from "../src/drivers/postgresql.js";
+import { testAdapter, databaseUser } from "./utils/test-adapter.ts";
+import { DrizzlePostgreSQLAdapter } from "../src/libs/adapter-postgresql.ts";
 
 dotenv.config({
   path: resolve(".env"),

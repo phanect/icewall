@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
-import { generateId } from "lucia";
-import type { Adapter, DatabaseSession, DatabaseUser } from "lucia";
+import {
+  generateId,
+  type Adapter,
+  type DatabaseSession,
+  type DatabaseUser,
+} from "../../src/routes/internal/lucia/index.ts";
 
 export const databaseUser: DatabaseUser = {
   id: generateId(15),

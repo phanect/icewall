@@ -1,8 +1,8 @@
-import { Lucia } from "lucia";
 import { BetterSqlite3Adapter } from "@lucia-auth/adapter-sqlite";
 import { GitHub } from "arctic";
 import dotenv from "dotenv";
 import { db, type DatabaseUser } from "./db.ts";
+import { Lucia } from "./index.ts";
 
 dotenv.config();
 
