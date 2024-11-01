@@ -9,13 +9,13 @@ import type {
 import type { InferSelectModel } from "drizzle-orm";
 
 export class DrizzleSQLiteAdapter implements Adapter {
-  private db: BaseSQLiteDatabase<"async" | "sync", {}>;
+  private db: BaseSQLiteDatabase<"async" | "sync", object>;
 
   private sessionTable: SQLiteSessionTable;
   private userTable: SQLiteUserTable;
 
   constructor(
-    db: BaseSQLiteDatabase<any, any, any>,
+    db: BaseSQLiteDatabase<"async" | "sync", object>,
     sessionTable: SQLiteSessionTable,
     userTable: SQLiteUserTable
   ) {
