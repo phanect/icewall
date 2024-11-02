@@ -35,10 +35,10 @@ export type RegisteredDatabaseUserAttributes = Register extends {
   DatabaseUserAttributes: infer _DatabaseUserAttributes;
 }
   ? _DatabaseUserAttributes
-  : {};
+  : object;
 
 export type RegisteredDatabaseSessionAttributes = Register extends {
   DatabaseSessionAttributes: infer _DatabaseSessionAttributes;
 }
   ? _DatabaseSessionAttributes
-  : {};
+  : object;
