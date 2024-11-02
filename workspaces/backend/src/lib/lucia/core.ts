@@ -13,11 +13,11 @@ import type { Cookie, CookieAttributes } from "./cookie.ts";
 
 type SessionAttributes = RegisteredLucia extends Lucia<infer _SessionAttributes, object>
   ? _SessionAttributes
-  : {};
+  : object;
 
 type UserAttributes = RegisteredLucia extends Lucia<object, infer _UserAttributes>
   ? _UserAttributes
-  : {};
+  : object;
 
 export type Session = {
   id: string;
@@ -31,8 +31,8 @@ export type User = {
 } & UserAttributes;
 
 export class Lucia<
-  _SessionAttributes extends {} = Record<never, never>,
-  _UserAttributes extends {} = Record<never, never>,
+  _SessionAttributes extends object = Record<never, never>,
+  _UserAttributes extends object = Record<never, never>,
 > {
   private adapter: Adapter;
   private sessionExpiresIn: TimeSpan;
