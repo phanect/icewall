@@ -1,27 +1,28 @@
-import { BetterSqlite3Adapter } from "@lucia-auth/adapter-sqlite";
 import { GitHub } from "arctic";
+import { drizzle } from "drizzle-orm/better-sqlite3";
 import dotenv from "dotenv";
-import { db, type DatabaseUser } from "./db.ts";
+import { type DatabaseUser } from "./db.ts";
 import { Lucia } from "./index.ts";
+import { DrizzleSQLiteAdapter } from "./adapter-sqlite.ts";
+import { IcedGateUsersTable } from "../db/schema/user.ts";
+import { IcedGateSessionsTable } from "../db/schema/session.ts";
 
 dotenv.config();
 
-const adapter = new BetterSqlite3Adapter(db, {
-  user: "user",
-  session: "session",
-});
-
-export const lucia = new Lucia(adapter, {
-  sessionCookie: {
-    attributes: {
-      secure: process.env.NODE_ENV === "production",
+export const lucia = new Lucia(
+  new DrizzleSQLiteAdapter(drizzle(), IcedGateSessionsTable, IcedGateUsersTable),
+  {
+    sessionCookie: {
+      attributes: {
+        secure: process.env.NODE_ENV === "production",
+      },
     },
-  },
-  getUserAttributes: (attributes) => ({
-    githubId: attributes.github_id,
-    username: attributes.username,
-  }),
-});
+    getUserAttributes: (attributes) => ({
+      githubId: attributes.github_id,
+      username: attributes.username,
+    }),
+  }
+);
 
 export const github = new GitHub(
   process.env.GITHUB_CLIENT_ID!,

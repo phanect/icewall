@@ -1,9 +1,10 @@
 import { OAuth2RequestError, generateState } from "arctic";
+import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
-import { generateId } from "../libs/index.ts";
+import { IcedGateUsersTable } from "../db/schema/user.ts";
+import { generateId } from "../libs/crypto.ts";
 import { github, lucia } from "../libs/auth.ts";
-import { db, type DatabaseUser } from "../libs/db.ts";
 import type { Context } from "../types.ts";
 
 type GitHubUser = {
@@ -41,9 +42,10 @@ githubLoginRouter.get("/login/github/callback", async (c) => {
       },
     });
     const githubUser: GitHubUser = await githubUserResponse.json();
-    const existingUser: DatabaseUser | undefined = (db
-      .prepare("SELECT * FROM user WHERE github_id = ?")
-      .get(githubUser.id) ?? undefined) as DatabaseUser | undefined;
+    const [ existingUser ] = await drizzle.select().from(IcedGateUsersTable)
+      .limit(1)
+      .where(eq(IcedGateUsersTable.githubId, githubUser.id));
+
     if (existingUser) {
       const session = await lucia.createSession(existingUser.id, {});
       c.header("Set-Cookie", lucia.createSessionCookie(session.id).serialize(), { append: true });
@@ -51,11 +53,12 @@ githubLoginRouter.get("/login/github/callback", async (c) => {
     }
 
     const userId = generateId(15);
-    db.prepare("INSERT INTO user (id, github_id, username) VALUES (?, ?, ?)").run(
-      userId,
-      githubUser.id,
-      githubUser.login
-    );
+    await drizzle.insert(IcedGateUsersTable).values({
+      id: userId,
+      githubId: githubUser.id,
+      username: githubUser.login,
+    });
+
     const session = await lucia.createSession(userId, {});
     c.header("Set-Cookie", lucia.createSessionCookie(session.id).serialize(), { append: true });
     return c.redirect("/");
