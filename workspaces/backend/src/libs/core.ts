@@ -2,49 +2,27 @@ import { TimeSpan, createDate, isWithinExpirationDate } from "./date.ts";
 import { CookieController } from "./cookie.ts";
 import { generateIdFromEntropySize } from "./crypto.ts";
 
+import type { User, Session } from "@prisma/client";
 import type { Adapter } from "./database.ts";
 import type {
   RegisteredDatabaseSessionAttributes,
   RegisteredDatabaseUserAttributes,
-  RegisteredLucia,
   UserId,
 } from "./index.ts";
 import type { Cookie, CookieAttributes } from "./cookie.ts";
 
-type SessionAttributes = RegisteredLucia extends Lucia<infer _SessionAttributes, object>
-  ? _SessionAttributes
-  : object;
-
-type UserAttributes = RegisteredLucia extends Lucia<object, infer _UserAttributes>
-  ? _UserAttributes
-  : object;
-
-export type Session = {
-  id: string;
-  expiresAt: Date;
-  fresh: boolean;
-  userId: UserId;
-} & SessionAttributes;
-
-export type User = {
-  id: UserId;
-} & UserAttributes;
-
-export class Lucia<
-  _SessionAttributes extends object = Record<never, never>,
-  _UserAttributes extends object = Record<never, never>,
-> {
+export class Lucia {
   private adapter: Adapter;
   private sessionExpiresIn: TimeSpan;
   private sessionCookieController: CookieController;
 
   private getSessionAttributes: (
     databaseSessionAttributes: RegisteredDatabaseSessionAttributes
-  ) => _SessionAttributes | Record<never, never>;
+  ) => Omit<Session, "id"> | Record<never, never>;
 
   private getUserAttributes: ((
     databaseUserAttributes: RegisteredDatabaseUserAttributes
-  ) => _UserAttributes) | undefined;
+  ) => Omit<User, "id">) | undefined;
 
   public readonly sessionCookieName: string;
 
@@ -55,10 +33,10 @@ export class Lucia<
       sessionCookie?: SessionCookieOptions;
       getSessionAttributes?: (
         databaseSessionAttributes: RegisteredDatabaseSessionAttributes
-      ) => _SessionAttributes;
+      ) => Omit<Session, "id">;
       getUserAttributes?: (
         databaseUserAttributes: RegisteredDatabaseUserAttributes
-      ) => _UserAttributes;
+      ) => Omit<User, "id">;
     }
   ) {
     this.adapter = adapter;

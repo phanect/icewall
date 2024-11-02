@@ -5,8 +5,6 @@ export { Cookie, type CookieAttributes } from "./cookie.ts";
 export { verifyRequestOrigin } from "./request.ts";
 
 export type {
-  User,
-  Session,
   SessionCookieOptions,
   SessionCookieAttributesOptions,
 } from "./core.ts";
