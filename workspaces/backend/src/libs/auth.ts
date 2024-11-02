@@ -29,9 +29,7 @@ export const github = new GitHub(
   "/login/github/callback",
 );
 
-declare module "lucia" {
-  type Register = {
-    Lucia: typeof lucia;
-    DatabaseUserAttributes: Omit<DatabaseUser, "id">;
-  };
-}
+export type Register = {
+  Lucia: typeof lucia;
+  DatabaseUserAttributes: Omit<DatabaseUser, "id">;
+};
