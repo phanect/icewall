@@ -16,6 +16,7 @@
     "build": "lerna run build --stream",
     "lint": "lerna exec -- tsc --noEmit && eslint",
     "fix": "eslint --fix",
+    "migrate": "(cd workspaces/backend && pnpm run migrate)",
     "clean": "git clean -dX --exclude=\"!.env\" --force",
     "refresh": "pnpm run clean && rm --force ./pnpm-lock.yaml && corepack up && pnpm install && pnpm run build"
   },
