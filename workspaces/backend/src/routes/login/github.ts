@@ -4,7 +4,7 @@ import { getCookie, setCookie } from "hono/cookie";
 import { generateId } from "../../lib/lucia/index.ts";
 import { github, lucia } from "../../lib/auth.ts";
 import { db, type DatabaseUser } from "../../lib/db.ts";
-import type { Context } from "../../lib/context.ts";
+import type { Context } from "../../lib/types.ts";
 
 type GitHubUser = {
   id: string;
