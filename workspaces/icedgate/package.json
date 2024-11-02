@@ -33,7 +33,7 @@
     "test": "tsx tests/mysql.ts && tsx tests/postgresql.ts && tsx tests/sqlite.ts && vitest run"
   },
   "dependencies": {
-    "arctic": "^0.10.2",
+    "arctic": "^2.0.0",
     "better-sqlite3": "^9.2.2",
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0",
