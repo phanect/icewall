@@ -2,8 +2,7 @@ import { OAuth2RequestError, generateState } from "arctic";
 import { Hono } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
 import { generateId } from "../../lib/lucia/index.ts";
-import { github, lucia } from "../../lib/auth.ts";
-import { db, type DatabaseUser } from "../../lib/db.ts";
+import { prisma, github, lucia } from "../../lib/auth.ts";
 import type { Context } from "../../lib/types.ts";
 
 type GitHubUser = {
@@ -41,9 +40,12 @@ githubLoginRouter.get("/login/github/callback", async (c) => {
       },
     });
     const githubUser = await githubUserResponse.json() as GitHubUser;
-    const existingUser: DatabaseUser | null = (db
-      .prepare("SELECT * FROM user WHERE github_id = ?")
-      .get(githubUser.id) ?? null) as DatabaseUser | null;
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        githubId: githubUser.id,
+      },
+    });
+
     if (existingUser) {
       const session = await lucia.createSession(existingUser.id, {});
       c.header("Set-Cookie", lucia.createSessionCookie(session.id).serialize(), { append: true });
@@ -51,11 +53,14 @@ githubLoginRouter.get("/login/github/callback", async (c) => {
     }
 
     const userId = generateId(15);
-    db.prepare("INSERT INTO user (id, github_id, username) VALUES (?, ?, ?)").run(
-      userId,
-      githubUser.id,
-      githubUser.login
-    );
+    await prisma.user.create({
+      data: {
+        id: userId,
+        githubId: githubUser.id,
+        username: githubUser.login,
+      },
+    });
+
     const session = await lucia.createSession(userId, {});
     c.header("Set-Cookie", lucia.createSessionCookie(session.id).serialize(), { append: true });
     return c.redirect("/");

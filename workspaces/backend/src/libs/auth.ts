@@ -1,27 +1,27 @@
-import { BetterSqlite3Adapter } from "@lucia-auth/adapter-sqlite";
+import { PrismaClient } from "@prisma/client";
 import { GitHub } from "arctic";
 import dotenv from "dotenv";
-import { db } from "./db.ts";
 import { Lucia } from "./lucia/index.ts";
+import { PrismaAdapter } from "./lucia/prisma-adapter.ts";
 
 dotenv.config();
 
-const adapter = new BetterSqlite3Adapter(db, {
-  user: "user",
-  session: "session",
-});
+export const prisma = new PrismaClient();
 
-export const lucia = new Lucia(adapter, {
-  sessionCookie: {
-    attributes: {
-      secure: process.env.NODE_ENV === "production",
+export const lucia = new Lucia(
+  new PrismaAdapter(prisma.session, prisma.user),
+  {
+    sessionCookie: {
+      attributes: {
+        secure: process.env.NODE_ENV === "production",
+      },
     },
-  },
-  getUserAttributes: (attributes) => ({
-    githubId: attributes.githubId,
-    username: attributes.username,
-  }),
-});
+    getUserAttributes: (attributes) => ({
+      githubId: attributes.githubId,
+      username: attributes.username,
+    }),
+  }
+);
 
 export const github = new GitHub(
   process.env.GITHUB_CLIENT_ID!,
