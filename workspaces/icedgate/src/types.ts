@@ -1,9 +1,10 @@
 import type { Env } from "hono";
-import type { User, Session } from "./libs/index.ts";
+import type { IcedGateUser } from "./db/schema/user.ts";
+import type { IcedGateSession } from "./db/schema/session.ts";
 
 export type IcedGateEnv = {
   Variables: {
-    user?: User;
-    session?: Session;
+    user?: IcedGateUser;
+    session?: IcedGateSession;
   };
 } & Env;

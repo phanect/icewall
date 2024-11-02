@@ -2,8 +2,6 @@ import { Lucia } from "lucia";
 import { BetterSqlite3Adapter } from "@lucia-auth/adapter-sqlite";
 import { db } from "./db.js";
 
-import type { DatabaseUser } from "./db.js";
-
 // import { webcrypto } from "crypto";
 // globalThis.crypto = webcrypto as Crypto;
 
@@ -18,14 +16,10 @@ export const lucia = new Lucia(adapter, {
       secure: process.env.NODE_ENV === "production",
     },
   },
-  getUserAttributes: (attributes) => ({
-    username: attributes.username,
-  }),
 });
 
 declare module "lucia" {
   type Register = {
     Lucia: typeof lucia;
-    DatabaseUserAttributes: Omit<DatabaseUser, "id">;
   };
 }

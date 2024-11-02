@@ -1,190 +1,71 @@
 import { eq, lte } from "drizzle-orm";
-
-import type { Adapter, DatabaseSession, DatabaseUser, UserId } from "./index.ts";
-import type { PgColumn, PgDatabase, PgTableWithColumns } from "drizzle-orm/pg-core";
-
-import type { InferSelectModel } from "drizzle-orm";
+import { IcedGateUsersTable, type IcedGateUser } from "../db/schema/user.ts";
+import { IcedGateSessionsTable, type IcedGateSession } from "../db/schema/session.ts";
+import type { PgDatabase } from "drizzle-orm/pg-core";
+import type { Adapter } from "./database.ts";
 
 export class DrizzlePostgreSQLAdapter implements Adapter {
   private db: PgDatabase<any, any, any>;
 
-  private sessionTable: PostgreSQLSessionTable;
-  private userTable: PostgreSQLUserTable;
-
   constructor(
     db: PgDatabase<any, any, any>,
-    sessionTable: PostgreSQLSessionTable,
-    userTable: PostgreSQLUserTable
   ) {
     this.db = db;
-    this.sessionTable = sessionTable;
-    this.userTable = userTable;
   }
 
-  public async deleteSession(sessionId: string): Promise<void> {
-    await this.db.delete(this.sessionTable).where(eq(this.sessionTable.id, sessionId));
+  public async deleteSession(sessionId: IcedGateSession["id"]): Promise<void> {
+    await this.db.delete(IcedGateSessionsTable).where(eq(IcedGateSessionsTable.id, sessionId));
   }
 
-  public async deleteUserSessions(userId: UserId): Promise<void> {
-    await this.db.delete(this.sessionTable).where(eq(this.sessionTable.userId, userId));
+  public async deleteUserSessions(userId: IcedGateUser["id"]): Promise<void> {
+    await this.db.delete(IcedGateSessionsTable).where(eq(IcedGateSessionsTable.userId, userId));
   }
 
   public async getSessionAndUser(
     sessionId: string
-  ): Promise<[session: DatabaseSession | undefined, user: DatabaseUser | undefined]> {
+  ): Promise<[session: IcedGateSession | undefined, user: IcedGateUser | undefined]> {
     const result = await this.db
       .select({
-        user: this.userTable,
-        session: this.sessionTable,
+        user: IcedGateUsersTable,
+        session: IcedGateSessionsTable,
       })
-      .from(this.sessionTable)
-      .innerJoin(this.userTable, eq(this.sessionTable.userId, this.userTable.id))
-      .where(eq(this.sessionTable.id, sessionId));
+      .from(IcedGateSessionsTable)
+      .innerJoin(IcedGateUsersTable, eq(IcedGateSessionsTable.userId, IcedGateUsersTable.id))
+      .where(eq(IcedGateSessionsTable.id, sessionId));
     if (result.length !== 1) {
       return [ undefined, undefined ];
     }
     return [
-      transformIntoDatabaseSession(result[0].session),
-      transformIntoDatabaseUser(result[0].user),
+      result[0].session,
+      result[0].user,
     ];
   }
 
-  public async getUserSessions(userId: UserId): Promise<DatabaseSession[]> {
-    const result = await this.db
+  public async getUserSessions(userId: IcedGateUser["id"]): Promise<IcedGateSession[]> {
+    return this.db
       .select()
-      .from(this.sessionTable)
-      .where(eq(this.sessionTable.userId, userId));
-    return result.map((val) => transformIntoDatabaseSession(val));
+      .from(IcedGateSessionsTable)
+      .where(eq(IcedGateSessionsTable.userId, userId));
   }
 
-  public async setSession(session: DatabaseSession): Promise<void> {
-    await this.db.insert(this.sessionTable).values({
+  public async setSession(session: IcedGateSession): Promise<void> {
+    await this.db.insert(IcedGateSessionsTable).values({
       id: session.id,
       userId: session.userId,
       expiresAt: session.expiresAt,
-      ...session.attributes,
     });
   }
 
-  public async updateSessionExpiration(sessionId: string, expiresAt: Date): Promise<void> {
+  public async updateSessionExpiration(sessionId: IcedGateSession["id"], expiresAt: IcedGateSession["expiresAt"]): Promise<void> {
     await this.db
-      .update(this.sessionTable)
+      .update(IcedGateSessionsTable)
       .set({
         expiresAt,
       })
-      .where(eq(this.sessionTable.id, sessionId));
+      .where(eq(IcedGateSessionsTable.id, sessionId));
   }
 
   public async deleteExpiredSessions(): Promise<void> {
-    await this.db.delete(this.sessionTable).where(lte(this.sessionTable.expiresAt, new Date()));
+    await this.db.delete(IcedGateSessionsTable).where(lte(IcedGateSessionsTable.expiresAt, new Date()));
   }
-}
-
-export type PostgreSQLUserTable = PgTableWithColumns<{
-  dialect: "pg";
-  columns: {
-    id: PgColumn<
-      {
-        name: any;
-        tableName: any;
-        dataType: any;
-        columnType: any;
-        data: UserId;
-        driverParam: any;
-        notNull: true;
-        hasDefault: boolean; // must be boolean instead of any to allow default values
-        enumValues: any;
-        baseColumn: any;
-        isPrimaryKey: any;
-        isAutoincrement: any;
-        hasRuntimeDefault: any;
-        generated: any;
-      },
-      object
-    >;
-  };
-  schema: any;
-  name: any;
-}>;
-
-export type PostgreSQLSessionTable = PgTableWithColumns<{
-  dialect: "pg";
-  columns: {
-    id: PgColumn<
-      {
-        dataType: any;
-        notNull: true;
-        enumValues: any;
-        tableName: any;
-        columnType: any;
-        data: string;
-        driverParam: any;
-        hasDefault: false;
-        name: any;
-        isPrimaryKey: any;
-        isAutoincrement: any;
-        hasRuntimeDefault: any;
-        generated: any;
-      },
-      object
-    >;
-    expiresAt: PgColumn<
-      {
-        dataType: any;
-        notNull: true;
-        enumValues: any;
-        tableName: any;
-        columnType: any;
-        data: Date;
-        driverParam: any;
-        hasDefault: false;
-        name: any;
-        isPrimaryKey: any;
-        isAutoincrement: any;
-        hasRuntimeDefault: any;
-        generated: any;
-      },
-      object
-    >;
-    userId: PgColumn<
-      {
-        dataType: any;
-        notNull: true;
-        enumValues: any;
-        tableName: any;
-        columnType: any;
-        data: UserId;
-        driverParam: any;
-        hasDefault: false;
-        name: any;
-        isPrimaryKey: any;
-        isAutoincrement: any;
-        hasRuntimeDefault: any;
-        generated: any;
-      },
-      object
-    >;
-  };
-  schema: any;
-  name: any;
-}>;
-
-function transformIntoDatabaseSession(
-  raw: InferSelectModel<PostgreSQLSessionTable>
-): DatabaseSession {
-  const { id, userId, expiresAt, ...attributes } = raw;
-  return {
-    userId,
-    id,
-    expiresAt,
-    attributes,
-  };
-}
-
-function transformIntoDatabaseUser(raw: InferSelectModel<PostgreSQLUserTable>): DatabaseUser {
-  const { id, ...attributes } = raw;
-  return {
-    id,
-    attributes,
-  };
 }
