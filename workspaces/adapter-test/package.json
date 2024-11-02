@@ -18,9 +18,6 @@
     "@phanect/configs": "latest",
     "lucia": "workspace:*"
   },
-  "peerDependencies": {
-    "lucia": "workspace:*"
-  },
   "engines": {
     "node": ">=22.x",
     "npm": ">=9.x",

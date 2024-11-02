@@ -14,13 +14,11 @@
     "test.debug": "vitest run src/utils/debug.test.ts"
   },
   "devDependencies": {
+    "@oslojs/crypto": "^1.0.1",
+    "@oslojs/encoding": "^1.1.0",
     "@phanect/configs": "latest",
     "@types/node": "^22.8.6",
     "vitest": "^2.0.0"
-  },
-  "dependencies": {
-    "@oslojs/crypto": "^1.0.1",
-    "@oslojs/encoding": "^1.1.0"
   },
   "engines": {
     "node": ">=22.x",
