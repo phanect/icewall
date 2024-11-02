@@ -1,7 +1,7 @@
 import { OAuth2RequestError, generateState } from "arctic";
 import { Hono } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
-import { generateId } from "lucia";
+import { generateId } from "../../lib/lucia/index.ts";
 import { github, lucia } from "../../lib/auth.ts";
 import { db, type DatabaseUser } from "../../lib/db.ts";
 import type { Context } from "../../lib/context.ts";

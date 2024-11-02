@@ -5,7 +5,7 @@ import type {
   DatabaseUser,
   RegisteredDatabaseUserAttributes,
   UserId,
-} from "lucia";
+} from "./index.ts";
 
 export class PrismaAdapter<_PrismaClient extends PrismaClient> implements Adapter {
   private sessionModel: PrismaModel<SessionSchema>;

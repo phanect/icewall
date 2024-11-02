@@ -5,11 +5,16 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch ./src/index.ts"
+    "dev": "tsx watch ./src/index.ts",
+    "build": "pnpm run build:db && tsup",
+    "build:db": "prisma db push && prisma generate",
+    "test": "pnpm run build:db && tsx tests/prisma.test.ts && vitest run"
   },
   "devDependencies": {
     "@hono/node-server": "^1.9.1",
     "@lucia-auth/adapter-sqlite": "^3.0.0",
+    "@oslojs/crypto": "^1.0.1",
+    "@oslojs/encoding": "^1.1.0",
     "@phanect/configs": "latest",
     "@types/better-sqlite3": "^7.6.8",
     "@types/node": "^22.8.6",
@@ -17,10 +22,11 @@
     "better-sqlite3": "^9.2.2",
     "dotenv": "^16.3.1",
     "hono": "^4.1.5",
-    "lucia": "workspace:*",
+    "prisma": "^5.0.0",
     "tsup": "^8.3.5",
     "tsx": "^4.7.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^2.0.0"
   },
   "engines": {
     "node": ">=22.x",
