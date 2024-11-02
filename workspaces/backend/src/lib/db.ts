@@ -14,9 +14,3 @@ db.exec(`CREATE TABLE IF NOT EXISTS session (
     user_id TEXT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user(id)
 )`);
-
-export type DatabaseUser = {
-  id: string;
-  username: string;
-  github_id: number;
-};

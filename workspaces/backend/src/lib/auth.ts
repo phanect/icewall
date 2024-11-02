@@ -1,7 +1,7 @@
 import { BetterSqlite3Adapter } from "@lucia-auth/adapter-sqlite";
 import { GitHub } from "arctic";
 import dotenv from "dotenv";
-import { db, type DatabaseUser } from "./db.ts";
+import { db } from "./db.ts";
 import { Lucia } from "./lucia/index.ts";
 
 dotenv.config();
@@ -31,5 +31,8 @@ export const github = new GitHub(
 
 export type Register = {
   Lucia: typeof lucia;
-  DatabaseUserAttributes: Omit<DatabaseUser, "id">;
+  DatabaseUserAttributes: {
+    username: string;
+    github_id: number;
+  };
 };
