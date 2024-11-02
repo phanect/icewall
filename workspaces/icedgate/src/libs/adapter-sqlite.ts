@@ -1,40 +1,29 @@
 import { eq, lte } from "drizzle-orm";
-
-import type { Adapter, DatabaseSession, DatabaseUser, UserId } from "./index.ts";
-import type {
-  SQLiteColumn,
-  BaseSQLiteDatabase,
-  SQLiteTableWithColumns,
-} from "drizzle-orm/sqlite-core";
-import type { InferSelectModel } from "drizzle-orm";
+import { IcedGateUsersTable, type IcedGateUser } from "../db/schema/user.ts";
+import { IcedGateSessionsTable, type IcedGateSession } from "../db/schema/session.ts";
+import type { BaseSQLiteDatabase } from "drizzle-orm/sqlite-core";
+import type { Adapter } from "./database.ts";
 
 export class DrizzleSQLiteAdapter implements Adapter {
   private db: BaseSQLiteDatabase<"async" | "sync", object>;
 
-  private sessionTable: SQLiteSessionTable;
-  private userTable: SQLiteUserTable;
-
   constructor(
     db: BaseSQLiteDatabase<"async" | "sync", object>,
-    sessionTable: SQLiteSessionTable,
-    userTable: SQLiteUserTable
   ) {
     this.db = db;
-    this.sessionTable = sessionTable;
-    this.userTable = userTable;
   }
 
-  public async deleteSession(sessionId: string): Promise<void> {
-    await this.db.delete(this.sessionTable).where(eq(this.sessionTable.id, sessionId));
+  public async deleteSession(sessionId: IcedGateSession["id"]): Promise<void> {
+    await this.db.delete(IcedGateSessionsTable).where(eq(IcedGateSessionsTable.id, sessionId));
   }
 
-  public async deleteUserSessions(userId: UserId): Promise<void> {
-    await this.db.delete(this.sessionTable).where(eq(this.sessionTable.userId, userId));
+  public async deleteUserSessions(userId: IcedGateUser["id"]): Promise<void> {
+    await this.db.delete(IcedGateSessionsTable).where(eq(IcedGateSessionsTable.userId, userId));
   }
 
   public async getSessionAndUser(
     sessionId: string
-  ): Promise<[session: DatabaseSession | undefined, user: DatabaseUser | undefined]> {
+  ): Promise<[session: IcedGateSession | undefined, user: IcedGateUser | undefined]> {
     // https://github.com/drizzle-team/drizzle-orm/issues/555
     const [ databaseSession, databaseUser ] = await Promise.all([
       this.getSession(sessionId),
@@ -43,18 +32,18 @@ export class DrizzleSQLiteAdapter implements Adapter {
     return [ databaseSession, databaseUser ];
   }
 
-  private async getSession(sessionId: string): Promise<DatabaseSession | undefined> {
+  private async getSession(sessionId: string): Promise<IcedGateSession | undefined> {
     const result = await this.db
       .select()
-      .from(this.sessionTable)
-      .where(eq(this.sessionTable.id, sessionId));
+      .from(IcedGateSessionsTable)
+      .where(eq(IcedGateSessionsTable.id, sessionId));
     if (result.length !== 1) {
       return undefined;
     }
-    return transformIntoDatabaseSession(result[0]);
+    return result[0];
   }
 
-  private async getUserFromSessionId(sessionId: string): Promise<DatabaseUser | undefined> {
+  private async getUserFromSessionId(sessionId: string): Promise<IcedGateUser | undefined> {
     const {
       _,
       $inferInsert,
@@ -62,159 +51,50 @@ export class DrizzleSQLiteAdapter implements Adapter {
       getSQL,
       shouldOmitSQLParens,
       ...userColumns
-    } = this.userTable;
+    } = IcedGateUsersTable;
     const result = await this.db
       .select(userColumns)
-      .from(this.sessionTable)
-      .innerJoin(this.userTable, eq(this.sessionTable.userId, this.userTable.id))
-      .where(eq(this.sessionTable.id, sessionId));
+      .from(IcedGateSessionsTable)
+      .innerJoin(IcedGateUsersTable, eq(IcedGateSessionsTable.userId, IcedGateUsersTable.id))
+      .where(eq(IcedGateSessionsTable.id, sessionId));
     if (result.length !== 1) {
       return undefined;
     }
-    return transformIntoDatabaseUser(result[0]);
+    return result[0];
   }
 
-  public async getUserSessions(userId: UserId): Promise<DatabaseSession[]> {
-    const result = await this.db
+  public async getUserSessions(userId: IcedGateUser["id"]): Promise<IcedGateSession[]> {
+    return this.db
       .select()
-      .from(this.sessionTable)
-      .where(eq(this.sessionTable.userId, userId))
+      .from(IcedGateSessionsTable)
+      .where(eq(IcedGateSessionsTable.userId, userId))
       .all();
-    return result.map((val) => transformIntoDatabaseSession(val));
   }
 
-  public async setSession(session: DatabaseSession): Promise<void> {
+  public async setSession(session: IcedGateSession): Promise<void> {
     await this.db
-      .insert(this.sessionTable)
+      .insert(IcedGateSessionsTable)
       .values({
         id: session.id,
         userId: session.userId,
         expiresAt: Math.floor(session.expiresAt.getTime() / 1000),
-        ...session.attributes,
       })
       .run();
   }
 
-  public async updateSessionExpiration(sessionId: string, expiresAt: Date): Promise<void> {
+  public async updateSessionExpiration(sessionId: IcedGateSession["id"], expiresAt: IcedGateSession["expiresAt"]): Promise<void> {
     await this.db
-      .update(this.sessionTable)
+      .update(IcedGateSessionsTable)
       .set({
         expiresAt: Math.floor(expiresAt.getTime() / 1000),
       })
-      .where(eq(this.sessionTable.id, sessionId))
+      .where(eq(IcedGateSessionsTable.id, sessionId))
       .run();
   }
 
   public async deleteExpiredSessions(): Promise<void> {
     await this.db
-      .delete(this.sessionTable)
-      .where(lte(this.sessionTable.expiresAt, Math.floor(Date.now() / 1000)));
+      .delete(IcedGateSessionsTable)
+      .where(lte(IcedGateSessionsTable.expiresAt, Math.floor(Date.now() / 1000)));
   }
-}
-
-export type SQLiteUserTable = SQLiteTableWithColumns<{
-  dialect: "sqlite";
-  columns: {
-    id: SQLiteColumn<
-      {
-        name: any;
-        tableName: any;
-        dataType: any;
-        columnType: any;
-        data: UserId;
-        driverParam: any;
-        notNull: true;
-        hasDefault: boolean; // must be boolean instead of any to allow default values
-        enumValues: any;
-        baseColumn: any;
-        isPrimaryKey: any;
-        isAutoincrement: any;
-        hasRuntimeDefault: any;
-        generated: any;
-      },
-      object
-    >;
-  };
-  schema: any;
-  name: any;
-}>;
-
-export type SQLiteSessionTable = SQLiteTableWithColumns<{
-  dialect: any;
-  columns: {
-    id: SQLiteColumn<
-      {
-        dataType: any;
-        notNull: true;
-        enumValues: any;
-        tableName: any;
-        columnType: any;
-        data: string;
-        driverParam: any;
-        hasDefault: false;
-        name: any;
-        isPrimaryKey: any;
-        isAutoincrement: any;
-        hasRuntimeDefault: any;
-        generated: any;
-      },
-      object
-    >;
-    expiresAt: SQLiteColumn<
-      {
-        dataType: any;
-        notNull: true;
-        enumValues: any;
-        tableName: any;
-        columnType: any;
-        data: number;
-        driverParam: any;
-        hasDefault: false;
-        name: any;
-        isPrimaryKey: any;
-        isAutoincrement: any;
-        hasRuntimeDefault: any;
-        generated: any;
-      },
-      object
-    >;
-    userId: SQLiteColumn<
-      {
-        dataType: any;
-        notNull: true;
-        enumValues: any;
-        tableName: any;
-        columnType: any;
-        data: UserId;
-        driverParam: any;
-        hasDefault: false;
-        name: any;
-        isPrimaryKey: any;
-        isAutoincrement: any;
-        hasRuntimeDefault: any;
-        generated: any;
-      },
-      object
-    >;
-  };
-  schema: any;
-  name: any;
-}>;
-
-function transformIntoDatabaseSession(raw: InferSelectModel<SQLiteSessionTable>): DatabaseSession {
-  const { id, userId, expiresAt: expiresAtUnix, ...attributes } = raw;
-  return {
-    userId,
-    id,
-    expiresAt: new Date(expiresAtUnix * 1000),
-    attributes,
-  };
-}
-
-function transformIntoDatabaseUser(raw: InferSelectModel<SQLiteUserTable>): DatabaseUser {
-  const { id, ...attributes } = raw;
-  return {
-    id,
-    attributes,
-  };
 }
