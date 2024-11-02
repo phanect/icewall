@@ -10,15 +10,3 @@ export type {
 } from "./core.ts";
 export type { Adapter } from "./database.ts";
 export type { PasswordHashingAlgorithm } from "./crypto.ts";
-
-import type { Lucia } from "./core.ts";
-
-export type Register = {};
-
-export type RegisteredLucia = Register extends {
-  Lucia: infer _Lucia;
-}
-  ? _Lucia extends Lucia<object, object>
-    ? _Lucia
-    : Lucia
-  : Lucia;
