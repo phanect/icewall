@@ -8,6 +8,7 @@
     "dev": "tsx watch ./src/index.ts",
     "build": "pnpm run build:db && tsup",
     "build:db": "prisma db push && prisma generate",
+    "migrate": "prisma migrate dev",
     "test": "pnpm run build:db && tsx tests/prisma.test.ts && vitest run"
   },
   "devDependencies": {
