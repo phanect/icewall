@@ -1,50 +1,15 @@
 import { TimeSpan, createDate, isWithinExpirationDate } from "./date.ts";
 import { CookieController } from "./cookie.ts";
 import { generateIdFromEntropySize } from "./crypto.ts";
-
+import type { IcedGateUser } from "../db/schema/user.ts";
+import type { IcedGateSession } from "../db/schema/session.ts";
 import type { Adapter } from "./database.ts";
-import type {
-  RegisteredDatabaseSessionAttributes,
-  RegisteredDatabaseUserAttributes,
-  RegisteredLucia,
-  UserId,
-} from "./index.ts";
 import type { Cookie, CookieAttributes } from "./cookie.ts";
 
-type SessionAttributes = RegisteredLucia extends Lucia<infer _SessionAttributes, object>
-  ? _SessionAttributes
-  : object;
-
-type UserAttributes = RegisteredLucia extends Lucia<object, infer _UserAttributes>
-  ? _UserAttributes
-  : object;
-
-export type Session = {
-  id: string;
-  expiresAt: Date;
-  fresh: boolean;
-  userId: UserId;
-} & SessionAttributes;
-
-export type User = {
-  id: UserId;
-} & UserAttributes;
-
-export class Lucia<
-  _SessionAttributes extends object = Record<never, never>,
-  _UserAttributes extends object = Record<never, never>,
-> {
+export class Lucia {
   private adapter: Adapter;
   private sessionExpiresIn: TimeSpan;
   private sessionCookieController: CookieController;
-
-  private getSessionAttributes: (
-    databaseSessionAttributes: RegisteredDatabaseSessionAttributes
-  ) => _SessionAttributes;
-
-  private getUserAttributes: (
-    databaseUserAttributes: RegisteredDatabaseUserAttributes
-  ) => _UserAttributes;
 
   public readonly sessionCookieName: string;
 
@@ -53,29 +18,9 @@ export class Lucia<
     options?: {
       sessionExpiresIn?: TimeSpan;
       sessionCookie?: SessionCookieOptions;
-      getSessionAttributes?: (
-        databaseSessionAttributes: RegisteredDatabaseSessionAttributes
-      ) => _SessionAttributes;
-      getUserAttributes?: (
-        databaseUserAttributes: RegisteredDatabaseUserAttributes
-      ) => _UserAttributes;
     }
   ) {
     this.adapter = adapter;
-
-    // we have to use `any` here since TS can't do conditional return types
-    this.getUserAttributes = (databaseUserAttributes) => {
-      if (options?.getUserAttributes) {
-        return options.getUserAttributes(databaseUserAttributes);
-      }
-      return {};
-    };
-    this.getSessionAttributes = (databaseSessionAttributes) => {
-      if (options?.getSessionAttributes) {
-        return options.getSessionAttributes(databaseSessionAttributes);
-      }
-      return {};
-    };
     this.sessionExpiresIn = options?.sessionExpiresIn ?? new TimeSpan(30, "d");
     this.sessionCookieName = options?.sessionCookie?.name ?? "auth_session";
     let sessionCookieExpiresIn = this.sessionExpiresIn;
@@ -98,9 +43,9 @@ export class Lucia<
     );
   }
 
-  public async getUserSessions(userId: UserId): Promise<Session[]> {
+  public async getUserSessions(userId: IcedGateUser["id"]): Promise<IcedGateSession[]> {
     const databaseSessions = await this.adapter.getUserSessions(userId);
-    const sessions: Session[] = [];
+    const sessions: IcedGateSession[] = [];
     for (const databaseSession of databaseSessions) {
       if (!isWithinExpirationDate(databaseSession.expiresAt)) {
         continue;
@@ -110,7 +55,6 @@ export class Lucia<
         expiresAt: databaseSession.expiresAt,
         userId: databaseSession.userId,
         fresh: false,
-        ...this.getSessionAttributes(databaseSession.attributes),
       });
     }
     return sessions;
@@ -118,7 +62,7 @@ export class Lucia<
 
   public async validateSession(
     sessionId: string
-  ): Promise<{ user: User; session: Session; } | { user: undefined; session: undefined; }> {
+  ): Promise<{ user: IcedGateUser; session: IcedGateSession; } | { user: undefined; session: undefined; }> {
     const [ databaseSession, databaseUser ] = await this.adapter.getSessionAndUser(sessionId);
     if (!databaseSession) {
       return { session: undefined, user: undefined };
@@ -134,8 +78,7 @@ export class Lucia<
     const activePeriodExpirationDate = new Date(
       databaseSession.expiresAt.getTime() - this.sessionExpiresIn.milliseconds() / 2
     );
-    const session: Session = {
-      ...this.getSessionAttributes(databaseSession.attributes),
+    const session: IcedGateSession = {
       id: databaseSession.id,
       userId: databaseSession.userId,
       fresh: false,
@@ -146,34 +89,30 @@ export class Lucia<
       session.expiresAt = createDate(this.sessionExpiresIn);
       await this.adapter.updateSessionExpiration(databaseSession.id, session.expiresAt);
     }
-    const user: User = {
-      ...this.getUserAttributes(databaseUser.attributes),
+    const user: IcedGateUser = {
       id: databaseUser.id,
     };
     return { user, session };
   }
 
   public async createSession(
-    userId: UserId,
-    attributes: RegisteredDatabaseSessionAttributes,
+    userId: IcedGateUser["id"],
     options?: {
       sessionId?: string;
     }
-  ): Promise<Session> {
+  ): Promise<IcedGateSession> {
     const sessionId = options?.sessionId ?? generateIdFromEntropySize(25);
     const sessionExpiresAt = createDate(this.sessionExpiresIn);
     await this.adapter.setSession({
       id: sessionId,
       userId,
       expiresAt: sessionExpiresAt,
-      attributes,
     });
-    const session: Session = {
+    const session: IcedGateSession = {
       id: sessionId,
       userId,
       fresh: true,
       expiresAt: sessionExpiresAt,
-      ...this.getSessionAttributes(attributes),
     };
     return session;
   }
@@ -182,7 +121,7 @@ export class Lucia<
     await this.adapter.deleteSession(sessionId);
   }
 
-  public async invalidateUserSessions(userId: UserId): Promise<void> {
+  public async invalidateUserSessions(userId: IcedGateUser["id"]): Promise<void> {
     await this.adapter.deleteUserSessions(userId);
   }
 

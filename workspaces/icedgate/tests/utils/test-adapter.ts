@@ -2,27 +2,22 @@ import assert from "node:assert/strict";
 import {
   generateId,
   type Adapter,
-  type DatabaseSession,
-  type DatabaseUser,
 } from "../../src/routes/internal/lucia/index.ts";
+import type { IcedGateSession } from "../../src/db/schema/session.ts";
+import type { IcedGateUser } from "../../src/db/schema/user.ts";
 
-export const databaseUser: DatabaseUser = {
+export const databaseUser: IcedGateUser = {
   id: generateId(15),
-  attributes: {
-    username: generateId(15),
-  },
+  username: generateId(15),
 };
 
 export async function testAdapter(adapter: Adapter) {
   console.log("\n\x1B[38;5;63;1m[start]  \x1B[0mRunning adapter tests\x1B[0m\n");
-  const databaseSession: DatabaseSession = {
+  const databaseSession: IcedGateSession = {
     userId: databaseUser.id,
     id: generateId(40),
     // get random date with 0ms
     expiresAt: new Date(Math.floor(Date.now() / 1000) * 1000 + 10_000),
-    attributes: {
-      country: "us",
-    },
   };
 
   await test("getSessionAndUser() returns [ undefined, undefined ] on invalid session id", async () => {
@@ -56,13 +51,10 @@ export async function testAdapter(adapter: Adapter) {
   });
 
   await test("deleteExpiredSessions() deletes all expired sessions", async () => {
-    const expiredSession: DatabaseSession = {
+    const expiredSession: IcedGateSession = {
       userId: databaseUser.id,
       id: generateId(40),
       expiresAt: new Date(Math.floor(Date.now() / 1000) * 1000 - 10_000),
-      attributes: {
-        country: "us",
-      },
     };
     await adapter.setSession(expiredSession);
     await adapter.deleteExpiredSessions();

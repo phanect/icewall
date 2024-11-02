@@ -1,29 +1,14 @@
-import type {
-  RegisteredDatabaseSessionAttributes,
-  RegisteredDatabaseUserAttributes,
-  UserId,
-} from "./index.ts";
+import type { IcedGateSession } from "../db/schema/session.ts";
+import type { IcedGateUser } from "../db/schema/user.ts";
 
 export type Adapter = {
   getSessionAndUser(
-    sessionId: string
-  ): Promise<[session: DatabaseSession | undefined, user: DatabaseUser | undefined]>;
-  getUserSessions(userId: UserId): Promise<DatabaseSession[]>;
-  setSession(session: DatabaseSession): Promise<void>;
-  updateSessionExpiration(sessionId: string, expiresAt: Date): Promise<void>;
-  deleteSession(sessionId: string): Promise<void>;
-  deleteUserSessions(userId: UserId): Promise<void>;
+    sessionId: IcedGateSession["id"],
+  ): Promise<[session: IcedGateSession | undefined, user: IcedGateUser | undefined]>;
+  getUserSessions(userId: IcedGateUser["id"]): Promise<IcedGateSession[]>;
+  setSession(session: IcedGateSession): Promise<void>;
+  updateSessionExpiration(sessionId: IcedGateSession["id"], expiresAt: IcedGateSession["expiresAt"]): Promise<void>;
+  deleteSession(sessionId: IcedGateSession["id"]): Promise<void>;
+  deleteUserSessions(userId: IcedGateUser["id"]): Promise<void>;
   deleteExpiredSessions(): Promise<void>;
-};
-
-export type DatabaseUser = {
-  id: UserId;
-  attributes: RegisteredDatabaseUserAttributes;
-};
-
-export type DatabaseSession = {
-  userId: UserId;
-  expiresAt: Date;
-  id: string;
-  attributes: RegisteredDatabaseSessionAttributes;
 };
