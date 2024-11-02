@@ -16,7 +16,6 @@
   "devDependencies": {
     "@phanect/configs": "latest",
     "@types/node": "^22.8.6",
-    "prettier": "^2.3.0",
     "vitest": "^2.0.0"
   },
   "dependencies": {
