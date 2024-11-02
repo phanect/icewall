@@ -17,9 +17,3 @@ export const lucia = new Lucia(adapter, {
     },
   },
 });
-
-declare module "lucia" {
-  type Register = {
-    Lucia: typeof lucia;
-  };
-}

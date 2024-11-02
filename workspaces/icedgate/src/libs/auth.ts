@@ -22,9 +22,3 @@ export const github = new GitHub(
   process.env.GITHUB_CLIENT_SECRET!,
   "/login/github/callback",
 );
-
-declare module "lucia" {
-  type Register = {
-    Lucia: typeof lucia;
-  };
-}
