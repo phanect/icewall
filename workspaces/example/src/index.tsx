@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { Hono } from "hono";
 
-import type { Context } from "../lib/context.js";
+import type { Context } from "../lib/types.ts";
 
 export const mainRouter = new Hono<Context>();
 

@@ -4,7 +4,7 @@ import { verifyRequestOrigin } from "./lib/lucia/index.ts";
 import { lucia } from "./lib/auth.ts";
 import { logoutRouter } from "./routes/logout.ts";
 import { loginRouter } from "./routes/login/index.ts";
-import type { Context } from "./lib/context.ts";
+import type { Context } from "./lib/types.ts";
 
 const app = new Hono<Context>();
 
