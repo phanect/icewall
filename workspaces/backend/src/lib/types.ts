@@ -1,5 +1,5 @@
 import type { Env } from "hono";
-import type { User, Session } from "./lucia/index.ts";
+import type { User, Session } from "@prisma/client";
 
 export type Context = {
   Variables: {
