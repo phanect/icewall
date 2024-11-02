@@ -15,7 +15,7 @@ export const githubLoginRouter = new Hono<Context>();
 
 githubLoginRouter.get("/login/github", async (c) => {
   const state = generateState();
-  const url = await github.createAuthorizationURL(state);
+  const url = github.createAuthorizationURL(state, [ "user:email" ]);
   setCookie(c, "github_oauth_state", state, {
     path: "/",
     secure: process.env.NODE_ENV === "production",
@@ -37,7 +37,7 @@ githubLoginRouter.get("/login/github/callback", async (c) => {
     const tokens = await github.validateAuthorizationCode(code);
     const githubUserResponse = await fetch("https://api.github.com/user", {
       headers: {
-        Authorization: `Bearer ${ tokens.accessToken }`,
+        Authorization: `Bearer ${ tokens.accessToken() }`,
       },
     });
     const githubUser: GitHubUser = await githubUserResponse.json();
