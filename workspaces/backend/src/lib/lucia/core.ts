@@ -40,7 +40,7 @@ export class Lucia<
 
   private getSessionAttributes: (
     databaseSessionAttributes: RegisteredDatabaseSessionAttributes
-  ) => _SessionAttributes;
+  ) => _SessionAttributes | Record<never, never>;
 
   private getUserAttributes: ((
     databaseUserAttributes: RegisteredDatabaseUserAttributes
@@ -157,6 +157,10 @@ export class Lucia<
       sessionId?: string;
     }
   ): Promise<Session> {
+    if (!this.getSessionAttributes) {
+      throw new Error("getSessionAttributes is not defined on instanciating Lucia class.");
+    }
+
     const sessionId = options?.sessionId ?? generateIdFromEntropySize(25);
     const sessionExpiresAt = createDate(this.sessionExpiresIn);
     await this.adapter.setSession({
