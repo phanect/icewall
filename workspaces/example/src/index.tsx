@@ -1,9 +1,9 @@
 import { readFile } from "node:fs/promises";
 import { Hono } from "hono";
 
-import type { Context } from "../../icedgate/src/types.ts";
+import type { IcedGateEnv } from "../../icedgate/src/types.ts";
 
-export const mainRouter = new Hono<Context>();
+export const mainRouter = new Hono<IcedGateEnv>();
 
 mainRouter.get("/", async (c) => {
   const user = c.get("user");
