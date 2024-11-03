@@ -25,8 +25,8 @@ githubLoginRouter.get("/login/github", async (c) => {
   }
 
   const github = new GitHub(
-    GITHUB_CLIENT_ID!,
-    GITHUB_CLIENT_SECRET!,
+    GITHUB_CLIENT_ID,
+    GITHUB_CLIENT_SECRET,
     "/login/github/callback",
   );
   const state = generateState();
@@ -52,8 +52,8 @@ githubLoginRouter.get("/login/github/callback", async (c) => {
   }
 
   const github = new GitHub(
-    GITHUB_CLIENT_ID!,
-    GITHUB_CLIENT_SECRET!,
+    GITHUB_CLIENT_ID,
+    GITHUB_CLIENT_SECRET,
     "/login/github/callback",
   );
 
