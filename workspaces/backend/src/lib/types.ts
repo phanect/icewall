@@ -1,9 +1,9 @@
-import type { Env } from "hono";
+import type { Env as HonoEnv } from "hono";
 import type { User, Session } from "@prisma/client";
 
-export type Context = {
+export type Env = {
   Variables: {
     user: User | null;
     session: Session | null;
   };
-} & Env;
+} & HonoEnv;

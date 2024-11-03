@@ -3,14 +3,14 @@ import { Hono } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
 import { generateId } from "../../lib/lucia/index.ts";
 import { prisma, github, lucia } from "../../lib/auth.ts";
-import type { Context } from "../../lib/types.ts";
+import type { Env } from "../../lib/types.ts";
 
 type GitHubUser = {
   id: number;
   login: string;
 };
 
-export const githubLoginRouter = new Hono<Context>();
+export const githubLoginRouter = new Hono<Env>();
 
 githubLoginRouter.get("/login/github", async (c) => {
   const state = generateState();

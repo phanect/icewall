@@ -5,9 +5,9 @@ import { lucia } from "./lib/auth.ts";
 import { mainRouter } from "./routes/index.ts";
 import { logoutRouter } from "./routes/logout.ts";
 import { loginRouter } from "./routes/login/index.ts";
-import type { Context } from "./lib/types.ts";
+import type { Env } from "./lib/types.ts";
 
-const app = new Hono<Context>();
+const app = new Hono<Env>();
 
 app.use("*", async (c, next) => {
   if (c.req.method === "GET") {
