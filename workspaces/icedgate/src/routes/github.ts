@@ -7,7 +7,7 @@ import { db, type DatabaseUser } from "../libs/db.ts";
 import type { Context } from "../types.ts";
 
 type GitHubUser = {
-  id: string;
+  id: number;
   login: string;
 };
 
