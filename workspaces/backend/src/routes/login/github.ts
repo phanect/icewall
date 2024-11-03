@@ -2,7 +2,8 @@ import { OAuth2RequestError, generateState } from "arctic";
 import { Hono } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
 import { generateId } from "../../lib/lucia/index.ts";
-import { prisma, github, lucia } from "../../lib/auth.ts";
+import { prisma, github, getLuciaInstance } from "../../lib/auth.ts";
+import { isLocal } from "../../lib/utils.ts";
 import type { Env } from "../../lib/types.ts";
 
 type GitHubUser = {
@@ -17,7 +18,7 @@ githubLoginRouter.get("/login/github", async (c) => {
   const url = github.createAuthorizationURL(state, [ "user:email" ]);
   setCookie(c, "github_oauth_state", state, {
     path: "/",
-    secure: process.env.NODE_ENV === "production",
+    secure: !isLocal(c),
     httpOnly: true,
     maxAge: 60 * 10,
     sameSite: "Lax",
@@ -33,6 +34,7 @@ githubLoginRouter.get("/login/github/callback", async (c) => {
     return c.body(null, 400);
   }
   try {
+    const lucia = getLuciaInstance(c);
     const tokens = await github.validateAuthorizationCode(code);
     const githubUserResponse = await fetch("https://api.github.com/user", {
       headers: {
