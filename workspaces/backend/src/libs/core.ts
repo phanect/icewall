@@ -4,25 +4,16 @@ import { generateIdFromEntropySize } from "./crypto.ts";
 
 import type { User, Session } from "@prisma/client";
 import type { Adapter } from "./database.ts";
-import type {
-  RegisteredDatabaseSessionAttributes,
-  RegisteredDatabaseUserAttributes,
-  UserId,
-} from "./index.ts";
 import type { Cookie, CookieAttributes } from "./cookie.ts";
+import type { SessionAttributes, UserAttributes } from "./types.ts";
 
 export class Lucia {
   private adapter: Adapter;
   private sessionExpiresIn: TimeSpan;
   private sessionCookieController: CookieController;
 
-  private getSessionAttributes: (
-    databaseSessionAttributes: RegisteredDatabaseSessionAttributes
-  ) => Omit<Session, "id"> | Record<never, never>;
-
-  private getUserAttributes: ((
-    databaseUserAttributes: RegisteredDatabaseUserAttributes
-  ) => Omit<User, "id">) | undefined;
+  private getSessionAttributes: (sessionAttributes: SessionAttributes) => Omit<Session, "id"> | Record<never, never>;
+  private getUserAttributes: ((userAttributes: UserAttributes) => Omit<User, "id">) | undefined;
 
   public readonly sessionCookieName: string;
 
@@ -31,12 +22,8 @@ export class Lucia {
     options?: {
       sessionExpiresIn?: TimeSpan;
       sessionCookie?: SessionCookieOptions;
-      getSessionAttributes?: (
-        databaseSessionAttributes: RegisteredDatabaseSessionAttributes
-      ) => Omit<Session, "id">;
-      getUserAttributes?: (
-        databaseUserAttributes: RegisteredDatabaseUserAttributes
-      ) => Omit<User, "id">;
+      getSessionAttributes?: (sessionAttributes: SessionAttributes) => Omit<Session, "id">;
+      getUserAttributes?: (userAttributes: UserAttributes) => Omit<User, "id">;
     }
   ) {
     this.adapter = adapter;
@@ -64,7 +51,7 @@ export class Lucia {
     );
   }
 
-  public async getUserSessions(userId: UserId): Promise<Session[]> {
+  public async getUserSessions(userId: string): Promise<Session[]> {
     const databaseSessions = await this.adapter.getUserSessions(userId);
     const sessions: Session[] = [];
     for (const databaseSession of databaseSessions) {
@@ -124,8 +111,8 @@ export class Lucia {
   }
 
   public async createSession(
-    userId: UserId,
-    attributes: RegisteredDatabaseSessionAttributes,
+    userId: string,
+    attributes: SessionAttributes,
     options?: {
       sessionId?: string;
     }
@@ -156,7 +143,7 @@ export class Lucia {
     await this.adapter.deleteSession(sessionId);
   }
 
-  public async invalidateUserSessions(userId: UserId): Promise<void> {
+  public async invalidateUserSessions(userId: string): Promise<void> {
     await this.adapter.deleteUserSessions(userId);
   }
 
