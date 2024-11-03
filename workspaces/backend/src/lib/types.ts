@@ -14,3 +14,6 @@ export type Env = {
     GITHUB_CLIENT_SECRET: string;
   };
 } & HonoEnv;
+
+export type UserAttributes = Omit<User, "id">;
+export type SessionAttributes = Omit<Session, "id" | "userId" | "expiresAt">;

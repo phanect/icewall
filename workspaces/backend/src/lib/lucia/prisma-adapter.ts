@@ -1,19 +1,17 @@
+import type { Session, User } from "@prisma/client";
 import type {
   Adapter,
   DatabaseSession,
-  RegisteredDatabaseSessionAttributes,
   DatabaseUser,
-  RegisteredDatabaseUserAttributes,
-  UserId,
 } from "./index.ts";
 
 export class PrismaAdapter implements Adapter {
-  private sessionModel: PrismaModel<SessionSchema>;
-  private userModel: PrismaModel<UserSchema>;
+  private sessionModel: PrismaModel<Session>;
+  private userModel: PrismaModel<User>;
 
   constructor(sessionModel: BasicPrismaModel, userModel: BasicPrismaModel) {
-    this.sessionModel = sessionModel as any as PrismaModel<SessionSchema>;
-    this.userModel = userModel as any as PrismaModel<UserSchema>;
+    this.sessionModel = sessionModel as any as PrismaModel<Session>;
+    this.userModel = userModel as any as PrismaModel<User>;
   }
 
   public async deleteSession(sessionId: string): Promise<void> {
@@ -28,7 +26,7 @@ export class PrismaAdapter implements Adapter {
     }
   }
 
-  public async deleteUserSessions(userId: UserId): Promise<void> {
+  public async deleteUserSessions(userId: string): Promise<void> {
     await this.sessionModel.deleteMany({
       where: {
         userId,
@@ -51,14 +49,14 @@ export class PrismaAdapter implements Adapter {
     if (!result) {
       return [ null, null ];
     }
-    const userResult: UserSchema = result[
+    const userResult: User = result[
       userModelKey as keyof typeof result
-    ] as any as UserSchema;
+    ] as any as User;
     delete result[userModelKey as keyof typeof result];
     return [ transformIntoDatabaseSession(result), transformIntoDatabaseUser(userResult) ];
   }
 
-  public async getUserSessions(userId: UserId): Promise<DatabaseSession[]> {
+  public async getUserSessions(userId: string): Promise<DatabaseSession[]> {
     const result = await this.sessionModel.findMany({
       where: {
         userId,
@@ -100,7 +98,7 @@ export class PrismaAdapter implements Adapter {
   }
 }
 
-function transformIntoDatabaseSession(raw: SessionSchema): DatabaseSession {
+function transformIntoDatabaseSession(raw: Session): DatabaseSession {
   const { id, userId, expiresAt, ...attributes } = raw;
   return {
     id,
@@ -110,7 +108,7 @@ function transformIntoDatabaseSession(raw: SessionSchema): DatabaseSession {
   };
 }
 
-function transformIntoDatabaseUser(raw: UserSchema): DatabaseUser {
+function transformIntoDatabaseUser(raw: User): DatabaseUser {
   const { id, ...attributes } = raw;
   return {
     id,
@@ -123,16 +121,6 @@ type PrismaClient = {
   $connect: any;
   $transaction: any;
 };
-
-type UserSchema = {
-  id: UserId;
-} & RegisteredDatabaseUserAttributes;
-
-type SessionSchema = {
-  id: string;
-  userId: UserId;
-  expiresAt: Date;
-} & RegisteredDatabaseSessionAttributes;
 
 type BasicPrismaModel = {
   fields: any;
