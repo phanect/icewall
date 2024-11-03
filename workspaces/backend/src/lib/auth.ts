@@ -18,7 +18,7 @@ export const lucia = new Lucia(adapter, {
     },
   },
   getUserAttributes: (attributes) => ({
-    githubId: attributes.github_id,
+    githubId: attributes.githubId,
     username: attributes.username,
   }),
 });
@@ -33,6 +33,6 @@ export type Register = {
   Lucia: typeof lucia;
   DatabaseUserAttributes: {
     username: string;
-    github_id: number;
+    githubId: number;
   };
 };

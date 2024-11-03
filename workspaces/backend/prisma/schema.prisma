@@ -8,10 +8,10 @@ datasource db {
 }
 
 model User {
-  id           String    @id
-  username     String    @unique
-  githubId     Int?      @unique
-  auth_session Session[]
+  id          String    @id
+  username    String    @unique
+  githubId    Int?      @unique
+  authSession Session[]
 }
 
 model Session {
