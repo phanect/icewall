@@ -1,10 +1,11 @@
-import { OAuth2RequestError, generateState } from "arctic";
+import { GitHub, OAuth2RequestError, generateState } from "arctic";
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
+import { env } from "hono/adapter";
 import { getCookie, setCookie } from "hono/cookie";
 import { IcedGateUsers } from "../db/schema/user.ts";
 import { generateId } from "../libs/crypto.ts";
-import { github, lucia } from "../libs/auth.ts";
+import { lucia } from "../libs/auth.ts";
 import type { IcedGateEnv } from "../types.ts";
 
 type GitHubUser = {
@@ -15,6 +16,20 @@ type GitHubUser = {
 export const githubLoginRouter = new Hono<IcedGateEnv>();
 
 githubLoginRouter.get("/login/github", async (c) => {
+  const {
+    GITHUB_CLIENT_ID,
+    GITHUB_CLIENT_SECRET,
+  } = env(c);
+
+  if (!GITHUB_CLIENT_ID || !GITHUB_CLIENT_SECRET) {
+    throw new Error("GITHUB_CLIENT_ID and/or GITHUB_CLIENT_SECRET are not set as environment variable(s).");
+  }
+
+  const github = new GitHub(
+    GITHUB_CLIENT_ID!,
+    GITHUB_CLIENT_SECRET!,
+    "/login/github/callback",
+  );
   const state = generateState();
   const url = github.createAuthorizationURL(state, [ "user:email" ]);
   setCookie(c, "github_oauth_state", state, {
@@ -28,6 +43,21 @@ githubLoginRouter.get("/login/github", async (c) => {
 });
 
 githubLoginRouter.get("/login/github/callback", async (c) => {
+  const {
+    GITHUB_CLIENT_ID,
+    GITHUB_CLIENT_SECRET,
+  } = env(c);
+
+  if (!GITHUB_CLIENT_ID || !GITHUB_CLIENT_SECRET) {
+    throw new Error("GITHUB_CLIENT_ID and/or GITHUB_CLIENT_SECRET are not set as environment variable(s).");
+  }
+
+  const github = new GitHub(
+    GITHUB_CLIENT_ID!,
+    GITHUB_CLIENT_SECRET!,
+    "/login/github/callback",
+  );
+
   const code = c.req.query("code")?.toString();
   const state = c.req.query("state")?.toString();
   const storedState = getCookie(c).github_oauth_state;
