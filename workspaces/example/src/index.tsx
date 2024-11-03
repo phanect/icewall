@@ -1,9 +1,9 @@
 import { readFile } from "node:fs/promises";
 import { Hono } from "hono";
 
-import type { Context } from "../lib/types.ts";
+import type { Env } from "../lib/types.ts";
 
-export const mainRouter = new Hono<Context>();
+export const mainRouter = new Hono<Env>();
 
 mainRouter.get("/", async (c) => {
   const user = c.get("user");
