@@ -5,9 +5,9 @@ import { lucia } from "./libs/auth.ts";
 import { logoutRouter } from "./routes/logout.ts";
 import { loginRouter } from "./routes/index.tsx";
 
-import type { Context } from "./types.ts";
+import type { IcedGateEnv } from "./types.ts";
 
-const app = new Hono<Context>();
+const app = new Hono<IcedGateEnv>();
 
 app.use("*", async (c, next) => {
   if (c.req.method === "GET") {

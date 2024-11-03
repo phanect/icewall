@@ -1,9 +1,9 @@
 import { Hono } from "hono";
 import { lucia } from "../libs/auth.ts";
 
-import type { Context } from "../types.ts";
+import type { IcedGateEnv } from "../types.ts";
 
-export const logoutRouter = new Hono<Context>();
+export const logoutRouter = new Hono<IcedGateEnv>();
 
 logoutRouter.post("/", async (c) => {
   const session = c.get("session");
