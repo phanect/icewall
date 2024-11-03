@@ -6,4 +6,11 @@ export type Env = {
     user: User | null;
     session: Session | null;
   };
+  /** Environment variables */
+  Bindings: {
+    SERVER_ENV: string;
+
+    GITHUB_CLIENT_ID: string;
+    GITHUB_CLIENT_SECRET: string;
+  };
 } & HonoEnv;
