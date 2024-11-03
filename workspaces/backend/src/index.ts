@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import { verifyRequestOrigin } from "./lib/lucia/index.ts";
-import { lucia } from "./lib/auth.ts";
+import { getLuciaInstance } from "./libs/auth.ts";
 import { logoutRouter } from "./routes/logout.ts";
 import { loginRouter } from "./routes/login/index.ts";
 import type { Env } from "./lib/types.ts";
@@ -21,6 +21,7 @@ app.use("*", async (c, next) => {
 });
 
 app.use("*", async (c, next) => {
+  const lucia = getLuciaInstance(c);
   const sessionId = lucia.readSessionCookie(c.req.header("Cookie") ?? "");
   if (!sessionId) {
     c.set("user", null);

@@ -1,11 +1,12 @@
 import { Hono } from "hono";
-import { lucia } from "../lib/auth.ts";
+import { getLuciaInstance } from "../lib/auth.ts";
 
 import type { Env } from "../lib/types.ts";
 
 export const logoutRouter = new Hono<Env>();
 
 logoutRouter.post("/", async (c) => {
+  const lucia = getLuciaInstance(c);
   const session = c.get("session");
   if (!session) {
     return c.body(null, 401);
