@@ -11,4 +11,11 @@ export type IcedGateEnv = {
     user?: IcedGateUser;
     session?: IcedGateSession;
   };
+  /** Environment variables */
+  Bindings: {
+    SERVER_ENV?: string;
+
+    GITHUB_CLIENT_ID?: string;
+    GITHUB_CLIENT_SECRET?: string;
+  };
 } & Env;
