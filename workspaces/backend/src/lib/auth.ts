@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { GitHub } from "arctic";
 import dotenv from "dotenv";
 import { Lucia } from "./lucia/index.ts";
 import { PrismaAdapter } from "./lucia/prisma-adapter.ts";
@@ -24,12 +23,6 @@ export const getLuciaInstance = (context: Context<Env>): Lucia => new Lucia(
       username: attributes.username,
     }),
   }
-);
-
-export const github = new GitHub(
-  process.env.GITHUB_CLIENT_ID!,
-  process.env.GITHUB_CLIENT_SECRET!,
-  "/login/github/callback",
 );
 
 export type Register = {
