@@ -42,9 +42,9 @@ export class Lucia<
     databaseSessionAttributes: RegisteredDatabaseSessionAttributes
   ) => _SessionAttributes;
 
-  private getUserAttributes: (
+  private getUserAttributes: ((
     databaseUserAttributes: RegisteredDatabaseUserAttributes
-  ) => _UserAttributes;
+  ) => _UserAttributes) | undefined;
 
   public readonly sessionCookieName: string;
 
@@ -62,14 +62,7 @@ export class Lucia<
     }
   ) {
     this.adapter = adapter;
-
-    // we have to use `any` here since TS can't do conditional return types
-    this.getUserAttributes = (databaseUserAttributes) => {
-      if (options?.getUserAttributes) {
-        return options.getUserAttributes(databaseUserAttributes);
-      }
-      return {};
-    };
+    this.getUserAttributes = options?.getUserAttributes;
     this.getSessionAttributes = (databaseSessionAttributes) => {
       if (options?.getSessionAttributes) {
         return options.getSessionAttributes(databaseSessionAttributes);
@@ -119,6 +112,10 @@ export class Lucia<
   public async validateSession(
     sessionId: string
   ): Promise<{ user: User; session: Session; } | { user: null; session: null; }> {
+    if (!this.getUserAttributes) {
+      throw new Error("getUserAttributes is not defined on instanciating Lucia class.");
+    }
+
     const [ databaseSession, databaseUser ] = await this.adapter.getSessionAndUser(sessionId);
     if (!databaseSession) {
       return { session: null, user: null };
