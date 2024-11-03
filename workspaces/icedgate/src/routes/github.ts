@@ -5,14 +5,14 @@ import { getCookie, setCookie } from "hono/cookie";
 import { IcedGateUsers } from "../db/schema/user.ts";
 import { generateId } from "../libs/crypto.ts";
 import { github, lucia } from "../libs/auth.ts";
-import type { Context } from "../types.ts";
+import type { IcedGateEnv } from "../types.ts";
 
 type GitHubUser = {
   id: number;
   login: string;
 };
 
-export const githubLoginRouter = new Hono<Context>();
+export const githubLoginRouter = new Hono<IcedGateEnv>();
 
 githubLoginRouter.get("/login/github", async (c) => {
   const state = generateState();

@@ -2,9 +2,9 @@ import { readFile } from "node:fs/promises";
 import { Hono } from "hono";
 import { githubLoginRouter } from "./github.ts";
 
-import type { Context } from "../types.ts";
+import type { IcedGateEnv } from "../types.ts";
 
-export const loginRouter = new Hono<Context>();
+export const loginRouter = new Hono<IcedGateEnv>();
 
 loginRouter.route("/", githubLoginRouter);
 
