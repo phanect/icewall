@@ -63,12 +63,7 @@ export class Lucia<
   ) {
     this.adapter = adapter;
     this.getUserAttributes = options?.getUserAttributes;
-    this.getSessionAttributes = (databaseSessionAttributes) => {
-      if (options?.getSessionAttributes) {
-        return options.getSessionAttributes(databaseSessionAttributes);
-      }
-      return {};
-    };
+    this.getSessionAttributes = options?.getSessionAttributes ?? (() => ({}));
     this.sessionExpiresIn = options?.sessionExpiresIn ?? new TimeSpan(30, "d");
     this.sessionCookieName = options?.sessionCookie?.name ?? "auth_session";
     let sessionCookieExpiresIn = this.sessionExpiresIn;
