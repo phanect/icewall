@@ -10,6 +10,7 @@ datasource db {
 model User {
   id           String    @id
   username     String    @unique
+  githubId     Int?      @unique
   auth_session Session[]
 }
 
@@ -17,7 +18,7 @@ model Session {
   id        String   @id
   userId    String
   expiresAt DateTime
-  country   String
+  fresh     Boolean
   user      User     @relation(references: [ id ], fields: [ userId ], onDelete: Cascade)
 
   @@index([ userId ])
