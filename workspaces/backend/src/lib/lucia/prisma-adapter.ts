@@ -7,7 +7,7 @@ import type {
   UserId,
 } from "./index.ts";
 
-export class PrismaAdapter<_PrismaClient extends PrismaClient> implements Adapter {
+export class PrismaAdapter implements Adapter {
   private sessionModel: PrismaModel<SessionSchema>;
   private userModel: PrismaModel<UserSchema>;
 
