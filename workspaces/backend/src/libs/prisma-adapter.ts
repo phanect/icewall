@@ -25,7 +25,7 @@ const transformIntoDatabaseUser = (raw: User): DatabaseUser => {
   };
 };
 
-export class PrismaAdapter<_PrismaClient extends PrismaClient> implements Adapter {
+export class PrismaAdapter implements Adapter {
   private sessionModel: PrismaModel<SessionSchema>;
   private userModel: PrismaModel<UserSchema>;
 
@@ -117,12 +117,6 @@ export class PrismaAdapter<_PrismaClient extends PrismaClient> implements Adapte
     });
   }
 }
-
-type PrismaClient = {
-  [K: string]: any;
-  $connect: any;
-  $transaction: any;
-};
 
 type UserSchema = {
   id: UserId;
