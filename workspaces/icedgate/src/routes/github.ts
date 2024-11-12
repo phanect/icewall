@@ -13,91 +13,88 @@ type GitHubUser = {
   login: string;
 };
 
-export const githubLoginRouter = new Hono<IcedGateEnv>();
+export const github = new Hono<IcedGateEnv>()
+  .get("/login/github", async (c) => {
+    const {
+      GITHUB_CLIENT_ID,
+      GITHUB_CLIENT_SECRET,
+    } = env(c);
 
-githubLoginRouter.get("/login/github", async (c) => {
-  const {
-    GITHUB_CLIENT_ID,
-    GITHUB_CLIENT_SECRET,
-  } = env(c);
+    if (!GITHUB_CLIENT_ID || !GITHUB_CLIENT_SECRET) {
+      throw new Error("GITHUB_CLIENT_ID and/or GITHUB_CLIENT_SECRET are not set as environment variable(s).");
+    }
 
-  if (!GITHUB_CLIENT_ID || !GITHUB_CLIENT_SECRET) {
-    throw new Error("GITHUB_CLIENT_ID and/or GITHUB_CLIENT_SECRET are not set as environment variable(s).");
-  }
-
-  const github = new GitHub(
-    GITHUB_CLIENT_ID,
-    GITHUB_CLIENT_SECRET,
-    "/login/github/callback",
-  );
-  const state = generateState();
-  const url = github.createAuthorizationURL(state, [ "user:email" ]);
-  setCookie(c, "github_oauth_state", state, {
-    path: "/",
-    secure: process.env.NODE_ENV === "production",
-    httpOnly: true,
-    maxAge: 60 * 10,
-    sameSite: "Lax",
-  });
-  return c.redirect(url.toString());
-});
-
-githubLoginRouter.get("/login/github/callback", async (c) => {
-  const {
-    GITHUB_CLIENT_ID,
-    GITHUB_CLIENT_SECRET,
-  } = env(c);
-
-  if (!GITHUB_CLIENT_ID || !GITHUB_CLIENT_SECRET) {
-    throw new Error("GITHUB_CLIENT_ID and/or GITHUB_CLIENT_SECRET are not set as environment variable(s).");
-  }
-
-  const github = new GitHub(
-    GITHUB_CLIENT_ID,
-    GITHUB_CLIENT_SECRET,
-    "/login/github/callback",
-  );
-
-  const code = c.req.query("code")?.toString();
-  const state = c.req.query("state")?.toString();
-  const storedState = getCookie(c).github_oauth_state;
-  if (!code || !state || !storedState || state !== storedState) {
-    return c.text("Failed to authenticate with GitHub. Sorry, this is probably caused by a bug or incident of this service or GitHub.", 400);
-  }
-  try {
-    const tokens = await github.validateAuthorizationCode(code);
-    const githubUserResponse = await fetch("https://api.github.com/user", {
-      headers: {
-        Authorization: `Bearer ${ tokens.accessToken() }`,
-      },
+    const github = new GitHub(
+      GITHUB_CLIENT_ID,
+      GITHUB_CLIENT_SECRET,
+      "/login/github/callback",
+    );
+    const state = generateState();
+    const url = github.createAuthorizationURL(state, [ "user:email" ]);
+    setCookie(c, "github_oauth_state", state, {
+      path: "/",
+      secure: !isLocal(c),
+      httpOnly: true,
+      maxAge: 60 * 10,
+      sameSite: "Lax",
     });
-    const githubUser: GitHubUser = await githubUserResponse.json();
-    const [ existingUser ] = await drizzle.select().from(IcedGateUsersTable)
-      .limit(1)
-      .where(eq(IcedGateUsersTable.githubId, githubUser.id));
+    return c.redirect(url.toString());
+  }).get("/login/github/callback", async (c) => {
+    const {
+      GITHUB_CLIENT_ID,
+      GITHUB_CLIENT_SECRET,
+    } = env(c);
 
-    if (existingUser) {
-      const session = await lucia.createSession(existingUser.id, {});
+    if (!GITHUB_CLIENT_ID || !GITHUB_CLIENT_SECRET) {
+      throw new Error("GITHUB_CLIENT_ID and/or GITHUB_CLIENT_SECRET are not set as environment variable(s).");
+    }
+
+    const github = new GitHub(
+      GITHUB_CLIENT_ID,
+      GITHUB_CLIENT_SECRET,
+      "/login/github/callback",
+    );
+
+    const code = c.req.query("code")?.toString();
+    const state = c.req.query("state")?.toString();
+    const storedState = getCookie(c).github_oauth_state;
+    if (!code || !state || !storedState || state !== storedState) {
+      return c.text("Failed to authenticate with GitHub. Sorry, this is probably caused by a bug or incident of this service or GitHub.", 400);
+    }
+    try {
+      const tokens = await github.validateAuthorizationCode(code);
+      const githubUserResponse = await fetch("https://api.github.com/user", {
+        headers: {
+          Authorization: `Bearer ${ tokens.accessToken() }`,
+        },
+      });
+      const githubUser: GitHubUser = await githubUserResponse.json();
+      const [ existingUser ] = await drizzle.select().from(IcedGateUsersTable)
+        .limit(1)
+        .where(eq(IcedGateUsersTable.githubId, githubUser.id));
+
+      if (existingUser) {
+        const session = await lucia.createSession(existingUser.id, {});
+        c.header("Set-Cookie", lucia.createSessionCookie(session.id).serialize(), { append: true });
+        return c.redirect("/");
+      }
+
+      const userId = generateId(15);
+      await drizzle.insert(IcedGateUsersTable).values({
+        id: userId,
+        githubId: githubUser.id,
+        username: githubUser.login,
+      });
+
+      const session = await lucia.createSession(userId, {});
       c.header("Set-Cookie", lucia.createSessionCookie(session.id).serialize(), { append: true });
       return c.redirect("/");
+    } catch (e) {
+      console.error(e);
+
+      if (e instanceof OAuth2RequestError && e.message.endsWith("bad_verification_code")) {
+        return c.text("Failed to authenticate with GitHub due to invalid verification code. Sorry, this is probably caused by a bug or incident of this service or GitHub.", 400);
+      }
+      return c.text("Failed to authenticate with GitHub due to unexpected error. Sorry, this is probably caused by a bug or incident of this service or GitHub.", 500);
     }
-
-    const userId = generateId(15);
-    await drizzle.insert(IcedGateUsersTable).values({
-      id: userId,
-      githubId: githubUser.id,
-      username: githubUser.login,
-    });
-
-    const session = await lucia.createSession(userId, {});
-    c.header("Set-Cookie", lucia.createSessionCookie(session.id).serialize(), { append: true });
-    return c.redirect("/");
-  } catch (e) {
-    console.error(e);
-
-    if (e instanceof OAuth2RequestError && e.message.endsWith("bad_verification_code")) {
-      return c.text("Failed to authenticate with GitHub due to invalid verification code. Sorry, this is probably caused by a bug or incident of this service or GitHub.", 400);
-    }
-    return c.text("Failed to authenticate with GitHub due to unexpected error. Sorry, this is probably caused by a bug or incident of this service or GitHub.", 500);
-  }
-});
+  });
