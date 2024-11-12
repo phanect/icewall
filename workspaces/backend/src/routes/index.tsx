@@ -1,4 +1,3 @@
-import { readFile } from "node:fs/promises";
 import { Hono } from "hono";
 
 import type { Env } from "../lib/types.ts";
@@ -10,8 +9,21 @@ mainRouter.get("/", async (c) => {
   if (!user) {
     return c.redirect("/login");
   }
-  const templateFile = await readFile("routes/index.template.html");
-  const template = templateFile.toString();
-  const html = template.replaceAll("%username%", user.username).replaceAll("%user_id%", user.id);
-  return c.html(html, 200);
+
+  return c.html((
+    <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>Lucia example</title>
+      </head>
+      <body>
+        <h1>Hi, { user.username }!</h1>
+        <p>Your user ID is { user.id }.</p>
+        <form method="post">
+          <button>Sign out</button>
+        </form>
+      </body>
+    </html>
+  ), 200);
 });
