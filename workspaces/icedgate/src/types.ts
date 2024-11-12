@@ -15,6 +15,7 @@ export type IcedGateEnv = {
   Bindings: {
     D1?: D1Database;
     SERVER_ENV?: string;
+    PROTOCOL_AND_HOST?: string;
 
     GITHUB_CLIENT_ID?: string;
     GITHUB_CLIENT_SECRET?: string;

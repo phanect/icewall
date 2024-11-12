@@ -16,6 +16,8 @@ type GitHubUser = {
 export const github = new Hono<IcedGateEnv>()
   .get("/login/github", async (c) => {
     const {
+      SERVER_ENV,
+      PROTOCOL_AND_HOST,
       GITHUB_CLIENT_ID,
       GITHUB_CLIENT_SECRET,
     } = env(c);
@@ -24,10 +26,14 @@ export const github = new Hono<IcedGateEnv>()
       throw new Error("GITHUB_CLIENT_ID and/or GITHUB_CLIENT_SECRET are not set as environment variable(s).");
     }
 
+    if (SERVER_ENV !== "production" && SERVER_ENV !== "staging" && SERVER_ENV !== "development") {
+      throw new Error(`Unexpected SERVER_ENV: "${ SERVER_ENV }"`);
+    }
+
     const github = new GitHub(
       GITHUB_CLIENT_ID,
       GITHUB_CLIENT_SECRET,
-      "/login/github/callback",
+      `${ PROTOCOL_AND_HOST }/login/github/callback`,
     );
     const state = generateState();
     const url = github.createAuthorizationURL(state, [ "user:email" ]);
@@ -41,6 +47,8 @@ export const github = new Hono<IcedGateEnv>()
     return c.redirect(url.toString());
   }).get("/login/github/callback", async (c) => {
     const {
+      SERVER_ENV,
+      PROTOCOL_AND_HOST,
       GITHUB_CLIENT_ID,
       GITHUB_CLIENT_SECRET,
     } = env(c);
@@ -49,10 +57,14 @@ export const github = new Hono<IcedGateEnv>()
       throw new Error("GITHUB_CLIENT_ID and/or GITHUB_CLIENT_SECRET are not set as environment variable(s).");
     }
 
+    if (SERVER_ENV !== "production" && SERVER_ENV !== "staging" && SERVER_ENV !== "development") {
+      throw new Error(`Unexpected SERVER_ENV: "${ SERVER_ENV }"`);
+    }
+
     const github = new GitHub(
       GITHUB_CLIENT_ID,
       GITHUB_CLIENT_SECRET,
-      "/login/github/callback",
+      `${ PROTOCOL_AND_HOST }/login/github/callback`,
     );
 
     const code = c.req.query("code")?.toString();
