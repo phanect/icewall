@@ -76,7 +76,7 @@ githubLoginRouter.get("/login/github/callback", async (c) => {
   const state = c.req.query("state")?.toString() ?? null;
   const storedState = getCookie(c).github_oauth_state ?? null;
   if (!code || !state || !storedState || state !== storedState) {
-    return c.body(null, 400);
+    return c.text("Failed to authenticate with GitHub. Sorry, this is probably caused by a bug or incident of this service or GitHub.", 400);
   }
   try {
     const lucia = getLuciaInstance(c);
@@ -112,10 +112,11 @@ githubLoginRouter.get("/login/github/callback", async (c) => {
     c.header("Set-Cookie", lucia.createSessionCookie(session.id).serialize(), { append: true });
     return c.redirect("/");
   } catch (e) {
-    if (e instanceof OAuth2RequestError && e.message === "bad_verification_code") {
-      // invalid code
-      return c.body(null, 400);
+    console.error(e);
+
+    if (e instanceof OAuth2RequestError && e.message.endsWith("bad_verification_code")) {
+      return c.text("Failed to authenticate with GitHub due to invalid verification code. Sorry, this is probably caused by a bug or incident of this service or GitHub.", 400);
     }
-    return c.body(null, 500);
+    return c.text("Failed to authenticate with GitHub due to unexpected error. Sorry, this is probably caused by a bug or incident of this service or GitHub.", 500);
   }
 });
