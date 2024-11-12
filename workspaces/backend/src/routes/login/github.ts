@@ -4,6 +4,7 @@ import { env } from "hono/adapter";
 import { getCookie, setCookie } from "hono/cookie";
 import { generateId } from "../../lib/lucia/index.ts";
 import { prisma, getLuciaInstance } from "../../lib/auth.ts";
+import { constants } from "../../lib/constants.ts";
 import { isLocal } from "../../lib/utils.ts";
 import type { Env } from "../../lib/types.ts";
 
@@ -16,6 +17,7 @@ export const githubLoginRouter = new Hono<Env>();
 
 githubLoginRouter.get("/login/github", async (c) => {
   const {
+    SERVER_ENV,
     GITHUB_CLIENT_ID,
     GITHUB_CLIENT_SECRET,
   } = env(c);
@@ -24,10 +26,16 @@ githubLoginRouter.get("/login/github", async (c) => {
     throw new Error("GITHUB_CLIENT_ID and/or GITHUB_CLIENT_SECRET are not set as environment variable(s).");
   }
 
+  if (SERVER_ENV !== "production" && SERVER_ENV !== "staging" && SERVER_ENV !== "development") {
+    throw new Error(`Unexpected SERVER_ENV: "${ SERVER_ENV }"`);
+  }
+
+  const { hostname } = constants(SERVER_ENV);
+
   const github = new GitHub(
     GITHUB_CLIENT_ID,
     GITHUB_CLIENT_SECRET,
-    "/login/github/callback",
+    `${ hostname }/login/github/callback`,
   );
   const state = generateState();
   const url = github.createAuthorizationURL(state, [ "user:email" ]);
@@ -43,6 +51,7 @@ githubLoginRouter.get("/login/github", async (c) => {
 
 githubLoginRouter.get("/login/github/callback", async (c) => {
   const {
+    SERVER_ENV,
     GITHUB_CLIENT_ID,
     GITHUB_CLIENT_SECRET,
   } = env(c);
@@ -51,10 +60,16 @@ githubLoginRouter.get("/login/github/callback", async (c) => {
     throw new Error("GITHUB_CLIENT_ID and/or GITHUB_CLIENT_SECRET are not set as environment variable(s).");
   }
 
+  if (SERVER_ENV !== "production" && SERVER_ENV !== "staging" && SERVER_ENV !== "development") {
+    throw new Error(`Unexpected SERVER_ENV: "${ SERVER_ENV }"`);
+  }
+
+  const { hostname } = constants(SERVER_ENV);
+
   const github = new GitHub(
     GITHUB_CLIENT_ID,
     GITHUB_CLIENT_SECRET,
-    "/login/github/callback",
+    `${ hostname }/login/github/callback`,
   );
 
   const code = c.req.query("code")?.toString() ?? null;
