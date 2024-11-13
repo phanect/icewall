@@ -1,14 +1,9 @@
-import { Hono } from "hono";
-import { serve } from "@hono/node-server";
-import { routers } from "./routes/index.tsx";
-import type { Env } from "./lib/types.ts";
+import type { Context, Input } from "hono";
+import type { User } from "@prisma/client";
+import type { Env } from "./types.ts";
 
-const app = new Hono<Env>()
-  .route("/", routers);
+export { authRoutes } from "./routes/index.tsx";
+export type { Env, User };
 
-serve({
-  fetch: app.fetch,
-  port: 3000,
-});
-
-console.log("Server running on port 3000");
+export const getUser = (c: Context<Env, string, Input>): User | null => c.get("user");
+export const isAuthenticated = (c: Context<Env, string, Input>): boolean => !!getUser(c);
