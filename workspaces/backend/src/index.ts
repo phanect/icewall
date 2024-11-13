@@ -4,7 +4,7 @@ import { verifyRequestOrigin } from "./lib/lucia/index.ts";
 import { getLuciaInstance } from "./lib/auth.ts";
 import { mainRouter } from "./routes/index.ts";
 import { logoutRouter } from "./routes/logout.ts";
-import { loginRouter } from "./routes/login/index.ts";
+import { loginRouter } from "./routes/login/index.tsx";
 import type { Env } from "./lib/types.ts";
 
 const app = new Hono<Env>();
