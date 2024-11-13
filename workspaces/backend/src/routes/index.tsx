@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { getLuciaInstance } from "./internal/auth.ts";
 import { verifyRequestOrigin } from "./internal/lucia/index.ts";
-import { githubLoginRouter } from "./github.ts";
+import { githubRouter } from "./github.ts";
 
 import type { Env } from "../types.ts";
 
@@ -36,7 +36,6 @@ export const authRoutes = new Hono<Env>()
     c.set("session", session);
     return next();
   })
-  .route("/", githubLoginRouter)
   .get("/login", async (c) => {
     const session = c.get("session");
     if (session) {
@@ -64,4 +63,4 @@ export const authRoutes = new Hono<Env>()
     await lucia.invalidateSession(session.id);
     c.header("Set-Cookie", lucia.createBlankSessionCookie().serialize(), { append: true });
     return c.redirect("/login");
-  });
+  }).route("/", githubRouter);
