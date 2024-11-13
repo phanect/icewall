@@ -1,10 +1,7 @@
 import { GitHub } from "arctic";
 import { drizzle } from "drizzle-orm/better-sqlite3";
-import dotenv from "dotenv";
 import { Lucia } from "./core.ts";
 import { DrizzleSQLiteAdapter } from "./adapter-sqlite.ts";
-
-dotenv.config();
 
 export const lucia = new Lucia(
   new DrizzleSQLiteAdapter(drizzle()),
