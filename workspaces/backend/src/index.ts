@@ -2,7 +2,6 @@ import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import { verifyRequestOrigin } from "./lib/lucia/index.ts";
 import { getLuciaInstance } from "./lib/auth.ts";
-import { mainRouter } from "./routes/index.ts";
 import { logoutRouter } from "./routes/logout.ts";
 import { loginRouter } from "./routes/login/index.tsx";
 import type { Env } from "./lib/types.ts";
@@ -42,7 +41,7 @@ app.use("*", async (c, next) => {
   return next();
 });
 
-app.route("/", mainRouter).route("/", loginRouter).route("/", logoutRouter);
+app.route("/", loginRouter).route("/", logoutRouter);
 
 serve({
   fetch: app.fetch,
