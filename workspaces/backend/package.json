@@ -19,13 +19,19 @@
     "migrate": "prisma migrate dev",
     "test": "pnpm run build:db && tsx tests/prisma.test.ts && vitest run"
   },
-  "devDependencies": {
+  "dependencies": {
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
+    "arctic": "^2.0.0"
+  },
+  "peerDependencies": {
+    "@prisma/client": "^5.21.1",
+    "hono": "^4.1.5"
+  },
+  "devDependencies": {
     "@phanect/configs": "latest",
     "@prisma/client": "^5.21.1",
     "@types/node": "^22.8.6",
-    "arctic": "^2.0.0",
     "hono": "^4.1.5",
     "prisma": "^5.0.0",
     "tsup": "^8.3.5",
