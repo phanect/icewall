@@ -2,13 +2,16 @@ import { defineConfig } from "tsup";
 
 export default defineConfig({
   entry: [ "src/index.ts" ],
-  target: "node20",
+  target: [
+    "chrome131", // For Cloudflare Workers
+    "node20",
+  ],
   format: "esm",
 
-  dts: false,
+  dts: true,
   sourcemap: true,
 
-  treeshake: true,
+  treeshake: false,
   minify: false,
   splitting: false,
   clean: true,
