@@ -1,12 +1,12 @@
 import { readFile } from "node:fs/promises";
 import { Hono } from "hono";
+import { icedgate, getUser, type IcedGateEnv } from "icedgate";
 
-import type { IcedGateEnv } from "../../icedgate/src/types.ts";
-
-export const mainRouter = new Hono<IcedGateEnv>();
+export const mainRouter = new Hono<IcedGateEnv>()
+  .route("/", icedgate);
 
 mainRouter.get("/", async (c) => {
-  const user = c.get("user");
+  const user = getUser(c);
   if (!user) {
     return c.redirect("/login");
   }
