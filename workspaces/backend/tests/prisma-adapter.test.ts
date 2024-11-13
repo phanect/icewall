@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { PrismaAdapter } from "../src/lib/lucia/prisma-adapter.ts";
+import { PrismaAdapter } from "../src/routes/internal/lucia/prisma-adapter.ts";
 import { testAdapter, databaseUser } from "./utils/test-adapter.ts";
 
 const client = new PrismaClient();

@@ -1,4 +1,4 @@
-import type { SessionAttributes, UserAttributes } from "../types.ts";
+import type { SessionAttributes, UserAttributes } from "../../../types.ts";
 
 export type Adapter = {
   getSessionAndUser(

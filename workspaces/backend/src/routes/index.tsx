@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { githubLoginRouter } from "./github.ts";
 
-import type { Env } from "../../lib/types.ts";
+import type { Env } from "../types.ts";
 
 export const loginRouter = new Hono<Env>()
   .route("/", githubLoginRouter)

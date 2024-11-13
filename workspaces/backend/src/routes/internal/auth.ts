@@ -4,7 +4,7 @@ import { Lucia } from "./lucia/index.ts";
 import { PrismaAdapter } from "./lucia/prisma-adapter.ts";
 import { isLocal } from "./utils.ts";
 import type { Context } from "hono";
-import type { Env } from "./types.ts";
+import type { Env } from "../../types.ts";
 
 dotenv.config();
 

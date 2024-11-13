@@ -5,7 +5,7 @@ import { generateIdFromEntropySize } from "./crypto.ts";
 import type { User, Session } from "@prisma/client";
 import type { Adapter } from "./database.ts";
 import type { Cookie, CookieAttributes } from "./cookie.ts";
-import type { SessionAttributes, UserAttributes } from "../types.ts";
+import type { SessionAttributes, UserAttributes } from "../../../types.ts";
 
 export class Lucia {
   private adapter: Adapter;
