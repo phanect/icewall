@@ -12,7 +12,7 @@ type GitHubUser = {
   login: string;
 };
 
-export const githubLoginRouter = new Hono<Env>()
+export const githubRouter = new Hono<Env>()
   .get("/login/github", async (c) => {
     const {
       SERVER_ENV,
