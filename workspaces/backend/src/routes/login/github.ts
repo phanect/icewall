@@ -94,7 +94,7 @@ githubLoginRouter.get("/login/github/callback", async (c) => {
     });
 
     if (existingUser) {
-      const session = await lucia.createSession(existingUser.id, {});
+      const session = await lucia.createSession(existingUser.id, { fresh: false });
       c.header("Set-Cookie", lucia.createSessionCookie(session.id).serialize(), { append: true });
       return c.redirect("/");
     }
@@ -108,7 +108,7 @@ githubLoginRouter.get("/login/github/callback", async (c) => {
       },
     });
 
-    const session = await lucia.createSession(userId, {});
+    const session = await lucia.createSession(userId, { fresh: true });
     c.header("Set-Cookie", lucia.createSessionCookie(session.id).serialize(), { append: true });
     return c.redirect("/");
   } catch (e) {
