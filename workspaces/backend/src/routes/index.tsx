@@ -15,11 +15,11 @@ export const loginRouter = new Hono<Env>()
         <head>
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width" />
-          <title>Lucia example</title>
+          <title>Login or Sign up</title>
         </head>
         <body>
-          <h1>Sign in</h1>
-          <a href="/login/github">Sign in with GitHub</a>
+          <h1>Login or Sign up</h1>
+          <a href="/login/github">Login or sign up with GitHub</a>
         </body>
       </html>
     ), 200);
