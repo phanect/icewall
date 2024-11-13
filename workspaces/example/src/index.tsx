@@ -1,10 +1,10 @@
 import { Hono } from "hono";
-
-import type { Env } from "../lib/types.ts";
+import { authRoutes, getUser, type Env } from "authserver";
 
 const app = new Hono<Env>()
+  .route("/", authRoutes)
   .get("/", async (c) => {
-    const user = c.get("user");
+    const user = getUser(c);
     if (!user) {
       return c.redirect("/login");
     }

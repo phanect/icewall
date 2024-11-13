@@ -10,6 +10,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241022.0",
     "@phanect/configs": "latest",
+    "authserver": "workspace:*",
     "wrangler": "^3.83.0"
   }
 }
