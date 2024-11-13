@@ -4,7 +4,6 @@ import { env } from "hono/adapter";
 import { getCookie, setCookie } from "hono/cookie";
 import { generateId } from "./internal/lucia/index.ts";
 import { prisma, getLuciaInstance } from "./internal/auth.ts";
-import { constants } from "./internal/constants.ts";
 import { isLocal } from "./internal/utils.ts";
 import type { Env } from "../types.ts";
 
@@ -17,6 +16,7 @@ export const githubRouter = new Hono<Env>()
   .get("/login/github", async (c) => {
     const {
       SERVER_ENV,
+      PROTOCOL_AND_HOST,
       GITHUB_CLIENT_ID,
       GITHUB_CLIENT_SECRET,
     } = env(c);
@@ -29,12 +29,10 @@ export const githubRouter = new Hono<Env>()
       throw new Error(`Unexpected SERVER_ENV: "${ SERVER_ENV }"`);
     }
 
-    const { hostname } = constants(SERVER_ENV);
-
     const github = new GitHub(
       GITHUB_CLIENT_ID,
       GITHUB_CLIENT_SECRET,
-      `${ hostname }/login/github/callback`,
+      `${ PROTOCOL_AND_HOST }/login/github/callback`,
     );
     const state = generateState();
     const url = github.createAuthorizationURL(state, [ "user:email" ]);
@@ -49,6 +47,7 @@ export const githubRouter = new Hono<Env>()
   }).get("/login/github/callback", async (c) => {
     const {
       SERVER_ENV,
+      PROTOCOL_AND_HOST,
       GITHUB_CLIENT_ID,
       GITHUB_CLIENT_SECRET,
     } = env(c);
@@ -61,12 +60,10 @@ export const githubRouter = new Hono<Env>()
       throw new Error(`Unexpected SERVER_ENV: "${ SERVER_ENV }"`);
     }
 
-    const { hostname } = constants(SERVER_ENV);
-
     const github = new GitHub(
       GITHUB_CLIENT_ID,
       GITHUB_CLIENT_SECRET,
-      `${ hostname }/login/github/callback`,
+      `${ PROTOCOL_AND_HOST }/login/github/callback`,
     );
 
     const code = c.req.query("code")?.toString() ?? null;
