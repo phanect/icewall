@@ -1,8 +1,11 @@
 import type { Env as HonoEnv } from "hono";
-import type { User, Session } from "@prisma/client";
+import type { PrismaClient, User, Session } from "@prisma/client";
+import type { Lucia } from "./core.ts";
 
 export type Env = {
   Variables: {
+    prisma: PrismaClient;
+    lucia: Lucia;
     user?: User;
     session?: Session;
   };

@@ -1,8 +1,10 @@
 import { Hono } from "hono";
-import { getLuciaInstance } from "./internal/auth.ts";
-import { verifyRequestOrigin } from "./internal/index.ts";
+import { PrismaClient } from "@prisma/client";
+import { verifyRequestOrigin } from "../libs/request.ts";
 import { githubRouter } from "./github.ts";
-
+import { Lucia } from "../libs/core.ts";
+import { PrismaAdapter } from "../libs/prisma-adapter.ts";
+import { isLocal } from "../libs/utils.ts";
 import type { Env } from "../libs/types.ts";
 
 export const authRoutes = new Hono<Env>()
@@ -17,7 +19,25 @@ export const authRoutes = new Hono<Env>()
     }
     return next();
   }).use("*", async (c, next) => {
-    const lucia = getLuciaInstance(c);
+    const prisma = new PrismaClient();
+    const lucia = new Lucia(
+      new PrismaAdapter(prisma.session, prisma.user),
+      {
+        sessionCookie: {
+          attributes: {
+            secure: !isLocal(c),
+          },
+        },
+        getUserAttributes: (attributes) => ({
+          githubId: attributes.githubId,
+          username: attributes.username,
+        }),
+      },
+    );
+
+    c.set("prisma", prisma);
+    c.set("lucia", lucia);
+
     const sessionId = lucia.readSessionCookie(c.req.header("Cookie") ?? "");
     if (!sessionId) {
       c.set("user", undefined);
@@ -55,7 +75,7 @@ export const authRoutes = new Hono<Env>()
       </html>
     ), 200);
   }).post("/", async (c) => {
-    const lucia = getLuciaInstance(c);
+    const lucia = c.get("lucia");
     const session = c.get("session");
     if (!session) {
       return c.body(null, 401);
