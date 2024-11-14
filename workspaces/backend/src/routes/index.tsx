@@ -19,7 +19,9 @@ export const authRoutes = new Hono<Env>()
     }
     return next();
   }).use("*", async (c, next) => {
-    const prisma = new PrismaClient();
+    const prisma = new PrismaClient({
+      adapter: new PrismaD1(c.env.db),
+    });
     const lucia = new Lucia(
       new PrismaAdapter(prisma),
       {
