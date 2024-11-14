@@ -2,7 +2,8 @@
   "name": "example",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy --minify"
+    "deploy": "wrangler deploy --minify",
+    "postinstall": "! ls .wrangler &> /dev/null && wrangler d1 execute icedgate-example --local --file=./schema.sql"
   },
   "dependencies": {
     "hono": "^4.6.9"
