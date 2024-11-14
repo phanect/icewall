@@ -5,5 +5,5 @@ import type { Env } from "./types.ts";
 export { authRoutes } from "./routes/index.tsx";
 export type { Env, User };
 
-export const getUser = (c: Context<Env, string, Input>): User | null => c.get("user");
+export const getUser = (c: Context<Env, string, Input>): User | undefined => c.get("user");
 export const isAuthenticated = (c: Context<Env, string, Input>): boolean => !!getUser(c);

@@ -10,8 +10,8 @@ export const authRoutes = new Hono<Env>()
     if (c.req.method === "GET") {
       return next();
     }
-    const originHeader = c.req.header("Origin") ?? null;
-    const hostHeader = c.req.header("Host") ?? null;
+    const originHeader = c.req.header("Origin") ?? undefined;
+    const hostHeader = c.req.header("Host") ?? undefined;
     if (!originHeader || !hostHeader || !verifyRequestOrigin(originHeader, [ hostHeader ])) {
       return c.body(null, 403);
     }
@@ -20,8 +20,8 @@ export const authRoutes = new Hono<Env>()
     const lucia = getLuciaInstance(c);
     const sessionId = lucia.readSessionCookie(c.req.header("Cookie") ?? "");
     if (!sessionId) {
-      c.set("user", null);
-      c.set("session", null);
+      c.set("user", undefined);
+      c.set("session", undefined);
       return next();
     }
 
@@ -32,8 +32,8 @@ export const authRoutes = new Hono<Env>()
     if (!session) {
       c.header("Set-Cookie", lucia.createBlankSessionCookie().serialize(), { append: true });
     }
-    c.set("user", user);
-    c.set("session", session);
+    c.set("user", user ?? undefined);
+    c.set("session", session ?? undefined);
     return next();
   })
   .get("/login", async (c) => {
