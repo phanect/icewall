@@ -3,8 +3,8 @@ import type { User, Session } from "@prisma/client";
 
 export type Env = {
   Variables: {
-    user: User | null;
-    session: Session | null;
+    user?: User;
+    session?: Session;
   };
   /** Environment variables */
   Bindings: {

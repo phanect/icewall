@@ -54,7 +54,7 @@ export class PrismaAdapter implements Adapter {
 
   public async getSessionAndUser(
     sessionId: string
-  ): Promise<[session: DatabaseSession | null, user: DatabaseUser | null]> {
+  ): Promise<[session: DatabaseSession | undefined, user: DatabaseUser | undefined]> {
     const userModelKey = this.userModel.name[0].toLowerCase() + this.userModel.name.slice(1);
     const result = await this.sessionModel.findUnique({
       where: {
@@ -65,7 +65,7 @@ export class PrismaAdapter implements Adapter {
       },
     });
     if (!result) {
-      return [ null, null ];
+      return [ undefined, undefined ];
     }
     const userResult: User = result[
       userModelKey as keyof typeof result

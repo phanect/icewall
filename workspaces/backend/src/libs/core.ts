@@ -151,15 +151,15 @@ export class Lucia {
     await this.adapter.deleteExpiredSessions();
   }
 
-  public readSessionCookie(cookieHeader: string): string | null {
+  public readSessionCookie(cookieHeader: string): string | undefined {
     const sessionId = this.sessionCookieController.parse(cookieHeader);
     return sessionId;
   }
 
-  public readBearerToken(authorizationHeader: string): string | null {
+  public readBearerToken(authorizationHeader: string): string | undefined {
     const [ authScheme, token ] = authorizationHeader.split(" ") as [string, string | undefined];
     if (authScheme !== "Bearer") {
-      return null;
+      return undefined;
     }
     return token ?? null;
   }
