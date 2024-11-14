@@ -1,6 +1,6 @@
 {
   "extends": [
-    "@phanect/configs/ts/nodejs",
+    "@phanect/configs/ts/cloudflare",
     "@phanect/configs/ts/addons/jsx"
   ],
   "compilerOptions": {
