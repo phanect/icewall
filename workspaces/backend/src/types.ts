@@ -1,13 +1,18 @@
 import type { Env as HonoEnv } from "hono";
-import type { User, Session } from "@prisma/client";
+import type { PrismaClient, User, Session } from "@prisma/client";
+import type { D1Database } from "@cloudflare/workers-types";
+import type { Lucia } from "./routes/internal/lucia/index.ts";
 
 export type Env = {
   Variables: {
+    prisma: PrismaClient;
+    lucia: Lucia;
     user?: User;
     session?: Session;
   };
   /** Environment variables */
   Bindings: {
+    db: D1Database;
     SERVER_ENV?: string;
     PROTOCOL_AND_HOST?: string;
 

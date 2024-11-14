@@ -3,7 +3,6 @@ import { Hono } from "hono";
 import { env } from "hono/adapter";
 import { getCookie, setCookie } from "hono/cookie";
 import { generateId } from "./internal/lucia/index.ts";
-import { prisma, getLuciaInstance } from "./internal/auth.ts";
 import { isLocal } from "./internal/utils.ts";
 import type { Env } from "../types.ts";
 
@@ -73,7 +72,9 @@ export const githubRouter = new Hono<Env>()
       return c.text("Failed to authenticate with GitHub. Sorry, this is probably caused by a bug or incident of this service or GitHub.", 400);
     }
     try {
-      const lucia = getLuciaInstance(c);
+      const prisma = c.get("prisma");
+      const lucia = c.get("lucia");
+
       const tokens = await github.validateAuthorizationCode(code);
       const githubUserResponse = await fetch("https://api.github.com/user", {
         headers: {
