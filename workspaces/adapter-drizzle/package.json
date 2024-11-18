@@ -9,7 +9,7 @@
   "module": "dist/index.js",
   "type": "module",
   "scripts": {
-    "build": "shx rm -rf ./dist/* && tsc",
+    "build": "rm -rf ./dist/* && tsc",
     "test.mysql": "tsx tests/mysql.ts",
     "test.postgresql": "tsx tests/postgresql.ts",
     "test.sqlite": "tsx tests/sqlite.ts"
@@ -22,13 +22,10 @@
     "drizzle-orm": ">= 0.29 <1"
   },
   "devDependencies": {
-    "@lucia-auth/adapter-test": "workspace:*",
     "@phanect/configs": "latest",
     "@types/better-sqlite3": "^7.6.3",
-    "better-sqlite3": "^8.4.0",
     "dotenv": "^16.0.3",
     "drizzle-orm": "^0",
-    "lucia": "workspace:*",
     "mysql2": "^3.2.3",
     "pg": "^8.8.0",
     "tsx": "^3.12.6"
