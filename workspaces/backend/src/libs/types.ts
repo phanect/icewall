@@ -1,13 +1,13 @@
 import type { Env as HonoEnv } from "hono";
-import type { PrismaClient, User, Session } from "@prisma/client";
+import type { PrismaClient, IcedGateUser, IcedGateSession } from "@prisma/client";
 import type { Lucia } from "./core.ts";
 
 export type Env = {
   Variables: {
     prisma: PrismaClient;
     lucia: Lucia;
-    user?: User;
-    session?: Session;
+    user?: IcedGateUser;
+    session?: IcedGateSession;
   };
   /** Environment variables */
   Bindings: {
@@ -19,5 +19,5 @@ export type Env = {
   };
 } & HonoEnv;
 
-export type UserAttributes = Omit<User, "id">;
-export type SessionAttributes = Omit<Session, "id" | "userId" | "expiresAt">;
+export type UserAttributes = Omit<IcedGateUser, "id">;
+export type SessionAttributes = Omit<IcedGateSession, "id" | "userId" | "expiresAt">;

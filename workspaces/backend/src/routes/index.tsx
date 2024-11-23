@@ -21,7 +21,7 @@ export const authRoutes = new Hono<Env>()
   }).use("*", async (c, next) => {
     const prisma = new PrismaClient();
     const lucia = new Lucia(
-      new PrismaAdapter(prisma.session, prisma.user),
+      new PrismaAdapter(prisma.icedGateSession, prisma.icedGateUser),
       {
         sessionCookie: {
           attributes: {

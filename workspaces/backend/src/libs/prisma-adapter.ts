@@ -1,11 +1,11 @@
-import type { Session, User } from "@prisma/client";
+import type { IcedGateSession, IcedGateUser } from "@prisma/client";
 import type {
   Adapter,
   DatabaseSession,
   DatabaseUser,
 } from "./database.ts";
 
-const transformIntoDatabaseSession = (raw: Session): DatabaseSession => {
+const transformIntoDatabaseSession = (raw: IcedGateSession): DatabaseSession => {
   const { id, userId, expiresAt, ...attributes } = raw;
   return {
     id,
@@ -15,7 +15,7 @@ const transformIntoDatabaseSession = (raw: Session): DatabaseSession => {
   };
 };
 
-const transformIntoDatabaseUser = (raw: User): DatabaseUser => {
+const transformIntoDatabaseUser = (raw: IcedGateUser): DatabaseUser => {
   const { id, ...attributes } = raw;
   return {
     id,
@@ -24,12 +24,12 @@ const transformIntoDatabaseUser = (raw: User): DatabaseUser => {
 };
 
 export class PrismaAdapter implements Adapter {
-  private sessionModel: PrismaModel<Session>;
-  private userModel: PrismaModel<User>;
+  private sessionModel: PrismaModel<IcedGateSession>;
+  private userModel: PrismaModel<IcedGateUser>;
 
   constructor(sessionModel: BasicPrismaModel, userModel: BasicPrismaModel) {
-    this.sessionModel = sessionModel as any as PrismaModel<Session>;
-    this.userModel = userModel as any as PrismaModel<User>;
+    this.sessionModel = sessionModel as any as PrismaModel<IcedGateSession>;
+    this.userModel = userModel as any as PrismaModel<IcedGateUser>;
   }
 
   public async deleteSession(sessionId: string): Promise<void> {
@@ -67,9 +67,9 @@ export class PrismaAdapter implements Adapter {
     if (!result) {
       return [ undefined, undefined ];
     }
-    const userResult: User = result[
+    const userResult: IcedGateUser = result[
       userModelKey as keyof typeof result
-    ] as any as User;
+    ] as any as IcedGateUser;
     delete result[userModelKey as keyof typeof result];
     return [ transformIntoDatabaseSession(result), transformIntoDatabaseUser(userResult) ];
   }

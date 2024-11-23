@@ -2,7 +2,7 @@ import { TimeSpan, createDate, isWithinExpirationDate } from "./date.ts";
 import { CookieController } from "./cookie.ts";
 import { generateIdFromEntropySize } from "./crypto.ts";
 
-import type { User, Session } from "@prisma/client";
+import type { IcedGateUser, IcedGateSession } from "@prisma/client";
 import type { Adapter } from "./database.ts";
 import type { Cookie, CookieAttributes } from "./cookie.ts";
 import type { SessionAttributes, UserAttributes } from "./types.ts";
@@ -12,8 +12,8 @@ export class Lucia {
   private sessionExpiresIn: TimeSpan;
   private sessionCookieController: CookieController;
 
-  private getSessionAttributes: (sessionAttributes: SessionAttributes) => Omit<Session, "id"> | Record<never, never>;
-  private getUserAttributes: ((userAttributes: UserAttributes) => Omit<User, "id">) | undefined;
+  private getSessionAttributes: (sessionAttributes: SessionAttributes) => Omit<IcedGateSession, "id"> | Record<never, never>;
+  private getUserAttributes: ((userAttributes: UserAttributes) => Omit<IcedGateUser, "id">) | undefined;
 
   public readonly sessionCookieName: string;
 
@@ -22,8 +22,8 @@ export class Lucia {
     options?: {
       sessionExpiresIn?: TimeSpan;
       sessionCookie?: SessionCookieOptions;
-      getSessionAttributes?: (sessionAttributes: SessionAttributes) => Omit<Session, "id">;
-      getUserAttributes?: (userAttributes: UserAttributes) => Omit<User, "id">;
+      getSessionAttributes?: (sessionAttributes: SessionAttributes) => Omit<IcedGateSession, "id">;
+      getUserAttributes?: (userAttributes: UserAttributes) => Omit<IcedGateUser, "id">;
     }
   ) {
     this.adapter = adapter;
@@ -51,9 +51,9 @@ export class Lucia {
     );
   }
 
-  public async getUserSessions(userId: string): Promise<Session[]> {
+  public async getUserSessions(userId: string): Promise<IcedGateSession[]> {
     const databaseSessions = await this.adapter.getUserSessions(userId);
-    const sessions: Session[] = [];
+    const sessions: IcedGateSession[] = [];
     for (const databaseSession of databaseSessions) {
       if (!isWithinExpirationDate(databaseSession.expiresAt)) {
         continue;
@@ -71,7 +71,7 @@ export class Lucia {
 
   public async validateSession(
     sessionId: string
-  ): Promise<{ user: User; session: Session; } | { user: null; session: null; }> {
+  ): Promise<{ user: IcedGateUser; session: IcedGateSession; } | { user: null; session: null; }> {
     if (!this.getUserAttributes) {
       throw new Error("getUserAttributes is not defined on instanciating Lucia class.");
     }
@@ -91,7 +91,7 @@ export class Lucia {
     const activePeriodExpirationDate = new Date(
       databaseSession.expiresAt.getTime() - this.sessionExpiresIn.milliseconds() / 2
     );
-    const session: Session = {
+    const session: IcedGateSession = {
       ...this.getSessionAttributes(databaseSession.attributes),
       id: databaseSession.id,
       userId: databaseSession.userId,
@@ -103,7 +103,7 @@ export class Lucia {
       session.expiresAt = createDate(this.sessionExpiresIn);
       await this.adapter.updateSessionExpiration(databaseSession.id, session.expiresAt);
     }
-    const user: User = {
+    const user: IcedGateUser = {
       ...this.getUserAttributes(databaseUser.attributes),
       id: databaseUser.id,
     };
@@ -116,7 +116,7 @@ export class Lucia {
     options?: {
       sessionId?: string;
     }
-  ): Promise<Session> {
+  ): Promise<IcedGateSession> {
     if (!this.getSessionAttributes) {
       throw new Error("getSessionAttributes is not defined on instanciating Lucia class.");
     }
@@ -129,7 +129,7 @@ export class Lucia {
       expiresAt: sessionExpiresAt,
       attributes,
     });
-    const session: Session = {
+    const session: IcedGateSession = {
       id: sessionId,
       userId,
       fresh: true,

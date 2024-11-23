@@ -4,9 +4,9 @@ import { testAdapter, databaseUser } from "./utils/test-adapter.ts";
 
 const client = new PrismaClient();
 
-const adapter = new PrismaAdapter(client.session, client.user);
+const adapter = new PrismaAdapter(client.icedGateSession, client.icedGateUser);
 
-await client.user.create({
+await client.icedGateUser.create({
   data: {
     id: databaseUser.id,
     ...databaseUser.attributes,
@@ -15,5 +15,5 @@ await client.user.create({
 
 await testAdapter(adapter);
 
-await client.session.deleteMany();
-await client.user.deleteMany();
+await client.icedGateSession.deleteMany();
+await client.icedGateUser.deleteMany();

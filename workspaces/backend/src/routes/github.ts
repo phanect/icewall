@@ -82,7 +82,7 @@ export const githubRouter = new Hono<Env>()
         },
       });
       const githubUser = await githubUserResponse.json() as GitHubUser;
-      const existingUser = await prisma.user.findFirst({
+      const existingUser = await prisma.icedGateUser.findFirst({
         where: {
           githubId: githubUser.id,
         },
@@ -95,7 +95,7 @@ export const githubRouter = new Hono<Env>()
       }
 
       const userId = generateId(15);
-      await prisma.user.create({
+      await prisma.icedGateUser.create({
         data: {
           id: userId,
           githubId: githubUser.id,

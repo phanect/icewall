@@ -2,19 +2,19 @@
 // DO NOT EDIT MANUALLY
 // This file should be gitignored
 
-model User {
+model IcedGateUser {
   id          String    @id
   username    String    @unique
   githubId    Int?      @unique
-  authSession Session[]
+  authSession IcedGateSession[]
 }
 
-model Session {
+model IcedGateSession {
   id        String   @id
   userId    String
   expiresAt DateTime
   fresh     Boolean
-  user      User     @relation(references: [ id ], fields: [ userId ], onDelete: Cascade)
+  user      IcedGateUser @relation(references: [ id ], fields: [ userId ], onDelete: Cascade)
 
   @@index([ userId ])
 }
