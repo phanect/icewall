@@ -1,5 +1,5 @@
 {
-  "name": "example",
+  "name": "icedgate-example",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify"
