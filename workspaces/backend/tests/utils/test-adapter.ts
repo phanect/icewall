@@ -10,6 +10,7 @@ export const databaseUser: DatabaseUser = {
   id: generateId(15),
   attributes: {
     username: generateId(15),
+    githubId: null,
   },
 };
 
@@ -21,7 +22,7 @@ export async function testAdapter(adapter: Adapter) {
     // get random date with 0ms
     expiresAt: new Date(Math.floor(Date.now() / 1000) * 1000 + 10_000),
     attributes: {
-      country: "us",
+      fresh: false,
     },
   };
 
@@ -61,7 +62,7 @@ export async function testAdapter(adapter: Adapter) {
       id: generateId(40),
       expiresAt: new Date(Math.floor(Date.now() / 1000) * 1000 - 10_000),
       attributes: {
-        country: "us",
+        fresh: false,
       },
     };
     await adapter.setSession(expiredSession);
