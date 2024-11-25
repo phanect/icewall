@@ -3,7 +3,7 @@ import type {
   Adapter,
   DatabaseSession,
   DatabaseUser,
-} from "./index.ts";
+} from "./database.ts";
 
 const transformIntoDatabaseSession = (raw: Session): DatabaseSession => {
   const { id, userId, expiresAt, ...attributes } = raw;

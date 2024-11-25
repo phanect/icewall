@@ -2,7 +2,7 @@ import { GitHub, OAuth2RequestError, generateState } from "arctic";
 import { Hono } from "hono";
 import { env } from "hono/adapter";
 import { getCookie, setCookie } from "hono/cookie";
-import { generateId } from "../../lib/lucia/index.ts";
+import { generateId } from "../libs/crypto.ts";
 import { prisma, getLuciaInstance } from "../libs/auth.ts";
 import { isLocal } from "../libs/utils.ts";
 import type { Env } from "../libs/types.ts";

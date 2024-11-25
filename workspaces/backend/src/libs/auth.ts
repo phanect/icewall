@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
-import { Lucia } from "./lucia/index.ts";
+import { Lucia } from "./core.ts";
 import { PrismaAdapter } from "./prisma-adapter.ts";
 import { isLocal } from "./utils.ts";
 import type { Context } from "hono";
