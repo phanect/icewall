@@ -25,23 +25,11 @@
     "arctic": "^2.0.0"
   },
   "peerDependencies": {
-    "@cloudflare/workers-types": "^4.20241022.0",
-    "@prisma/adapter-d1": "^5.22.0",
     "@prisma/client": "^5.21.1",
     "hono": "^4.1.5"
   },
-  "peerDependenciesMeta": {
-    "@cloudflare/workers-types": {
-      "optional": true
-    },
-    "@prisma/adapter-d1": {
-      "optional": true
-    }
-  },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20241022.0",
     "@phanect/configs": "latest",
-    "@prisma/adapter-d1": "^5.22.0",
     "@prisma/client": "^5.21.1",
     "@types/node": "^22.8.6",
     "hono": "^4.1.5",
