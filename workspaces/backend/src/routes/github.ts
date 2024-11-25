@@ -3,9 +3,9 @@ import { Hono } from "hono";
 import { env } from "hono/adapter";
 import { getCookie, setCookie } from "hono/cookie";
 import { generateId } from "../../lib/lucia/index.ts";
-import { prisma, getLuciaInstance } from "../../lib/auth.ts";
-import { isLocal } from "../../lib/utils.ts";
-import type { Env } from "../../lib/types.ts";
+import { prisma, getLuciaInstance } from "../libs/auth.ts";
+import { isLocal } from "../libs/utils.ts";
+import type { Env } from "../libs/types.ts";
 
 type GitHubUser = {
   id: number;

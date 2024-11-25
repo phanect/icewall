@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import { Hono } from "hono";
 import { githubLoginRouter } from "./github.ts";
 
-import type { Env } from "../../lib/types.ts";
+import type { Env } from "../libs/types.ts";
 
 export const loginRouter = new Hono<Env>();
 

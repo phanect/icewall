@@ -3,8 +3,8 @@ import { serve } from "@hono/node-server";
 import { verifyRequestOrigin } from "./lib/lucia/index.ts";
 import { getLuciaInstance } from "./libs/auth.ts";
 import { logoutRouter } from "./routes/logout.ts";
-import { loginRouter } from "./routes/login/index.ts";
-import type { Env } from "./lib/types.ts";
+import { loginRouter } from "./routes/index.tsx";
+import type { Env } from "./libs/types.ts";
 
 const app = new Hono<Env>();
 

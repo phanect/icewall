@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { getLuciaInstance } from "../lib/auth.ts";
+import { getLuciaInstance } from "../libs/auth.ts";
 
-import type { Env } from "../lib/types.ts";
+import type { Env } from "../libs/types.ts";
 
 export const logoutRouter = new Hono<Env>();
 
