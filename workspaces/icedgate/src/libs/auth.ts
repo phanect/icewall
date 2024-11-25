@@ -1,7 +1,7 @@
 import { GitHub } from "arctic";
 import { drizzle } from "drizzle-orm/better-sqlite3";
 import dotenv from "dotenv";
-import { Lucia } from "./index.ts";
+import { Lucia } from "./core.ts";
 import { DrizzleSQLiteAdapter } from "./adapter-sqlite.ts";
 
 dotenv.config();

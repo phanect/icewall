@@ -1,8 +1,6 @@
 import assert from "node:assert/strict";
-import {
-  generateId,
-  type Adapter,
-} from "../../src/routes/internal/lucia/index.ts";
+import { generateId } from "../../src/libs/crypto.ts";
+import type { Adapter } from "../../src/libs/database.ts";
 import type { IcedGateSession } from "../../src/db/schema/session.ts";
 import type { IcedGateUser } from "../../src/db/schema/user.ts";
 
