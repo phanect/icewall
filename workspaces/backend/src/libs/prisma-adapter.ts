@@ -1,4 +1,4 @@
-import type { IcedGateSession, IcedGateUser } from "@prisma/client";
+import type { PrismaClient, IcedGateSession, IcedGateUser } from "@prisma/client";
 import type {
   Adapter,
   DatabaseSession,
@@ -24,17 +24,15 @@ const transformIntoDatabaseUser = (raw: IcedGateUser): DatabaseUser => {
 };
 
 export class PrismaAdapter implements Adapter {
-  private sessionModel: PrismaModel<IcedGateSession>;
-  private userModel: PrismaModel<IcedGateUser>;
+  #prisma: PrismaClient;
 
-  constructor(sessionModel: BasicPrismaModel, userModel: BasicPrismaModel) {
-    this.sessionModel = sessionModel as any as PrismaModel<IcedGateSession>;
-    this.userModel = userModel as any as PrismaModel<IcedGateUser>;
+  constructor(prisma: PrismaClient) {
+    this.#prisma = prisma;
   }
 
   public async deleteSession(sessionId: string): Promise<void> {
     try {
-      await this.sessionModel.delete({
+      await this.#prisma.icedGateSession.delete({
         where: {
           id: sessionId,
         },
@@ -45,7 +43,7 @@ export class PrismaAdapter implements Adapter {
   }
 
   public async deleteUserSessions(userId: string): Promise<void> {
-    await this.sessionModel.deleteMany({
+    await this.#prisma.icedGateSession.deleteMany({
       where: {
         userId,
       },
@@ -55,27 +53,24 @@ export class PrismaAdapter implements Adapter {
   public async getSessionAndUser(
     sessionId: string
   ): Promise<[session: DatabaseSession | undefined, user: DatabaseUser | undefined]> {
-    const userModelKey = this.userModel.name[0].toLowerCase() + this.userModel.name.slice(1);
-    const result = await this.sessionModel.findUnique({
+    const result = await this.#prisma.icedGateSession.findUnique({
       where: {
         id: sessionId,
       },
       include: {
-        [userModelKey]: true,
+        user: true,
       },
     });
     if (!result) {
       return [ undefined, undefined ];
     }
-    const userResult: IcedGateUser = result[
-      userModelKey as keyof typeof result
-    ] as any as IcedGateUser;
-    delete result[userModelKey as keyof typeof result];
-    return [ transformIntoDatabaseSession(result), transformIntoDatabaseUser(userResult) ];
+    const { user: userResult, ...resultRest } = result;
+
+    return [ transformIntoDatabaseSession(resultRest), transformIntoDatabaseUser(userResult) ];
   }
 
   public async getUserSessions(userId: string): Promise<DatabaseSession[]> {
-    const result = await this.sessionModel.findMany({
+    const result = await this.#prisma.icedGateSession.findMany({
       where: {
         userId,
       },
@@ -84,7 +79,7 @@ export class PrismaAdapter implements Adapter {
   }
 
   public async setSession(value: DatabaseSession): Promise<void> {
-    await this.sessionModel.create({
+    await this.#prisma.icedGateSession.create({
       data: {
         id: value.id,
         userId: value.userId,
@@ -95,7 +90,7 @@ export class PrismaAdapter implements Adapter {
   }
 
   public async updateSessionExpiration(sessionId: string, expiresAt: Date): Promise<void> {
-    await this.sessionModel.update({
+    await this.#prisma.icedGateSession.update({
       where: {
         id: sessionId,
       },
@@ -106,7 +101,7 @@ export class PrismaAdapter implements Adapter {
   }
 
   public async deleteExpiredSessions(): Promise<void> {
-    await this.sessionModel.deleteMany({
+    await this.#prisma.icedGateSession.deleteMany({
       where: {
         expiresAt: {
           lte: new Date(),
@@ -115,30 +110,3 @@ export class PrismaAdapter implements Adapter {
     });
   }
 }
-
-type BasicPrismaModel = {
-  fields: any;
-  findUnique: any;
-  findMany: any;
-};
-
-type PrismaWhere<_Schema extends {}> = {
-  [K in keyof _Schema]?:
-    | _Schema[K]
-    | {
-      lte?: _Schema[K];
-    };
-};
-
-type PrismaModel<_Schema extends {}> = {
-  name: string;
-  findUnique: <_Included = {}>(options: {
-    where: PrismaWhere<_Schema>;
-    include?: Record<string, boolean>;
-  }) => Promise<null | (_Schema & _Included)>;
-  findMany: (options?: { where: PrismaWhere<_Schema>; }) => Promise<_Schema[]>;
-  create: (options: { data: _Schema; }) => Promise<_Schema>;
-  delete: (options: { where: PrismaWhere<_Schema>; }) => Promise<void>;
-  deleteMany: (options?: { where: PrismaWhere<_Schema>; }) => Promise<void>;
-  update: (options: { data: Partial<_Schema>; where: PrismaWhere<_Schema>; }) => Promise<_Schema>;
-};
