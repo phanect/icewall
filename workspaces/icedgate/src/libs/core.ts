@@ -136,11 +136,11 @@ export class Lucia {
   }
 
   public readBearerToken(authorizationHeader: string): string | undefined {
-    const [ authScheme, token ] = authorizationHeader.split(" ") as [string, string | undefined];
+    const [ authScheme, token ] = authorizationHeader.split(" ");
     if (authScheme !== "Bearer") {
       return undefined;
     }
-    return token;
+    return 0 < token.length ? token : undefined;
   }
 
   public createSessionCookie(sessionId: string): Cookie {
