@@ -20,4 +20,14 @@ export default [
       },
     },
   },
+  {
+    files: [ "./workspaces/backend/**" ],
+    rules: {
+      // To allow experimental`fetch()` on Node.js v20.
+      // You can use `fetch()` without any Node.js CLI options.
+      "n/no-unsupported-features/node-builtins": [ "error", {
+        allowExperimental: true,
+      }],
+    },
+  },
 ];
