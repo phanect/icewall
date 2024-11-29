@@ -4,7 +4,7 @@ import { testAdapter, databaseUser } from "./utils/test-adapter.ts";
 
 const client = new PrismaClient();
 
-const adapter = new PrismaAdapter(client.icedGateSession, client.icedGateUser);
+const adapter = new PrismaAdapter(client);
 
 await client.icedGateUser.create({
   data: {
