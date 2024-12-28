@@ -7,7 +7,7 @@ import type {
 export type Adapter = {
   getSessionAndUser(
     sessionId: string
-  ): Promise<[session: DatabaseSession | null, user: DatabaseUser | null]>;
+  ): Promise<[session: DatabaseSession | undefined, user: DatabaseUser | undefined]>;
   getUserSessions(userId: UserId): Promise<DatabaseSession[]>;
   setSession(session: DatabaseSession): Promise<void>;
   updateSessionExpiration(sessionId: string, expiresAt: Date): Promise<void>;

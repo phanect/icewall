@@ -34,7 +34,7 @@ export class DrizzleSQLiteAdapter implements Adapter {
 
   public async getSessionAndUser(
     sessionId: string
-  ): Promise<[session: DatabaseSession | null, user: DatabaseUser | null]> {
+  ): Promise<[session: DatabaseSession | undefined, user: DatabaseUser | undefined]> {
     // https://github.com/drizzle-team/drizzle-orm/issues/555
     const [ databaseSession, databaseUser ] = await Promise.all([
       this.getSession(sessionId),
@@ -43,18 +43,18 @@ export class DrizzleSQLiteAdapter implements Adapter {
     return [ databaseSession, databaseUser ];
   }
 
-  private async getSession(sessionId: string): Promise<DatabaseSession | null> {
+  private async getSession(sessionId: string): Promise<DatabaseSession | undefined> {
     const result = await this.db
       .select()
       .from(this.sessionTable)
       .where(eq(this.sessionTable.id, sessionId));
     if (result.length !== 1) {
-      return null;
+      return undefined;
     }
     return transformIntoDatabaseSession(result[0]);
   }
 
-  private async getUserFromSessionId(sessionId: string): Promise<DatabaseUser | null> {
+  private async getUserFromSessionId(sessionId: string): Promise<DatabaseUser | undefined> {
     const {
       _,
       $inferInsert,
@@ -69,7 +69,7 @@ export class DrizzleSQLiteAdapter implements Adapter {
       .innerJoin(this.userTable, eq(this.sessionTable.userId, this.userTable.id))
       .where(eq(this.sessionTable.id, sessionId));
     if (result.length !== 1) {
-      return null;
+      return undefined;
     }
     return transformIntoDatabaseUser(result[0]);
   }
