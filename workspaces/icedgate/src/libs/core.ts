@@ -118,18 +118,18 @@ export class Lucia<
 
   public async validateSession(
     sessionId: string
-  ): Promise<{ user: User; session: Session; } | { user: null; session: null; }> {
+  ): Promise<{ user: User; session: Session; } | { user: undefined; session: undefined; }> {
     const [ databaseSession, databaseUser ] = await this.adapter.getSessionAndUser(sessionId);
     if (!databaseSession) {
-      return { session: null, user: null };
+      return { session: undefined, user: undefined };
     }
     if (!databaseUser) {
       await this.adapter.deleteSession(databaseSession.id);
-      return { session: null, user: null };
+      return { session: undefined, user: undefined };
     }
     if (!isWithinExpirationDate(databaseSession.expiresAt)) {
       await this.adapter.deleteSession(databaseSession.id);
-      return { session: null, user: null };
+      return { session: undefined, user: undefined };
     }
     const activePeriodExpirationDate = new Date(
       databaseSession.expiresAt.getTime() - this.sessionExpiresIn.milliseconds() / 2
@@ -190,17 +190,17 @@ export class Lucia<
     await this.adapter.deleteExpiredSessions();
   }
 
-  public readSessionCookie(cookieHeader: string): string | null {
+  public readSessionCookie(cookieHeader: string): string | undefined {
     const sessionId = this.sessionCookieController.parse(cookieHeader);
     return sessionId;
   }
 
-  public readBearerToken(authorizationHeader: string): string | null {
+  public readBearerToken(authorizationHeader: string): string | undefined {
     const [ authScheme, token ] = authorizationHeader.split(" ") as [string, string | undefined];
     if (authScheme !== "Bearer") {
-      return null;
+      return undefined;
     }
-    return token ?? null;
+    return token;
   }
 
   public createSessionCookie(sessionId: string): Cookie {

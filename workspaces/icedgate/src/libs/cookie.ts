@@ -83,13 +83,13 @@ export class CookieController {
     }
   ) {
     this.cookieName = cookieName;
-    this.cookieExpiresIn = cookieOptions?.expiresIn ?? null;
+    this.cookieExpiresIn = cookieOptions?.expiresIn;
     this.baseCookieAttributes = baseCookieAttributes;
   }
 
   public cookieName: string;
 
-  private cookieExpiresIn: TimeSpan | null;
+  private cookieExpiresIn: TimeSpan | undefined;
   private baseCookieAttributes: CookieAttributes;
 
   public createCookie(value: string): Cookie {
@@ -106,8 +106,8 @@ export class CookieController {
     });
   }
 
-  public parse(header: string): string | null {
+  public parse(header: string): string | undefined {
     const cookies = parseCookies(header);
-    return cookies.get(this.cookieName) ?? null;
+    return cookies.get(this.cookieName);
   }
 }

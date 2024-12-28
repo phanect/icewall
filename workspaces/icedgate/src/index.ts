@@ -13,8 +13,8 @@ app.use("*", async (c, next) => {
   if (c.req.method === "GET") {
     return next();
   }
-  const originHeader = c.req.header("Origin") ?? null;
-  const hostHeader = c.req.header("Host") ?? null;
+  const originHeader = c.req.header("Origin");
+  const hostHeader = c.req.header("Host");
   if (!originHeader || !hostHeader || !verifyRequestOrigin(originHeader, [ hostHeader ])) {
     return c.body(null, 403);
   }
@@ -24,8 +24,8 @@ app.use("*", async (c, next) => {
 app.use("*", async (c, next) => {
   const sessionId = lucia.readSessionCookie(c.req.header("Cookie") ?? "");
   if (!sessionId) {
-    c.set("user", null);
-    c.set("session", null);
+    c.set("user", undefined);
+    c.set("session", undefined);
     return next();
   }
 
