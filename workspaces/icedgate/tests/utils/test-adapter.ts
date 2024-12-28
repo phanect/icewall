@@ -25,9 +25,9 @@ export async function testAdapter(adapter: Adapter) {
     },
   };
 
-  await test("getSessionAndUser() returns [null, null] on invalid session id", async () => {
+  await test("getSessionAndUser() returns [ undefined, undefined ] on invalid session id", async () => {
     const result = await adapter.getSessionAndUser(databaseSession.id);
-    assert.deepStrictEqual(result, [ null, null ]);
+    assert.deepStrictEqual(result, [ undefined, undefined ]);
   });
 
   await test("getUserSessions() returns empty array on invalid user id", async () => {

@@ -27,9 +27,9 @@ githubLoginRouter.get("/login/github", async (c) => {
 });
 
 githubLoginRouter.get("/login/github/callback", async (c) => {
-  const code = c.req.query("code")?.toString() ?? null;
-  const state = c.req.query("state")?.toString() ?? null;
-  const storedState = getCookie(c).github_oauth_state ?? null;
+  const code = c.req.query("code")?.toString();
+  const state = c.req.query("state")?.toString();
+  const storedState = getCookie(c).github_oauth_state;
   if (!code || !state || !storedState || state !== storedState) {
     return c.body(null, 400);
   }
@@ -41,9 +41,9 @@ githubLoginRouter.get("/login/github/callback", async (c) => {
       },
     });
     const githubUser: GitHubUser = await githubUserResponse.json();
-    const existingUser: DatabaseUser | null = (db
+    const existingUser: DatabaseUser | undefined = (db
       .prepare("SELECT * FROM user WHERE github_id = ?")
-      .get(githubUser.id) ?? null) as DatabaseUser | null;
+      .get(githubUser.id) ?? undefined) as DatabaseUser | undefined;
     if (existingUser) {
       const session = await lucia.createSession(existingUser.id, {});
       c.header("Set-Cookie", lucia.createSessionCookie(session.id).serialize(), { append: true });

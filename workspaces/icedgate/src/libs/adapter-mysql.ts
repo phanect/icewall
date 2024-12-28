@@ -30,7 +30,7 @@ export class DrizzleMySQLAdapter implements Adapter {
 
   public async getSessionAndUser(
     sessionId: string
-  ): Promise<[session: DatabaseSession | null, user: DatabaseUser | null]> {
+  ): Promise<[session: DatabaseSession | undefined, user: DatabaseUser | undefined]> {
     const result = await this.db
       .select({
         user: this.userTable,
@@ -40,7 +40,7 @@ export class DrizzleMySQLAdapter implements Adapter {
       .innerJoin(this.userTable, eq(this.sessionTable.userId, this.userTable.id))
       .where(eq(this.sessionTable.id, sessionId));
     if (result.length !== 1) {
-      return [ null, null ];
+      return [ undefined, undefined ];
     }
     return [
       transformIntoDatabaseSession(result[0].session),
