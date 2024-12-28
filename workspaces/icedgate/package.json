@@ -43,7 +43,6 @@
     "pg": "^8.8.0"
   },
   "devDependencies": {
-    "@hono/node-server": "^1.9.1",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
     "@phanect/configs": "latest",
