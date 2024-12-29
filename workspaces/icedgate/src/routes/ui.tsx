@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 import { jsxRenderer } from "hono/jsx-renderer";
 import { Layout } from "../ui/layouts/default.tsx";
-import { lucia } from "../libs/auth.ts";
 
 import type { IcedGateEnv } from "../types.ts";
 
@@ -24,6 +23,7 @@ export const ui = new Hono<IcedGateEnv>()
       </Layout>
     ), 200);
   }).post("/", async (c) => {
+    const lucia = c.get("lucia");
     const session = c.get("session");
     if (!session) {
       return c.body(null, 401);
