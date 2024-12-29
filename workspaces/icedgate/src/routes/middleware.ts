@@ -1,5 +1,9 @@
 import { Hono } from "hono";
+import { drizzle } from "drizzle-orm/d1";
+import { Lucia } from "../libs/core.ts";
+import { DrizzleSQLiteAdapter } from "../libs/adapter-sqlite.ts";
 import { verifyRequestOrigin } from "../libs/request.ts";
+import { isLocal } from "../libs/utils.ts";
 import type { IcedGateEnv } from "../types.ts";
 
 export const middleware = new Hono<IcedGateEnv>()
@@ -14,6 +18,20 @@ export const middleware = new Hono<IcedGateEnv>()
     }
     return next();
   }).use("*", async (c, next) => {
+    const db = drizzle();
+    const lucia = new Lucia(
+      new DrizzleSQLiteAdapter(db),
+      {
+        sessionCookie: {
+          attributes: {
+            secure: !isLocal(c),
+          },
+        },
+      }
+    );
+    c.set("drizzle", db);
+    c.set("lucia", lucia);
+
     const sessionId = lucia.readSessionCookie(c.req.header("Cookie") ?? "");
     if (!sessionId) {
       c.set("user", undefined);

@@ -5,7 +5,7 @@ import { env } from "hono/adapter";
 import { getCookie, setCookie } from "hono/cookie";
 import { IcedGateUsersTable } from "../db/schema/user.ts";
 import { generateId } from "../libs/crypto.ts";
-import { lucia } from "../libs/auth.ts";
+import { isLocal } from "../libs/utils.ts";
 import type { IcedGateEnv } from "../types.ts";
 
 type GitHubUser = {
@@ -62,6 +62,9 @@ export const github = new Hono<IcedGateEnv>()
       return c.text("Failed to authenticate with GitHub. Sorry, this is probably caused by a bug or incident of this service or GitHub.", 400);
     }
     try {
+      const drizzle = c.get("drizzle");
+      const lucia = c.get("lucia");
+
       const tokens = await github.validateAuthorizationCode(code);
       const githubUserResponse = await fetch("https://api.github.com/user", {
         headers: {
