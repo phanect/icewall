@@ -78,21 +78,17 @@ export class Lucia {
     const activePeriodExpirationDate = new Date(
       databaseSession.expiresAt.getTime() - this.sessionExpiresIn.milliseconds() / 2
     );
-    const session: IcedGateSession = {
-      id: databaseSession.id,
-      userId: databaseSession.userId,
-      fresh: false,
-      expiresAt: databaseSession.expiresAt,
-    };
-    if (!isWithinExpirationDate(activePeriodExpirationDate)) {
+    const session = databaseSession;
+
+    if (isWithinExpirationDate(activePeriodExpirationDate)) {
+      session.fresh = false;
+    } else {
       session.fresh = true;
       session.expiresAt = createDate(this.sessionExpiresIn);
       await this.adapter.updateSessionExpiration(databaseSession.id, session.expiresAt);
     }
-    const user: IcedGateUser = {
-      id: databaseUser.id,
-    };
-    return { user, session };
+
+    return { user: databaseUser, session };
   }
 
   public async createSession(
