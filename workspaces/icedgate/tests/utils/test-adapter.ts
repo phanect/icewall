@@ -9,6 +9,7 @@ import type { IcedGateUser } from "../../src/db/schema/user.ts";
 export const databaseUser: IcedGateUser = {
   id: generateId(15),
   username: generateId(15),
+  githubId: null,
 };
 
 export async function testAdapter(adapter: Adapter) {
@@ -18,6 +19,7 @@ export async function testAdapter(adapter: Adapter) {
     id: generateId(40),
     // get random date with 0ms
     expiresAt: new Date(Math.floor(Date.now() / 1000) * 1000 + 10_000),
+    fresh: false,
   };
 
   await test("getSessionAndUser() returns [ undefined, undefined ] on invalid session id", async () => {
@@ -54,6 +56,7 @@ export async function testAdapter(adapter: Adapter) {
     const expiredSession: IcedGateSession = {
       userId: databaseUser.id,
       id: generateId(40),
+      fresh: false,
       expiresAt: new Date(Math.floor(Date.now() / 1000) * 1000 - 10_000),
     };
     await adapter.setSession(expiredSession);
