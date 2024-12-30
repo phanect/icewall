@@ -106,6 +106,7 @@ export class Lucia {
     await this.adapter.setSession({
       id: sessionId,
       userId,
+      fresh: true,
       expiresAt: sessionExpiresAt,
     });
     const session: IcedGateSession = {

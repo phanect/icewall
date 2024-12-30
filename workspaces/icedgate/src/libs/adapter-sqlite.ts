@@ -74,11 +74,7 @@ export class DrizzleSQLiteAdapter implements Adapter {
   public async setSession(session: IcedGateSession): Promise<void> {
     await this.db
       .insert(IcedGateSessionsTable)
-      .values({
-        id: session.id,
-        userId: session.userId,
-        expiresAt: Math.floor(session.expiresAt.getTime() / 1000),
-      })
+      .values(session)
       .run();
   }
 
@@ -86,7 +82,7 @@ export class DrizzleSQLiteAdapter implements Adapter {
     await this.db
       .update(IcedGateSessionsTable)
       .set({
-        expiresAt: Math.floor(expiresAt.getTime() / 1000),
+        expiresAt,
       })
       .where(eq(IcedGateSessionsTable.id, sessionId))
       .run();
@@ -95,6 +91,6 @@ export class DrizzleSQLiteAdapter implements Adapter {
   public async deleteExpiredSessions(): Promise<void> {
     await this.db
       .delete(IcedGateSessionsTable)
-      .where(lte(IcedGateSessionsTable.expiresAt, Math.floor(Date.now() / 1000)));
+      .where(lte(IcedGateSessionsTable.expiresAt, new Date()));
   }
 }
