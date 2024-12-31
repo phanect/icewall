@@ -89,7 +89,7 @@ export const github = new Hono<IcedGateEnv>()
         .where(eq(IcedGateUsersTable.githubId, githubUser.id));
 
       if (existingUser) {
-        const session = await lucia.createSession(existingUser.id, {});
+        const session = await lucia.createSession(existingUser.id);
         c.header("Set-Cookie", lucia.createSessionCookie(session.id).serialize(), { append: true });
         return c.redirect("/");
       }
@@ -101,7 +101,7 @@ export const github = new Hono<IcedGateEnv>()
         username: githubUser.login,
       });
 
-      const session = await lucia.createSession(userId, {});
+      const session = await lucia.createSession(userId);
       c.header("Set-Cookie", lucia.createSessionCookie(session.id).serialize(), { append: true });
       return c.redirect("/");
     } catch (e) {
