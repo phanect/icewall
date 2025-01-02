@@ -31,7 +31,8 @@
     "dev": "pnpm run build:db && tsup --watch",
     "build": "pnpm run build:db && tsup",
     "build:db": "drizzle-kit generate && drizzle-kit migrate",
-    "test": "pnpm run build:db && tsx tests/mysql.ts && tsx tests/postgresql.ts && tsx tests/sqlite.ts && vitest run"
+    "test": "pnpm run build:db && tsx tests/mysql.ts && tsx tests/postgresql.ts && tsx tests/sqlite.ts && vitest run",
+    "prepare": "tsx ./scripts/prepare.ts"
   },
   "dependencies": {
     "@oslojs/crypto": "^1.0.1",
