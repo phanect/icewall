@@ -1,10 +1,10 @@
-import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, table, text } from "../dbms.ts";
 import type { InferSelectModel } from "drizzle-orm";
 
-export const IcedGateUsersTable = sqliteTable("IcedGateUsers", {
+export const IcedGateUsersTable = table("IcedGateUsers", {
   id: text().primaryKey(),
   username: text().unique().notNull(),
-  githubId: int().unique(),
+  githubId: integer().unique(),
 });
 
 export type IcedGateUser = InferSelectModel<typeof IcedGateUsersTable>;
