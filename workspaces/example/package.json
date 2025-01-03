@@ -13,7 +13,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "wrangler dev",
+    "dev": "pnpm run build:cloudflare && wrangler dev",
+    "build": "pnpm run build:cloudflare",
+    "build:cloudflare": "tsx ./scripts/build-cloudflare.ts",
     "deploy": "wrangler deploy --minify"
   },
   "dependencies": {
@@ -24,6 +26,9 @@
     "@cloudflare/workers-types": "^4.20241022.0",
     "@phanect/configs": "latest",
     "@types/node": "^22.10.5",
+    "dotenv": "^16.3.1",
+    "jsonc-parser": "^3.3.1",
+    "tsx": "^4.7.0",
     "typescript": "^5.3.3",
     "wrangler": "^3.83.0"
   }
