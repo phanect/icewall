@@ -81,6 +81,9 @@ export const github = new Hono<IcedGateEnv>()
       const githubUserResponse = await fetch("https://api.github.com/user", {
         headers: {
           Authorization: `Bearer ${ tokens.accessToken() }`,
+          Accept: "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28",
+          "User-Agent": "IcedGate",
         },
       });
       const githubUser: GitHubUser = await githubUserResponse.json();
