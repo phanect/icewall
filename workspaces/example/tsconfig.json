@@ -4,7 +4,8 @@
     "jsxImportSource": "hono/jsx",
     "lib": [ "esnext" ],
     "types": [
-      "@cloudflare/workers-types"
+      "@cloudflare/workers-types",
+      "@types/node"
     ],
   },
   "include": [
