@@ -18,7 +18,16 @@ export const middleware = new Hono<IcedGateEnv>()
     }
     return next();
   }).use("*", async (c, next) => {
-    const db = drizzle();
+    if (!c.env.D1) {
+      throw new Error(`\`D1\` is not set as a Cloudflare D1 binding.
+Set the following config in wrangler.toml.
+
+[[d1_databases]]
+binding: "D1"
+`);
+    }
+
+    const db = drizzle(c.env.D1);
     const lucia = new Lucia(
       new DrizzleSQLiteAdapter(db),
       {
