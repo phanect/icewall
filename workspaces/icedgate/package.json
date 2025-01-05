@@ -57,6 +57,7 @@
     }
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241022.0",
     "@phanect/configs": "latest",
     "@types/better-sqlite3": "^7.6.8",
     "@types/node": "^22.8.6",

@@ -4,6 +4,9 @@
     "@phanect/configs/ts/addons/npm"
   ],
   "compilerOptions": {
+    "types": [
+      "@cloudflare/workers-types"
+    ],
     "jsxImportSource": "hono/jsx"
   },
   "include": [

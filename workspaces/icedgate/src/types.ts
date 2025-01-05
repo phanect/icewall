@@ -13,6 +13,7 @@ export type IcedGateEnv = {
   };
   /** Environment variables */
   Bindings: {
+    D1?: D1Database;
     SERVER_ENV?: string;
 
     GITHUB_CLIENT_ID?: string;
