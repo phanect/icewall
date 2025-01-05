@@ -13,10 +13,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "pnpm run build:cloudflare && wrangler dev",
-    "build": "pnpm run build:cloudflare",
+    "dev": "pnpm run build && pnpm run dev:migrate && wrangler dev",
+    "dev:migrate": "wrangler d1 migrations apply icedgate-example --local",
+    "build": "pnpm run build:cloudflare && pnpm run build:db",
     "build:cloudflare": "tsx ./scripts/build-cloudflare.ts",
-    "deploy": "wrangler deploy --minify"
+    "build:db": "drizzle-kit generate",
+    "deploy": "pnpm run deploy:migrate && wrangler deploy --minify",
+    "deploy:migrate": "wrangler d1 migrations apply icedgate-example"
   },
   "dependencies": {
     "hono": "^4.6.9",
