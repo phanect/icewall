@@ -8,16 +8,14 @@ import type { IcedGateEnv } from "../types.ts";
 
 export const middleware = new Hono<IcedGateEnv>()
   .use("*", async (c, next) => {
-    if (c.req.method === "GET") {
-      return next();
+    if (c.req.method !== "GET") {
+      const originHeader = c.req.header("Origin");
+      const hostHeader = c.req.header("Host");
+      if (!originHeader || !hostHeader || !verifyRequestOrigin(originHeader, [ hostHeader ])) {
+        return c.body(null, 403);
+      }
     }
-    const originHeader = c.req.header("Origin");
-    const hostHeader = c.req.header("Host");
-    if (!originHeader || !hostHeader || !verifyRequestOrigin(originHeader, [ hostHeader ])) {
-      return c.body(null, 403);
-    }
-    return next();
-  }).use("*", async (c, next) => {
+
     if (!c.env.D1) {
       throw new Error(`\`D1\` is not set as a Cloudflare D1 binding.
 Set the following config in wrangler.toml.
