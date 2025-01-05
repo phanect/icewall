@@ -11,10 +11,11 @@
 
   "d1_databases": [{
     "binding": "D1",
-    "migrations_dir": "drizzle"
+    "migrations_dir": "drizzle",
+    "database_name": "icedgate-example",
+    "preview_database_id": "local-icedgate-example"
     // Following properties are added from environmental variables
     // "database_id": "00000000-0000-0000-00000000",
-    // "database_name": "awesome-d1db"
   }],
 
   "dev": {
