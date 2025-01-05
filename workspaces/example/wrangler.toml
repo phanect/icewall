@@ -1,0 +1,13 @@
+name = "icedgate-example"
+main = "src/index.tsx"
+compatibility_date = "2024-11-13"
+compatibility_flags = [ "nodejs_compat" ]
+
+[[d1_databases]]
+binding = "D1"
+database_name = ""
+database_id = ""
+migrations_dir = "drizzle"
+
+[dev]
+port = 3000
