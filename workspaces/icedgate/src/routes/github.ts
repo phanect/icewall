@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { env } from "hono/adapter";
 import { getCookie, setCookie } from "hono/cookie";
-import { IcedGateUsers } from "../db/schema/user.ts";
+import { IcedGateUsersTable } from "../db/schema/user.ts";
 import { generateId } from "../libs/crypto.ts";
 import { isLocal } from "../libs/utils.ts";
 import type { IcedGateEnv } from "../types.ts";
@@ -87,9 +87,9 @@ export const github = new Hono<IcedGateEnv>()
         },
       });
       const githubUser: GitHubUser = await githubUserResponse.json();
-      const [ existingUser ] = await drizzle.select().from(IcedGateUsers)
+      const [ existingUser ] = await drizzle.select().from(IcedGateUsersTable)
         .limit(1)
-        .where(eq(IcedGateUsers.githubId, githubUser.id));
+        .where(eq(IcedGateUsersTable.githubId, githubUser.id));
 
       if (existingUser) {
         const session = await lucia.createSession(existingUser.id);
@@ -98,7 +98,7 @@ export const github = new Hono<IcedGateEnv>()
       }
 
       const userId = generateId(15);
-      await drizzle.insert(IcedGateUsers).values({
+      await drizzle.insert(IcedGateUsersTable).values({
         id: userId,
         githubId: githubUser.id,
         username: githubUser.login,

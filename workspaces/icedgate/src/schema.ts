@@ -1,2 +1,2 @@
-export { IcedGateUsers } from "./db/schema/user.ts";
-export { IcedGateSessions } from "./db/schema/session.ts";
+export { IcedGateUsersTable } from "./db/schema/user.ts";
+export { IcedGateSessionsTable } from "./db/schema/session.ts";

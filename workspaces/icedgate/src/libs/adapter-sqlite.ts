@@ -1,6 +1,6 @@
 import { eq, lte } from "drizzle-orm";
-import { IcedGateUsers, type IcedGateUser } from "../db/schema/user.ts";
-import { IcedGateSessions, type IcedGateSession } from "../db/schema/session.ts";
+import { IcedGateUsersTable, type IcedGateUser } from "../db/schema/user.ts";
+import { IcedGateSessionsTable, type IcedGateSession } from "../db/schema/session.ts";
 import type { BaseSQLiteDatabase } from "drizzle-orm/sqlite-core";
 import type { Adapter } from "./database.ts";
 
@@ -14,11 +14,11 @@ export class DrizzleSQLiteAdapter implements Adapter {
   }
 
   public async deleteSession(sessionId: IcedGateSession["id"]): Promise<void> {
-    await this.db.delete(IcedGateSessions).where(eq(IcedGateSessions.id, sessionId));
+    await this.db.delete(IcedGateSessionsTable).where(eq(IcedGateSessionsTable.id, sessionId));
   }
 
   public async deleteUserSessions(userId: IcedGateUser["id"]): Promise<void> {
-    await this.db.delete(IcedGateSessions).where(eq(IcedGateSessions.userId, userId));
+    await this.db.delete(IcedGateSessionsTable).where(eq(IcedGateSessionsTable.userId, userId));
   }
 
   public async getSessionAndUser(
@@ -35,8 +35,8 @@ export class DrizzleSQLiteAdapter implements Adapter {
   private async getSession(sessionId: string): Promise<IcedGateSession | undefined> {
     const result = await this.db
       .select()
-      .from(IcedGateSessions)
-      .where(eq(IcedGateSessions.id, sessionId));
+      .from(IcedGateSessionsTable)
+      .where(eq(IcedGateSessionsTable.id, sessionId));
     if (result.length !== 1) {
       return undefined;
     }
@@ -51,12 +51,12 @@ export class DrizzleSQLiteAdapter implements Adapter {
       getSQL,
       shouldOmitSQLParens,
       ...userColumns
-    } = IcedGateUsers;
+    } = IcedGateUsersTable;
     const result = await this.db
       .select(userColumns)
-      .from(IcedGateSessions)
-      .innerJoin(IcedGateUsers, eq(IcedGateSessions.userId, IcedGateUsers.id))
-      .where(eq(IcedGateSessions.id, sessionId));
+      .from(IcedGateSessionsTable)
+      .innerJoin(IcedGateUsersTable, eq(IcedGateSessionsTable.userId, IcedGateUsersTable.id))
+      .where(eq(IcedGateSessionsTable.id, sessionId));
     if (result.length !== 1) {
       return undefined;
     }
@@ -66,31 +66,31 @@ export class DrizzleSQLiteAdapter implements Adapter {
   public async getUserSessions(userId: IcedGateUser["id"]): Promise<IcedGateSession[]> {
     return this.db
       .select()
-      .from(IcedGateSessions)
-      .where(eq(IcedGateSessions.userId, userId))
+      .from(IcedGateSessionsTable)
+      .where(eq(IcedGateSessionsTable.userId, userId))
       .all();
   }
 
   public async setSession(session: IcedGateSession): Promise<void> {
     await this.db
-      .insert(IcedGateSessions)
+      .insert(IcedGateSessionsTable)
       .values(session)
       .run();
   }
 
   public async updateSessionExpiration(sessionId: IcedGateSession["id"], expiresAt: IcedGateSession["expiresAt"]): Promise<void> {
     await this.db
-      .update(IcedGateSessions)
+      .update(IcedGateSessionsTable)
       .set({
         expiresAt,
       })
-      .where(eq(IcedGateSessions.id, sessionId))
+      .where(eq(IcedGateSessionsTable.id, sessionId))
       .run();
   }
 
   public async deleteExpiredSessions(): Promise<void> {
     await this.db
-      .delete(IcedGateSessions)
-      .where(lte(IcedGateSessions.expiresAt, new Date()));
+      .delete(IcedGateSessionsTable)
+      .where(lte(IcedGateSessionsTable.expiresAt, new Date()));
   }
 }

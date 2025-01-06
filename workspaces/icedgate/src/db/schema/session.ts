@@ -1,14 +1,14 @@
 import { table, boolean, text, timestamp } from "../dbms.ts";
-import { IcedGateUsers } from "./user.ts";
+import { IcedGateUsersTable } from "./user.ts";
 import type { InferSelectModel } from "drizzle-orm";
 
-export const IcedGateSessions = table("IcedGateSessions", {
+export const IcedGateSessionsTable = table("IcedGateSessions", {
   id: text().primaryKey(),
   fresh: boolean().notNull(),
   expiresAt: timestamp().notNull(),
   userId: text()
     .notNull()
-    .references(() => IcedGateUsers.id),
+    .references(() => IcedGateUsersTable.id),
 });
 
-export type IcedGateSession = InferSelectModel<typeof IcedGateSessions>;
+export type IcedGateSession = InferSelectModel<typeof IcedGateSessionsTable>;
