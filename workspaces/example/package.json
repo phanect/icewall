@@ -10,5 +10,21 @@
     "name": "pilcrowOnPaper",
     "url": "https://github.com/pilcrowonpaper"
   }],
-  "private": true
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --minify"
+  },
+  "dependencies": {
+    "hono": "^4.6.9",
+    "icedgate": "workspace:*"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241022.0",
+    "@phanect/configs": "latest",
+    "@types/node": "^22.10.5",
+    "typescript": "^5.3.3",
+    "wrangler": "^3.83.0"
+  }
 }
