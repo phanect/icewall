@@ -1,0 +1,26 @@
+{
+  "javascript.preferences.importModuleSpecifierEnding": "js",
+  "javascript.preferences.quoteStyle": "double",
+  "typescript.preferences.preferTypeOnlyAutoImports": true,
+
+  "eslint.useFlatConfig": true,
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "astro",
+    "json",
+    "jsonc",
+    "json5"
+  ],
+  "eslint.probe": [
+    "javascriptreact",
+    "typescriptreact",
+    "html",
+    "vue"
+  ],
+
+  "yaml.schemas": {
+    // Schema for GitHub Actions configs
+    "https://json.schemastore.org/github-workflow.json": "/.github/workflows/*.{yml,yaml}"
+  }
+}
