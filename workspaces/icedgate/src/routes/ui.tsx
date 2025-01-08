@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 import { jsxRenderer } from "hono/jsx-renderer";
-import { Layout } from "../ui/layouts/default.tsx";
-
+import { Login } from "../ui/pages/login.tsx";
 import type { IcedGateEnv } from "../types.ts";
 
 export const ui = new Hono<IcedGateEnv>()
@@ -16,12 +15,8 @@ export const ui = new Hono<IcedGateEnv>()
     if (session) {
       return c.redirect("/");
     }
-    return c.html((
-      <Layout title="Lucia example">
-        <h1>Sign in</h1>
-        <a href="/login/github">Sign in with GitHub</a>
-      </Layout>
-    ), 200);
+
+    return c.render(<Login />);
   }).get("/logout", async (c) => {
     const lucia = c.get("lucia");
     const session = c.get("session");
