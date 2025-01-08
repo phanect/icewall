@@ -5,7 +5,6 @@ export const Login: FC = () => {
   return (
     <Layout title="Modern Login Page | SortedCoding">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-      <link rel="stylesheet" href="style.css" />
 
       <div class="container" id="container">
         <div class="form-container sign-up">
