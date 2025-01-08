@@ -19,9 +19,7 @@ const app = new Hono<IcedGateEnv>()
         <body>
           <h1>Hi, { user.username }!</h1>
           <p>Your user ID is { user.id }.</p>
-          <form method="post">
-            <button>Sign out</button>
-          </form>
+          <a href="/logout">Sign out</a>
         </body>
       </html>
     ), 200);
