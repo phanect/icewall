@@ -1,0 +1,21 @@
+{
+  "extends": "@phanect/configs/ts",
+  "compilerOptions": {
+    "jsxImportSource": "hono/jsx",
+    "lib": [ "esnext" ],
+    "types": [
+      "@cloudflare/workers-types"
+    ],
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.mjs",
+    "**/*.jsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

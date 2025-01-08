@@ -28,8 +28,8 @@
     }
   },
   "scripts": {
-    "dev": "tsx watch ./src/index.ts",
-    "build": "shx rm -rf ./dist/* && tsc",
+    "dev": "tsup --watch",
+    "build": "tsup",
     "test": "tsx tests/mysql.ts && tsx tests/postgresql.ts && tsx tests/sqlite.ts && vitest run"
   },
   "dependencies": {
@@ -48,6 +48,7 @@
     "@phanect/configs": "latest",
     "@types/better-sqlite3": "^7.6.8",
     "@types/node": "^22.8.6",
+    "tsup": "^8.3.5",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
     "vitest": "^2.0.0"

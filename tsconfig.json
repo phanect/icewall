@@ -1,0 +1,16 @@
+{
+  "extends": "@phanect/configs/ts/nodejs",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.mjs",
+    "**/*.jsx"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/dist",
+    // Use tsconfig.json in each workspace package root for the workspaces.
+    "./workspaces/*/**"
+  ]
+}
