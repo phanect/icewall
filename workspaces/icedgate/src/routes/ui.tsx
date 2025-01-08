@@ -22,7 +22,7 @@ export const ui = new Hono<IcedGateEnv>()
         <a href="/login/github">Sign in with GitHub</a>
       </Layout>
     ), 200);
-  }).post("/", async (c) => {
+  }).get("/logout", async (c) => {
     const lucia = c.get("lucia");
     const session = c.get("session");
     if (!session) {
