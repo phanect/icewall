@@ -1,20 +1,21 @@
 import { type FC } from "hono/jsx";
 import { Layout } from "../layouts/default.tsx";
+import { GoogleIcon } from "../../vendor/feathericon/google.tsx";
+import { FacebookIcon } from "../../vendor/feathericon/facebook.tsx";
+import { GitHubIcon } from "../../vendor/feathericon/github.tsx";
 
 export const Login: FC = () => {
   return (
     <Layout title="Modern Login Page | SortedCoding">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-
       <div class="container" id="container">
         <div class="form-container sign-up">
           <form>
             <h1>Create Account</h1>
 
             <div class="social-icons">
-              <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-              <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-              <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+              <a href="#" class="icon"><GoogleIcon /></a>
+              <a href="#" class="icon"><FacebookIcon /></a>
+              <a href="#" class="icon"><GitHubIcon /></a>
             </div>
 
             <span>or use your email for registration</span>
@@ -30,9 +31,9 @@ export const Login: FC = () => {
             <h1>Sign In</h1>
 
             <div class="social-icons">
-              <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-              <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-              <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+              <a href="#" class="icon"><GoogleIcon /></a>
+              <a href="#" class="icon"><FacebookIcon /></a>
+              <a href="#" class="icon"><GitHubIcon /></a>
             </div>
 
             <span>or use your email password</span>
