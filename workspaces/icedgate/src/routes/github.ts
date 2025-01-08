@@ -70,9 +70,38 @@ export const github = new Hono<IcedGateEnv>()
     const code = c.req.query("code")?.toString();
     const state = c.req.query("state")?.toString();
     const storedState = getCookie(c).github_oauth_state;
-    if (!code || !state || !storedState || state !== storedState) {
-      return c.text("Failed to authenticate with GitHub. Sorry, this is probably caused by a bug or incident of this service or GitHub.", 400);
+
+    if (!code || !state || !storedState) {
+      const missingParamNames = [
+        !code ? "code" : undefined,
+        !state ? "state" : undefined,
+        !storedState ? "github_oauth_state" : undefined,
+      ].filter((paramName) => !!paramName)
+        .map((paramName) => `"${ paramName }"`)
+        .join(", ");
+
+      if (missingParamNames) {
+        console.error(`Required parameter(s) ${ missingParamNames } were not given by GitHub.`);
+      } else {
+        console.error("Unexpected error in /login/github/callback. Error code GH1-1");
+      }
+
+      return c.text("Failed to authenticate with GitHub. Sorry, this is probably caused by a bug or incident of this service or GitHub. Error code: GH1", 500);
     }
+
+    if (state !== storedState) {
+      if (!storedState) {
+        console.error(
+          "`github_oauth_state` saved in the Cookie is empty!",
+          `typeof storedState === ${ typeof storedState }, storedState === ${ storedState }`,
+        );
+      } else {
+        console.error("`state` given from GitHub and `github_oauth_state` saved in the Cookie must be matched, but they were unmatched.");
+      }
+
+      return c.text("Failed to authenticate with GitHub. Sorry, this is probably caused by a bug or incident of this service or GitHub. Error code: GH2", 400);
+    }
+
     try {
       const drizzle = c.get("drizzle");
       const lucia = c.get("lucia");
