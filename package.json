@@ -22,7 +22,7 @@
     "workspaces/*"
   ],
   "scripts": {
-    "dev": "lerna run dev --stream --parallel",
+    "dev": "pnpm run build && lerna run dev --stream --parallel",
     "build": "lerna run build --stream",
     "lint": "lerna exec -- tsc --noEmit && eslint",
     "fix": "eslint --fix",
