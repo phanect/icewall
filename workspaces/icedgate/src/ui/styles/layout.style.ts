@@ -21,6 +21,16 @@ export const styles = css`
       height: 100vh;
     }
 
+    .line-horizontal {
+      border: none;
+      border-top: 1px solid #aaa;
+
+      width: 95%;
+
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+    }
+
     .container {
       background-color: #fff;
       border-radius: 30px;
@@ -36,11 +46,15 @@ export const styles = css`
       font-size: 12px;
     }
 
-    .container a {
+    .forget-password {
       color: #333;
       font-size: 13px;
       text-decoration: none;
       margin: 15px 0 10px;
+    }
+
+    .forget-password:hover {
+      color: rgb(40, 93, 252);
     }
 
     .container button{
@@ -222,6 +236,13 @@ export const styles = css`
 
     .toggle p{
       color: #fff;
+    }
+
+    .email-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75em;
+      align-items: center;
     }
   }
 `;

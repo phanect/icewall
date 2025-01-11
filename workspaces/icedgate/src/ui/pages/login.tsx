@@ -37,9 +37,14 @@ export const Login: FC = () => {
               <form>
                 <input type="email" placeholder="Email" />
                 <input type="password" placeholder="Password" />
-                <a href="#">Forget Your Password?</a>
                 <button>Sign In</button>
               </form>
+
+              <hr class="line-horizontal" />
+
+              <div class="email-options">
+                <a href="#" class="forget-password">Forget Your Password?</a>
+              </div>
             </div>
           </div>
         </div>
