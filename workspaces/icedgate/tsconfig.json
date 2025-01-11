@@ -18,6 +18,12 @@
   ],
   "exclude": [
     "node_modules/",
-    "dist/"
+    "dist/",
+
+    // tmporarily ignore
+    "./src/libs/adapter-mysql.ts",
+    "./src/libs/adapter-postgresql.ts",
+    "./tests/adapter-*",
+    "./src/libs/scrypt.ts"
   ]
 }
