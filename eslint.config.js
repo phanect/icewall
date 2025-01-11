@@ -6,6 +6,9 @@ export default [
     ignores: [
       "**/dist/**",
       "**/vendor/**",
+
+      // temporarily ignore until this directory is merged to icedgate package
+      "**/hono/**/*",
     ],
   },
 
