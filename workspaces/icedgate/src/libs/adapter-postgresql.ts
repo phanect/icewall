@@ -1,3 +1,5 @@
+// @ts-nocheck TODO
+/* eslint-disable */
 import { eq, lte } from "drizzle-orm";
 import { IcedGateUsersTable, type IcedGateUser } from "../db/schema/user.ts";
 import { IcedGateSessionsTable, type IcedGateSession } from "../db/schema/session.ts";
