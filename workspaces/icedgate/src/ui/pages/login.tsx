@@ -6,56 +6,40 @@ import { GitHubIcon } from "../../vendor/feathericon/github.tsx";
 
 export const Login: FC = () => {
   return (
-    <Layout title="Modern Login Page | SortedCoding">
+    <Layout title="Login or Sign up">
       <div class="container" id="container">
-        <div class="form-container sign-up">
-          <form>
-            <h1>Create Account</h1>
-
-            <div class="social-icons">
-              <a href="./login/google" class="icon"><GoogleIcon /></a>
-              <a href="./login/facebook" class="icon"><FacebookIcon /></a>
-              <a href="./login/github" class="icon"><GitHubIcon /></a>
-            </div>
-
-            <span>or use your email for registration</span>
-
-            <input type="text" placeholder="Name" />
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <button>Sign Up</button>
-          </form>
-        </div>
         <div class="form-container sign-in">
-          <form>
-            <h1>Sign In</h1>
+          <h1 class="title">Login or Sign up</h1>
+          <span>with thirdparty accounts</span>
 
-            <div class="social-icons">
-              <a href="./login/google" class="icon"><GoogleIcon /></a>
-              <a href="./login/facebook" class="icon"><FacebookIcon /></a>
-              <a href="./login/github" class="icon"><GitHubIcon /></a>
-            </div>
-
-            <span>or use your email password</span>
-
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <a href="#">Forget Your Password?</a>
-            <button>Sign In</button>
-          </form>
+          <div class="social-icons">
+            <a href="./login/google" class="icon"><GoogleIcon /></a>
+            <a href="./login/facebook" class="icon"><FacebookIcon /></a>
+            <a href="./login/github" class="icon"><GitHubIcon /></a>
+          </div>
         </div>
 
         <div class="toggle-container">
           <div class="toggle">
             <div class="toggle-panel toggle-left">
-              <h1>Welcome Back!</h1>
-              <p>Enter your personal details to use all of site features</p>
-              <button class="hidden" id="login">Sign In</button>
+              <span>or use your email for registration</span>
+
+              <form>
+                <input type="text" placeholder="Name" />
+                <input type="email" placeholder="Email" />
+                <input type="password" placeholder="Password" />
+                <button>Sign Up</button>
+              </form>
             </div>
             <div class="toggle-panel toggle-right">
-              <h1>Hello, Friend!</h1>
-              <p>Register with your personal details to use all of site features</p>
-              <button class="hidden" id="register">Sign Up</button>
+              <span>or use your email password</span>
+
+              <form>
+                <input type="email" placeholder="Email" />
+                <input type="password" placeholder="Password" />
+                <a href="#">Forget Your Password?</a>
+                <button>Sign In</button>
+              </form>
             </div>
           </div>
         </div>

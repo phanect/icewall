@@ -32,13 +32,6 @@ export const styles = css`
       min-height: 480px;
     }
 
-    .container p {
-      font-size: 14px;
-      line-height: 20px;
-      letter-spacing: 0.3px;
-      margin: 20px 0;
-    }
-
     .container span {
       font-size: 12px;
     }
@@ -66,17 +59,12 @@ export const styles = css`
       transition: 0.5s ease;
     }
 
-    .container button.hidden{
-      background-color: orangered;
-      border-color: #fff;
-    }
-
     .container button:hover{
       background-color: orangered;
       transform: scale(1.1);
     }
 
-    .container form{
+    .form-container {
       background-color: #fff;
       display: flex;
       align-items: center;
@@ -138,6 +126,10 @@ export const styles = css`
         opacity: 1;
         z-index: 5;
       }
+    }
+
+    .title {
+      margin-bottom: 0.2em;
     }
 
     .social-icons{
