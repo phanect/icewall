@@ -13,9 +13,9 @@ export const Login: FC = () => {
             <h1>Create Account</h1>
 
             <div class="social-icons">
-              <a href="#" class="icon"><GoogleIcon /></a>
-              <a href="#" class="icon"><FacebookIcon /></a>
-              <a href="#" class="icon"><GitHubIcon /></a>
+              <a href="./login/google" class="icon"><GoogleIcon /></a>
+              <a href="./login/facebook" class="icon"><FacebookIcon /></a>
+              <a href="./login/github" class="icon"><GitHubIcon /></a>
             </div>
 
             <span>or use your email for registration</span>
@@ -31,9 +31,9 @@ export const Login: FC = () => {
             <h1>Sign In</h1>
 
             <div class="social-icons">
-              <a href="#" class="icon"><GoogleIcon /></a>
-              <a href="#" class="icon"><FacebookIcon /></a>
-              <a href="#" class="icon"><GitHubIcon /></a>
+              <a href="./login/google" class="icon"><GoogleIcon /></a>
+              <a href="./login/facebook" class="icon"><FacebookIcon /></a>
+              <a href="./login/github" class="icon"><GitHubIcon /></a>
             </div>
 
             <span>or use your email password</span>
