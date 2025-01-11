@@ -189,7 +189,6 @@ export const styles = css`
 
     .toggle{
       height: 100%;
-      height: 100%;
       width: 200%;
       transform: translateX(0);
       transition: all 0.6s ease-in-out;
