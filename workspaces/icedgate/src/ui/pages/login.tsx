@@ -19,6 +19,8 @@ export const Login: FC = () => {
           </div>
         </div>
 
+        <hr class="line-vertical" />
+
         <div class="toggle-container">
           <div class="toggle">
             <div class="toggle-panel toggle-left">

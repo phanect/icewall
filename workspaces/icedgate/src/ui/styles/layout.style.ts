@@ -31,6 +31,17 @@ export const styles = css`
       margin-bottom: 2rem;
     }
 
+    .line-vertical {
+      border: none;
+      border-left: 1px solid #aaa;
+
+      width: 1px;
+      height: 80%;
+
+      margin-left: 2rem;
+      margin-right: 2rem;
+    }
+
     .container {
       display: flex;
       justify-content: space-between;
@@ -172,7 +183,6 @@ export const styles = css`
     .toggle-container{
       width: 50%;
       height: 100%;
-      overflow: hidden;
       transition: all 0.6s ease-in-out;
       border-radius: 150px 0 0 100px;
     }
@@ -184,7 +194,6 @@ export const styles = css`
 
     .toggle{
       height: 100%;
-      background: orangered;
       height: 100%;
       width: 200%;
       transform: translateX(0);
