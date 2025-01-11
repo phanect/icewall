@@ -85,7 +85,7 @@ export const styles = css`
       transition: 0.5s ease;
     }
 
-    .container button:hover{
+    .container button:hover, .icon:hover {
       background-color: orangered;
       transform: scale(1.1);
     }
@@ -173,11 +173,6 @@ export const styles = css`
       cursor: pointer;
       box-shadow: 0 0 10px rgba(218,59,59,0.3);
       transition: 0.3s ease;
-    }
-
-    .social-icons a:hover{
-      transform: translateY(-25%);
-      background-color: orangered;
     }
 
     .toggle-container{
