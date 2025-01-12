@@ -2,7 +2,6 @@
 /scripts
 /tests
 .gitignore
-drizzle.config.ts
 tsconfig.json
 tsup.config.ts
 vitest.config.ts

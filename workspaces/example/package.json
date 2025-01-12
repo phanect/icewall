@@ -18,8 +18,8 @@
     "build": "pnpm run build:cloudflare && pnpm run build:db",
     "build:cloudflare": "tsx ./scripts/build-cloudflare.ts",
     "build:db": "drizzle-kit generate",
-    "deploy": "pnpm run deploy:migrate && wrangler deploy --minify",
-    "deploy:migrate": "wrangler d1 migrations apply icedgate-example"
+    "release": "pnpm run release:migrate && wrangler deploy --minify",
+    "release:migrate": "wrangler d1 migrations apply icedgate-example"
   },
   "dependencies": {
     "hono": "^4.6.9",
