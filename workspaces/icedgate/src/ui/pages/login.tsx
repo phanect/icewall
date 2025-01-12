@@ -30,7 +30,7 @@ export const Login: FC = () => {
                 <input type="text" placeholder="Name" />
                 <input type="email" placeholder="Email" />
                 <input type="password" class="last" placeholder="Password" />
-                <button>Sign Up</button>
+                <button class="execute">Sign Up</button>
               </form>
             </div>
             <div class="toggle-panel toggle-right">
@@ -39,7 +39,7 @@ export const Login: FC = () => {
               <form>
                 <input type="email" placeholder="Email" />
                 <input type="password" class="last" placeholder="Password" />
-                <button>Sign In</button>
+                <button class="execute">Sign In</button>
               </form>
 
               <hr class="line-horizontal" />
