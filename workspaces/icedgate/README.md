@@ -2,6 +2,9 @@
 
 An authentication middleware works with Hono, Drizzle, & Cloudflare D1
 
+> [!WARNING]
+> Currently in alpha, not production ready yet
+
 ## License & Credits
 
 This repository is licensed under [Apache License 2.0](./LICENSE.txt).
