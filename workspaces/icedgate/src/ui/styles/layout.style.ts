@@ -25,6 +25,11 @@ export const styles = css`
       font-size: 2rem;
     }
 
+    h2 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5em;
+    }
+
     .line-horizontal {
       border: none;
       border-top: 1px solid #aaa;
