@@ -21,6 +21,10 @@ export const styles = css`
       height: 100vh;
     }
 
+    h1 {
+      font-size: 2rem;
+    }
+
     .line-horizontal {
       border: none;
       border-top: 1px solid #aaa;
