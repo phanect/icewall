@@ -12,11 +12,13 @@ export const ui = new Hono<IcedGateEnv>()
     ),
   ).get("/login", async (c) => {
     const session = c.get("session");
+    const showSignUpForm = (c.req.query("signup") === "true");
+
     if (session) {
       return c.redirect("/");
     }
 
-    return c.render(<Login />);
+    return c.render(<Login showSignUpForm={showSignUpForm} />);
   }).get("/logout", async (c) => {
     const lucia = c.get("lucia");
     const session = c.get("session");
