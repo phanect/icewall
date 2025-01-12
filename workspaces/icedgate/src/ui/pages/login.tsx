@@ -29,7 +29,7 @@ export const Login: FC = () => {
               <form>
                 <input type="text" placeholder="Name" />
                 <input type="email" placeholder="Email" />
-                <input type="password" placeholder="Password" />
+                <input type="password" class="last" placeholder="Password" />
                 <button>Sign Up</button>
               </form>
             </div>
@@ -38,7 +38,7 @@ export const Login: FC = () => {
 
               <form>
                 <input type="email" placeholder="Email" />
-                <input type="password" placeholder="Password" />
+                <input type="password" class="last" placeholder="Password" />
                 <button>Sign In</button>
               </form>
 
