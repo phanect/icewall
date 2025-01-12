@@ -104,7 +104,8 @@ export const styles = css`
       background-color: #eee;
       border: none;
       display: flex;
-      margin: 8px 0;
+      margin-top: 0.75em;
+      margin-bottom: 0.75em;
       padding: 10px 15px;
       font-size: 13px;
       border-radius: 8px;
@@ -230,6 +231,10 @@ export const styles = css`
 
     .toggle p{
       color: #fff;
+    }
+
+    input.last {
+      margin-bottom: 1.5em;
     }
 
     .email-options {
