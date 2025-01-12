@@ -30,6 +30,10 @@ export const styles = css`
       margin-bottom: 0.5em;
     }
 
+    p, span {
+      font-size: 12px;
+    }
+
     .line-horizontal {
       border: none;
       border-top: 1px solid #aaa;
@@ -64,21 +68,20 @@ export const styles = css`
       min-height: 480px;
     }
 
-    .container span {
-      font-size: 12px;
-    }
-
     .forget-password {
       color: #333;
       font-size: 13px;
       text-decoration: underline;
+
+      margin-top: 1.5em;
     }
 
     .forget-password:hover {
       color: rgb(40, 93, 252);
     }
 
-    .container button{
+    .button{
+      display: inline;
       color:#fff;
       font-size: 12px;
       padding-top: 10px;
@@ -93,13 +96,20 @@ export const styles = css`
       transition: 0.5s ease;
     }
 
-    .container button.execute {
+    .button.execute {
       background-color: rgb(155, 179, 253);
       padding-left: 45px;
       padding-right: 45px;
     }
 
-    .container button:hover, .icon:hover {
+    .button.switch {
+      background-color:rgb(157, 157, 157);
+
+      padding-left: 1.5em;
+      padding-right: 1.5em;
+    }
+
+    .button:hover, .icon:hover {
       background-color: rgb(120, 154, 255);
       transform: scale(1.1);
     }
@@ -222,24 +232,7 @@ export const styles = css`
       flex-direction: column;
       padding: 0 30px;
       text-align: center;
-      transform: translateX(0);
       transition: all 0.6s ease-in-out;
-    }
-
-    .toggle-left{
-      transform: translateX(-200%);
-    }
-
-    .container.active .toggle-left{
-      transform: translateX(0);
-    }
-
-    .toggle-right{
-      transform: translateX(0);
-    }
-
-    .container.active .toggle-right{
-      transform: translateX(200%);
     }
 
     input.last {
