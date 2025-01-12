@@ -24,7 +24,7 @@ export const Login: FC = () => {
         <div class="toggle-container">
           <div class="toggle">
             <div class="toggle-panel toggle-left">
-              <span>or use your email for registration</span>
+              <h2>Sign up with password</h2>
 
               <form>
                 <input type="text" placeholder="Name" />
@@ -34,7 +34,7 @@ export const Login: FC = () => {
               </form>
             </div>
             <div class="toggle-panel toggle-right">
-              <span>or use your email password</span>
+              <h2>Login with password</h2>
 
               <form>
                 <input type="email" placeholder="Email" />
