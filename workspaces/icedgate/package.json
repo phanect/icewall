@@ -39,6 +39,7 @@
     "prepare": "tsx ./scripts/prepare.ts"
   },
   "dependencies": {
+    "@noble/hashes": "^1.7.0",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
     "@types/pg": "^8.11.10",
