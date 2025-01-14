@@ -1,4 +1,4 @@
-import { eq, lte } from "drizzle-orm";
+import { eq, getTableColumns, lte } from "drizzle-orm";
 import { IcedGateUsersTable, type IcedGateUser } from "../db/schema/user.ts";
 import { IcedGateSessionsTable, type IcedGateSession } from "../db/schema/session.ts";
 import type { BaseSQLiteDatabase } from "drizzle-orm/sqlite-core";
@@ -44,16 +44,8 @@ export class DrizzleSQLiteAdapter implements Adapter {
   }
 
   private async getUserFromSessionId(sessionId: string): Promise<IcedGateUser | undefined> {
-    const {
-      _,
-      $inferInsert,
-      $inferSelect,
-      getSQL,
-      shouldOmitSQLParens,
-      ...userColumns
-    } = IcedGateUsersTable;
     const result = await this.db
-      .select(userColumns)
+      .select(getTableColumns(IcedGateUsersTable))
       .from(IcedGateSessionsTable)
       .innerJoin(IcedGateUsersTable, eq(IcedGateSessionsTable.userId, IcedGateUsersTable.id))
       .where(eq(IcedGateSessionsTable.id, sessionId));
