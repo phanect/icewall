@@ -9,6 +9,11 @@
     "nodejs_compat"
   ],
 
+  "route": {
+    "pattern": "icedgate.phanective.org/*",
+    "zone_name": "icedgate.phanective.org"
+  },
+
   "d1_databases": [{
     "binding": "D1",
     "database_name": "icedgate-example",
@@ -16,6 +21,16 @@
     // Following properties are added from environmental variables
     // "database_id": "00000000-0000-0000-00000000",
   }],
+
+  "env": {
+    "staging": {
+      "name": "icedgate-preview",
+      "route": {
+        "pattern": "icedgate-preview.phanective.org/*",
+        "zone_name": "icedgate-preview.phanective.org"
+      }
+    }
+  },
 
   "dev": {
     "port": 3000
