@@ -5,12 +5,12 @@ import "dotenv/config";
 if (
   !env.CLOUDFLARE_ACCOUNT_ID
   || !env.CLOUDFLARE_DATABASE_ID
-  || !env.CLOUDFLARE_D1_TOKEN
+  || !env.CLOUDFLARE_API_TOKEN
 ) {
   throw new Error(`Missing Cloudflare secrets:
     CLOUDFLARE_ACCOUNT_ID: ${ env.CLOUDFLARE_ACCOUNT_ID }
     CLOUDFLARE_DATABASE_ID: ${ env.CLOUDFLARE_DATABASE_ID }
-    CLOUDFLARE_D1_TOKEN: ${ env.CLOUDFLARE_D1_TOKEN }
+    CLOUDFLARE_API_TOKEN: ${ env.CLOUDFLARE_API_TOKEN }
   `);
 }
 
@@ -23,6 +23,6 @@ export default defineConfig({
   dbCredentials: {
     accountId: env.CLOUDFLARE_ACCOUNT_ID,
     databaseId: env.CLOUDFLARE_DATABASE_ID,
-    token: env.CLOUDFLARE_D1_TOKEN,
+    token: env.CLOUDFLARE_API_TOKEN,
   },
 });
