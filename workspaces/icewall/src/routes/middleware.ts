@@ -9,7 +9,7 @@ import type { IcewallEnv } from "../types.ts";
 
 /** Middleware for pages to be protected by the authwall */
 export const authProtection = createMiddleware<IcewallEnv>(async (c, next) => {
-  const user = getUser(c);
+  const user = getUser(c, { ifLoggedOut: "returnUndefined" });
   if (user) {
     return next();
   } else {
