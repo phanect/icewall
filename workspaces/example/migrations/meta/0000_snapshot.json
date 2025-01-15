@@ -1,11 +1,11 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "3e9fb954-4e71-42c9-a01d-bcbaf5febfcf",
+  "id": "5ddb65a0-10b9-4fcb-8aef-d3182e8a71d6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "IcedGateSessions": {
-      "name": "IcedGateSessions",
+    "IcewallSessions": {
+      "name": "IcewallSessions",
       "columns": {
         "id": {
           "name": "id",
@@ -38,10 +38,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "IcedGateSessions_userId_IcedGateUsers_id_fk": {
-          "name": "IcedGateSessions_userId_IcedGateUsers_id_fk",
-          "tableFrom": "IcedGateSessions",
-          "tableTo": "IcedGateUsers",
+        "IcewallSessions_userId_IcewallUsers_id_fk": {
+          "name": "IcewallSessions_userId_IcewallUsers_id_fk",
+          "tableFrom": "IcewallSessions",
+          "tableTo": "IcewallUsers",
           "columnsFrom": [
             "userId"
           ],
@@ -56,8 +56,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "IcedGateUsers": {
-      "name": "IcedGateUsers",
+    "IcewallUsers": {
+      "name": "IcewallUsers",
       "columns": {
         "id": {
           "name": "id",
@@ -82,15 +82,15 @@
         }
       },
       "indexes": {
-        "IcedGateUsers_username_unique": {
-          "name": "IcedGateUsers_username_unique",
+        "IcewallUsers_username_unique": {
+          "name": "IcewallUsers_username_unique",
           "columns": [
             "username"
           ],
           "isUnique": true
         },
-        "IcedGateUsers_githubId_unique": {
-          "name": "IcedGateUsers_githubId_unique",
+        "IcewallUsers_githubId_unique": {
+          "name": "IcewallUsers_githubId_unique",
           "columns": [
             "githubId"
           ],
