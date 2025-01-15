@@ -1,10 +1,10 @@
 import { deepStrictEqual } from "node:assert/strict";
 import { generateId } from "../../src/libs/crypto.ts";
 import type { Adapter } from "../../src/libs/database.ts";
-import type { IcedGateSession } from "../../src/db/schema/session.ts";
-import type { IcedGateUser } from "../../src/db/schema/user.ts";
+import type { IcewallSession } from "../../src/db/schema/session.ts";
+import type { IcewallUser } from "../../src/db/schema/user.ts";
 
-export const databaseUser: IcedGateUser = {
+export const databaseUser: IcewallUser = {
   id: generateId(15),
   username: generateId(15),
   githubId: null,
@@ -12,7 +12,7 @@ export const databaseUser: IcedGateUser = {
 
 export async function testAdapter(adapter: Adapter) {
   console.log("\n\x1B[38;5;63;1m[start]  \x1B[0mRunning adapter tests\x1B[0m\n");
-  const databaseSession: IcedGateSession = {
+  const databaseSession: IcewallSession = {
     userId: databaseUser.id,
     id: generateId(40),
     // get random date with 0ms
@@ -51,7 +51,7 @@ export async function testAdapter(adapter: Adapter) {
   });
 
   await test("deleteExpiredSessions() deletes all expired sessions", async () => {
-    const expiredSession: IcedGateSession = {
+    const expiredSession: IcewallSession = {
       userId: databaseUser.id,
       id: generateId(40),
       fresh: false,

@@ -1,4 +1,4 @@
-# IcedGate
+# Icewall
 
 An authentication middleware works with Hono, Drizzle, & Cloudflare D1
 
@@ -14,6 +14,6 @@ This repository includes codebase derived from Lucia and its examples:
 - [Lucia v3.2.2](https://github.com/lucia-auth/lucia/tree/v3) licensed under MIT
 - [Lucia examples (partially)](https://github.com/lucia-auth/examples) licensed under MIT
 
-The `icedgate` package bundles the following icons:
+The `icewall` package bundles the following icons:
 
 - [feathericons](https://github.com/feathericon/feathericon) licensed under MIT

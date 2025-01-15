@@ -3,17 +3,17 @@ import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { env } from "hono/adapter";
 import { getCookie, setCookie } from "hono/cookie";
-import { IcedGateUsersTable } from "../db/schema/user.ts";
+import { IcewallUsersTable } from "../db/schema/user.ts";
 import { generateId } from "../libs/crypto.ts";
 import { isLocal } from "../libs/utils.ts";
-import type { IcedGateEnv } from "../types.ts";
+import type { IcewallEnv } from "../types.ts";
 
 type GitHubUser = {
   id: number;
   login: string;
 };
 
-export const github = new Hono<IcedGateEnv>()
+export const github = new Hono<IcewallEnv>()
   .get("/login/github", async (c) => {
     const {
       SERVER_ENV,
@@ -112,13 +112,13 @@ export const github = new Hono<IcedGateEnv>()
           Authorization: `Bearer ${ tokens.accessToken() }`,
           Accept: "application/vnd.github+json",
           "X-GitHub-Api-Version": "2022-11-28",
-          "User-Agent": "IcedGate",
+          "User-Agent": "Icewall",
         },
       });
       const githubUser: GitHubUser = await githubUserResponse.json();
-      const [ existingUser ] = await drizzle.select().from(IcedGateUsersTable)
+      const [ existingUser ] = await drizzle.select().from(IcewallUsersTable)
         .limit(1)
-        .where(eq(IcedGateUsersTable.githubId, githubUser.id));
+        .where(eq(IcewallUsersTable.githubId, githubUser.id));
 
       if (existingUser) {
         const session = await lucia.createSession(existingUser.id);
@@ -127,7 +127,7 @@ export const github = new Hono<IcedGateEnv>()
       }
 
       const userId = generateId(15);
-      await drizzle.insert(IcedGateUsersTable).values({
+      await drizzle.insert(IcewallUsersTable).values({
         id: userId,
         githubId: githubUser.id,
         username: githubUser.login,

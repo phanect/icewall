@@ -1,8 +1,8 @@
 import { TimeSpan, createDate, isWithinExpirationDate } from "./date.ts";
 import { CookieController } from "./cookie.ts";
 import { generateIdFromEntropySize } from "./crypto.ts";
-import type { IcedGateUser } from "../db/schema/user.ts";
-import type { IcedGateSession } from "../db/schema/session.ts";
+import type { IcewallUser } from "../db/schema/user.ts";
+import type { IcewallSession } from "../db/schema/session.ts";
 import type { Adapter } from "./database.ts";
 import type { Cookie, CookieAttributes } from "./cookie.ts";
 
@@ -43,9 +43,9 @@ export class Lucia {
     );
   }
 
-  public async getUserSessions(userId: IcedGateUser["id"]): Promise<IcedGateSession[]> {
+  public async getUserSessions(userId: IcewallUser["id"]): Promise<IcewallSession[]> {
     const databaseSessions = await this.adapter.getUserSessions(userId);
-    const sessions: IcedGateSession[] = [];
+    const sessions: IcewallSession[] = [];
     for (const databaseSession of databaseSessions) {
       if (!isWithinExpirationDate(databaseSession.expiresAt)) {
         continue;
@@ -62,7 +62,7 @@ export class Lucia {
 
   public async validateSession(
     sessionId: string
-  ): Promise<{ user: IcedGateUser; session: IcedGateSession; } | { user: undefined; session: undefined; }> {
+  ): Promise<{ user: IcewallUser; session: IcewallSession; } | { user: undefined; session: undefined; }> {
     const [ databaseSession, databaseUser ] = await this.adapter.getSessionAndUser(sessionId);
     if (!databaseSession) {
       return { session: undefined, user: undefined };
@@ -92,11 +92,11 @@ export class Lucia {
   }
 
   public async createSession(
-    userId: IcedGateUser["id"],
+    userId: IcewallUser["id"],
     options?: {
       sessionId?: string;
     }
-  ): Promise<IcedGateSession> {
+  ): Promise<IcewallSession> {
     const sessionId = options?.sessionId ?? generateIdFromEntropySize(25);
     const sessionExpiresAt = createDate(this.sessionExpiresIn);
     await this.adapter.setSession({
@@ -105,7 +105,7 @@ export class Lucia {
       fresh: true,
       expiresAt: sessionExpiresAt,
     });
-    const session: IcedGateSession = {
+    const session: IcewallSession = {
       id: sessionId,
       userId,
       fresh: true,
@@ -118,7 +118,7 @@ export class Lucia {
     await this.adapter.deleteSession(sessionId);
   }
 
-  public async invalidateUserSessions(userId: IcedGateUser["id"]): Promise<void> {
+  public async invalidateUserSessions(userId: IcewallUser["id"]): Promise<void> {
     await this.adapter.deleteUserSessions(userId);
   }
 
