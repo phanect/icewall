@@ -23,7 +23,7 @@ export const ui = new Hono<IcewallEnv>()
     const lucia = c.get("lucia");
     const session = c.get("session");
     if (!session) {
-      return c.body(null, 401);
+      return c.redirect("./login");
     }
     await lucia.invalidateSession(session.id);
     c.header("Set-Cookie", lucia.createBlankSessionCookie().serialize(), { append: true });
