@@ -4,6 +4,7 @@ import type { InferSelectModel } from "drizzle-orm";
 export const IcewallUsersTable = table("IcewallUsers", {
   id: text().primaryKey(),
   username: text().unique().notNull(),
+  googleId: integer().unique(),
   githubId: integer().unique(),
 });
 
