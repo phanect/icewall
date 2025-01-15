@@ -1,8 +1,8 @@
 import { Hono } from "hono";
-import { icewall, authProtection, getUser, type IcewallEnv } from "icewall";
+import { authRoutes, authProtection, getUser, type IcewallEnv } from "icewall";
 
 const app = new Hono<IcewallEnv>()
-  .route("/", icewall)
+  .route("/", authRoutes)
   .use("/dashboard", authProtection)
   .get("/", async (c) => {
     const user = getUser(c);
