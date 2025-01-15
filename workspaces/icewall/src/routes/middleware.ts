@@ -1,11 +1,23 @@
 import { createMiddleware } from "hono/factory";
 import { drizzle } from "drizzle-orm/d1";
+import { getUser } from "../index.ts";
 import { Lucia } from "../libs/core.ts";
 import { DrizzleSQLiteAdapter } from "../libs/adapter-sqlite.ts";
 import { verifyRequestOrigin } from "../libs/request.ts";
 import { isLocal } from "../libs/utils.ts";
 import type { IcewallEnv } from "../types.ts";
 
+/** Middleware for pages to be protected by the authwall */
+export const authProtection = createMiddleware<IcewallEnv>(async (c, next) => {
+  const user = getUser(c);
+  if (user) {
+    return next();
+  } else {
+    return c.redirect("/auth/login");
+  }
+});
+
+/** Middleware to be used internally */
 export const middleware = createMiddleware<IcewallEnv>(async (c, next) => {
   if (c.req.method !== "GET") {
     const originHeader = c.req.header("Origin");
