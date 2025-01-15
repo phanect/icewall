@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { authRoutes, authProtection, getUser, type IcewallEnv } from "icewall";
+import { authRoutes, authProtection, isAuthenticated, getUser, type IcewallEnv } from "icewall";
 
 const app = new Hono<IcewallEnv>()
   .route("/", authRoutes)
@@ -18,7 +18,18 @@ const app = new Hono<IcewallEnv>()
         <body>
           <h1>Icewall Demo</h1>
           <p>This is a public page. Anyone can view this page without login.</p>
-          <a href="/auth/login">Login</a>
+
+          <p>
+            { isAuthenticated(c) ? (
+              <a href="/auth/logout">Logout</a>
+            ) : (
+              <a href="/auth/login">Login</a>
+            )}
+          </p>
+
+          <p>
+            <a href="/dashboard">User dashboard (authentication required)</a>
+          </p>
         </body>
       </html>
     ), 200);
