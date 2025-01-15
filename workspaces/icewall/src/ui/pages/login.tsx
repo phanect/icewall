@@ -17,9 +17,9 @@ export const Login: FC<Props> = ({ showSignUpForm = false }) => {
           <span>with thirdparty accounts</span>
 
           <div class="social-icons">
-            <a href="./login/google" class="icon"><GoogleIcon /></a>
-            <a href="./login/facebook" class="icon"><FacebookIcon /></a>
-            <a href="./login/github" class="icon"><GitHubIcon /></a>
+            <a href="./google" class="icon"><GoogleIcon /></a>
+            <a href="./facebook" class="icon"><FacebookIcon /></a>
+            <a href="./github" class="icon"><GitHubIcon /></a>
           </div>
         </div>
 
