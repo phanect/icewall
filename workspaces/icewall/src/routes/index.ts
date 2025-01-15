@@ -3,9 +3,9 @@ import { middleware } from "./middleware.ts";
 import { ui } from "./ui.tsx";
 import { github } from "./github.ts";
 
-import type { IcedGateEnv } from "../types.ts";
+import type { IcewallEnv } from "../types.ts";
 
-export const icedgate = new Hono<IcedGateEnv>()
+export const icewall = new Hono<IcewallEnv>()
   .use(middleware)
   .route("/", ui)
   .route("/", github);

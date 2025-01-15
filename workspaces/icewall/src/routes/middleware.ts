@@ -4,9 +4,9 @@ import { Lucia } from "../libs/core.ts";
 import { DrizzleSQLiteAdapter } from "../libs/adapter-sqlite.ts";
 import { verifyRequestOrigin } from "../libs/request.ts";
 import { isLocal } from "../libs/utils.ts";
-import type { IcedGateEnv } from "../types.ts";
+import type { IcewallEnv } from "../types.ts";
 
-export const middleware = createMiddleware<IcedGateEnv>(async (c, next) => {
+export const middleware = createMiddleware<IcewallEnv>(async (c, next) => {
   if (c.req.method !== "GET") {
     const originHeader = c.req.header("Origin");
     const hostHeader = c.req.header("Host");

@@ -1,1 +1,1 @@
-export * from "icedgate/schema";
+export * from "icewall/schema";

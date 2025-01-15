@@ -1,5 +1,5 @@
 {
-  "name": "icedgate",
+  "name": "icewall",
   "version": "0.0.1",
   "license": "Apache-2.0",
   "author": {
@@ -16,10 +16,10 @@
       "url": "https://github.com/SortedCoding"
     }
   ],
-  "homepage": "https://github.com/phanect/icedgate",
+  "homepage": "https://github.com/phanect/icewall",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/phanect/icedgate.git"
+    "url": "git+ssh://git@github.com/phanect/icewall.git"
   },
   "type": "module",
   "main": "./dist/index.js",

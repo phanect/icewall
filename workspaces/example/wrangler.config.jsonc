@@ -2,7 +2,7 @@
   // Some secrets written in .env will be added to this wrangler.config.jsonc
   // and wrangler.json will be generated.
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "icedgate-example",
+  "name": "icewall-example",
   "main": "src/index.tsx",
   "compatibility_date": "2024-11-13",
   "compatibility_flags": [
@@ -10,24 +10,24 @@
   ],
 
   "route": {
-    "pattern": "icedgate.phanective.org/*",
-    "zone_name": "icedgate.phanective.org"
+    "pattern": "icewall.phanective.org/*",
+    "zone_name": "icewall.phanective.org"
   },
 
   "d1_databases": [{
     "binding": "D1",
-    "database_name": "icedgate-example",
-    "preview_database_id": "local-icedgate-example"
+    "database_name": "icewall-example",
+    "preview_database_id": "local-icewall-example"
     // Following properties are added from environmental variables
     // "database_id": "00000000-0000-0000-00000000",
   }],
 
   "env": {
     "staging": {
-      "name": "icedgate-preview",
+      "name": "icewall-preview",
       "route": {
-        "pattern": "icedgate-preview.phanective.org/*",
-        "zone_name": "icedgate-preview.phanective.org"
+        "pattern": "icewall-preview.phanective.org/*",
+        "zone_name": "icewall-preview.phanective.org"
       }
     }
   },

@@ -7,7 +7,7 @@ export default [
       "**/dist/**",
       "**/vendor/**",
 
-      // temporarily ignore until this directory is merged to icedgate package
+      // temporarily ignore until this directory is merged to icewall package
       "**/hono/**/*",
     ],
   },

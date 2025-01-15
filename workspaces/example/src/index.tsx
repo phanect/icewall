@@ -1,8 +1,8 @@
 import { Hono } from "hono";
-import { icedgate, getUser, type IcedGateEnv } from "icedgate";
+import { icewall, getUser, type IcewallEnv } from "icewall";
 
-const app = new Hono<IcedGateEnv>()
-  .route("/", icedgate)
+const app = new Hono<IcewallEnv>()
+  .route("/", icewall)
   .get("/", async (c) => {
     const user = getUser(c);
     if (!user) {

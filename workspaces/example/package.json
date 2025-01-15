@@ -1,5 +1,5 @@
 {
-  "name": "icedgate-example",
+  "name": "icewall-example",
   "version": "0.0.0",
   "license": "Apache-2.0",
   "author": {
@@ -14,16 +14,16 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm run dev:migrate && wrangler dev",
-    "dev:migrate": "wrangler d1 migrations apply icedgate-example --local",
+    "dev:migrate": "wrangler d1 migrations apply icewall-example --local",
     "build": "pnpm run build:cloudflare && pnpm run build:db",
     "build:cloudflare": "tsx ./scripts/build-cloudflare.ts",
     "build:db": "drizzle-kit generate",
     "release": "pnpm run release:migrate && wrangler deploy --minify",
-    "release:migrate": "wrangler d1 migrations apply icedgate-example"
+    "release:migrate": "wrangler d1 migrations apply icewall-example"
   },
   "dependencies": {
     "hono": "^4.6.9",
-    "icedgate": "workspace:*"
+    "icewall": "workspace:*"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241022.0",

@@ -1,8 +1,8 @@
 // @ts-nocheck TODO
 /* eslint-disable */
 import { eq, lte } from "drizzle-orm";
-import { IcedGateUsersTable, type IcedGateUser } from "../db/schema/user.ts";
-import { IcedGateSessionsTable, type IcedGateSession } from "../db/schema/session.ts";
+import { IcewallUsersTable, type IcewallUser } from "../db/schema/user.ts";
+import { IcewallSessionsTable, type IcewallSession } from "../db/schema/session.ts";
 import type { MySqlDatabase } from "drizzle-orm/mysql-core";
 import type { Adapter } from "./database.ts";
 
@@ -15,25 +15,25 @@ export class DrizzleMySQLAdapter implements Adapter {
     this.db = db;
   }
 
-  public async deleteSession(sessionId: IcedGateSession["id"]): Promise<void> {
-    await this.db.delete(IcedGateSessionsTable).where(eq(IcedGateSessionsTable.id, sessionId));
+  public async deleteSession(sessionId: IcewallSession["id"]): Promise<void> {
+    await this.db.delete(IcewallSessionsTable).where(eq(IcewallSessionsTable.id, sessionId));
   }
 
-  public async deleteUserSessions(userId: IcedGateUser["id"]): Promise<void> {
-    await this.db.delete(IcedGateSessionsTable).where(eq(IcedGateSessionsTable.userId, userId));
+  public async deleteUserSessions(userId: IcewallUser["id"]): Promise<void> {
+    await this.db.delete(IcewallSessionsTable).where(eq(IcewallSessionsTable.userId, userId));
   }
 
   public async getSessionAndUser(
     sessionId: string
-  ): Promise<[session: IcedGateSession | undefined, user: IcedGateUser | undefined]> {
+  ): Promise<[session: IcewallSession | undefined, user: IcewallUser | undefined]> {
     const result = await this.db
       .select({
-        user: IcedGateUsersTable,
-        session: IcedGateSessionsTable,
+        user: IcewallUsersTable,
+        session: IcewallSessionsTable,
       })
-      .from(IcedGateSessionsTable)
-      .innerJoin(IcedGateUsersTable, eq(IcedGateSessionsTable.userId, IcedGateUsersTable.id))
-      .where(eq(IcedGateSessionsTable.id, sessionId));
+      .from(IcewallSessionsTable)
+      .innerJoin(IcewallUsersTable, eq(IcewallSessionsTable.userId, IcewallUsersTable.id))
+      .where(eq(IcewallSessionsTable.id, sessionId));
     if (result.length !== 1) {
       return [ undefined, undefined ];
     }
@@ -43,31 +43,31 @@ export class DrizzleMySQLAdapter implements Adapter {
     ];
   }
 
-  public async getUserSessions(userId: IcedGateUser["id"]): Promise<IcedGateSession[]> {
+  public async getUserSessions(userId: IcewallUser["id"]): Promise<IcewallSession[]> {
     return this.db
       .select()
-      .from(IcedGateSessionsTable)
-      .where(eq(IcedGateSessionsTable.userId, userId));
+      .from(IcewallSessionsTable)
+      .where(eq(IcewallSessionsTable.userId, userId));
   }
 
-  public async setSession(session: IcedGateSession): Promise<void> {
-    await this.db.insert(IcedGateSessionsTable).values({
+  public async setSession(session: IcewallSession): Promise<void> {
+    await this.db.insert(IcewallSessionsTable).values({
       id: session.id,
       userId: session.userId,
       expiresAt: session.expiresAt,
     });
   }
 
-  public async updateSessionExpiration(sessionId: IcedGateSession["id"], expiresAt: IcedGateSession["expiresAt"]): Promise<void> {
+  public async updateSessionExpiration(sessionId: IcewallSession["id"], expiresAt: IcewallSession["expiresAt"]): Promise<void> {
     await this.db
-      .update(IcedGateSessionsTable)
+      .update(IcewallSessionsTable)
       .set({
         expiresAt,
       })
-      .where(eq(IcedGateSessionsTable.id, sessionId));
+      .where(eq(IcewallSessionsTable.id, sessionId));
   }
 
   public async deleteExpiredSessions(): Promise<void> {
-    await this.db.delete(IcedGateSessionsTable).where(lte(IcedGateSessionsTable.expiresAt, new Date()));
+    await this.db.delete(IcewallSessionsTable).where(lte(IcewallSessionsTable.expiresAt, new Date()));
   }
 }
