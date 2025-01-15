@@ -1,14 +1,15 @@
 import { type FC } from "hono/jsx";
 import { Layout } from "../layouts/default.tsx";
-import { GoogleIcon } from "../../vendor/feathericon/google.tsx";
-import { FacebookIcon } from "../../vendor/feathericon/facebook.tsx";
+// import { GoogleIcon } from "../../vendor/feathericon/google.tsx";
+// import { FacebookIcon } from "../../vendor/feathericon/facebook.tsx";
 import { GitHubIcon } from "../../vendor/feathericon/github.tsx";
 
 type Props = {
   showSignUpForm?: boolean;
 };
 
-export const Login: FC<Props> = ({ showSignUpForm = false }) => {
+// @ts-expect-error TODO showSignUpForm will be used when password login is available
+export const Login: FC<Props> = ({ showSignUpForm = false }) => { // eslint-disable-line @typescript-eslint/no-unused-vars
   return (
     <Layout title="Login or Sign up">
       <div class="container">
@@ -17,12 +18,15 @@ export const Login: FC<Props> = ({ showSignUpForm = false }) => {
           <span>with thirdparty accounts</span>
 
           <div class="social-icons">
+            {/*
             <a href="./google" class="icon"><GoogleIcon /></a>
             <a href="./facebook" class="icon"><FacebookIcon /></a>
+            */}
             <a href="./github" class="icon"><GitHubIcon /></a>
           </div>
         </div>
 
+        {/*
         <hr class="line-vertical" />
 
         <div class="toggle-container">
@@ -67,6 +71,7 @@ export const Login: FC<Props> = ({ showSignUpForm = false }) => {
             )}
           </div>
         </div>
+        */}
       </div>
     </Layout>
   );
