@@ -14,7 +14,7 @@ type GitHubUser = {
 };
 
 export const github = new Hono<IcewallEnv>()
-  .get("/login/github", async (c) => {
+  .get("/github", async (c) => {
     const {
       SERVER_ENV,
       PROTOCOL_AND_HOST,
@@ -33,7 +33,7 @@ export const github = new Hono<IcewallEnv>()
     const github = new GitHub(
       GITHUB_CLIENT_ID,
       GITHUB_CLIENT_SECRET,
-      `${ PROTOCOL_AND_HOST }/login/github/callback`,
+      `${ PROTOCOL_AND_HOST }/auth/github/callback`,
     );
     const state = generateState();
     const url = github.createAuthorizationURL(state, [ "user:email" ]);
@@ -45,7 +45,7 @@ export const github = new Hono<IcewallEnv>()
       sameSite: "Lax",
     });
     return c.redirect(url.toString());
-  }).get("/login/github/callback", async (c) => {
+  }).get("/github/callback", async (c) => {
     const {
       SERVER_ENV,
       PROTOCOL_AND_HOST,
@@ -64,7 +64,7 @@ export const github = new Hono<IcewallEnv>()
     const github = new GitHub(
       GITHUB_CLIENT_ID,
       GITHUB_CLIENT_SECRET,
-      `${ PROTOCOL_AND_HOST }/login/github/callback`,
+      `${ PROTOCOL_AND_HOST }/auth/github/callback`,
     );
 
     const code = c.req.query("code")?.toString();
