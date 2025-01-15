@@ -46,6 +46,7 @@ export const github = new Hono<IcewallEnv>()
     });
     return c.redirect(url.toString());
   }).get("/github/callback", async (c) => {
+    const redirectTarget = "/auth/postlogin";
     const {
       SERVER_ENV,
       PROTOCOL_AND_HOST,
@@ -123,7 +124,7 @@ export const github = new Hono<IcewallEnv>()
       if (existingUser) {
         const session = await lucia.createSession(existingUser.id);
         c.header("Set-Cookie", lucia.createSessionCookie(session.id).serialize(), { append: true });
-        return c.redirect("/");
+        return c.redirect(redirectTarget);
       }
 
       const userId = generateId(15);
@@ -135,7 +136,7 @@ export const github = new Hono<IcewallEnv>()
 
       const session = await lucia.createSession(userId);
       c.header("Set-Cookie", lucia.createSessionCookie(session.id).serialize(), { append: true });
-      return c.redirect("/");
+      return c.redirect(redirectTarget);
     } catch (e) {
       console.error(e);
 
