@@ -6,5 +6,5 @@ export { authRoutes } from "./routes/index.ts";
 export { authProtection } from "./routes/middleware.ts";
 
 export const getUser = (c: Context<IcewallEnv, string, Input>): IcewallUser | undefined => c.get("user");
-export const isAuthenticated = (c: Context<IcewallEnv, string, Input>): boolean => !!getUser(c);
+export const isAuthenticated = (c: Context<IcewallEnv, string, Input>): boolean => !!c.get("user");
 export type { IcewallEnv, IcewallUser };
