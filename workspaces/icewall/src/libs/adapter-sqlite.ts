@@ -63,15 +63,13 @@ export class DrizzleSQLiteAdapter implements Adapter {
     return this.db
       .select()
       .from(IcewallSessionsTable)
-      .where(eq(IcewallSessionsTable.userId, userId))
-      .all();
+      .where(eq(IcewallSessionsTable.userId, userId));
   }
 
   public async setSession(session: IcewallSession): Promise<void> {
     await this.db
       .insert(IcewallSessionsTable)
-      .values(session)
-      .run();
+      .values(session);
   }
 
   public async updateSessionExpiration(sessionId: IcewallSession["id"], expiresAt: IcewallSession["expiresAt"]): Promise<void> {
@@ -80,8 +78,7 @@ export class DrizzleSQLiteAdapter implements Adapter {
       .set({
         expiresAt,
       })
-      .where(eq(IcewallSessionsTable.id, sessionId))
-      .run();
+      .where(eq(IcewallSessionsTable.id, sessionId));
   }
 
   public async deleteExpiredSessions(): Promise<void> {
