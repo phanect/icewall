@@ -36,8 +36,8 @@ export class DrizzleMySQLAdapter implements Adapter {
         session: IcewallSessionsTable,
       })
       .from(IcewallSessionsTable)
-      .innerJoin(IcewallUsersTable, eq(IcewallSessionsTable.userId, IcewallUsersTable.id))
-      .where(eq(IcewallSessionsTable.id, sessionId));
+      .where(eq(IcewallSessionsTable.id, sessionId))
+      .innerJoin(IcewallUsersTable, eq(IcewallSessionsTable.userId, IcewallUsersTable.id));
     if (result.length !== 1) {
       return [ undefined, undefined ];
     }
