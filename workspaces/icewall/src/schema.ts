@@ -1,2 +1,2 @@
-export { IcewallUsersTable } from "./db/schema/user.ts";
-export { IcewallSessionsTable } from "./db/schema/session.ts";
+export { IcewallUsersTable, type IcewallUser } from "./db/schema/user.ts";
+export { IcewallSessionsTable, type IcewallSession } from "./db/schema/session.ts";
