@@ -54,14 +54,12 @@ export class DrizzlePostgreSQLAdapter implements Adapter {
       .where(eq(IcewallSessionsTable.userId, userId));
   }
 
-  public async setSession(session: IcewallSession): Promise<void> {
+  public async setSession(
+    session: Omit<IcewallSession, "fresh"> & { fresh?: boolean | null; },
+  ): Promise<void> {
     await this.db
       .insert(IcewallSessionsTable)
-      .values({
-        id: session.id,
-        userId: session.userId,
-        expiresAt: session.expiresAt,
-      });
+      .values(session);
   }
 
   public async updateSessionExpiration(sessionId: IcewallSession["id"], expiresAt: IcewallSession["expiresAt"]): Promise<void> {

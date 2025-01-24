@@ -66,7 +66,9 @@ export class DrizzleSQLiteAdapter implements Adapter {
       .where(eq(IcewallSessionsTable.userId, userId));
   }
 
-  public async setSession(session: IcewallSession): Promise<void> {
+  public async setSession(
+    session: Omit<IcewallSession, "fresh"> & { fresh?: boolean | null; },
+  ): Promise<void> {
     await this.db
       .insert(IcewallSessionsTable)
       .values(session);

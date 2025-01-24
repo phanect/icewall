@@ -6,7 +6,7 @@ export type Adapter = {
     sessionId: IcewallSession["id"],
   ): Promise<[session: IcewallSession | undefined, user: IcewallUser | undefined]>;
   getUserSessions(userId: IcewallUser["id"]): Promise<IcewallSession[]>;
-  setSession(session: IcewallSession): Promise<void>;
+  setSession(session: Omit<IcewallSession, "fresh"> & { fresh?: boolean; }): Promise<void>;
   updateSessionExpiration(sessionId: IcewallSession["id"], expiresAt: IcewallSession["expiresAt"]): Promise<void>;
   deleteSession(sessionId: IcewallSession["id"]): Promise<void>;
   deleteUserSessions(userId: IcewallUser["id"]): Promise<void>;
