@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { jsxRenderer } from "hono/jsx-renderer";
 import { Login } from "../ui/pages/login.tsx";
-import type { IcewallEnv } from "../types.ts";
+import type { IcewallEnv } from "../env.ts";
 
 export const ui = new Hono<IcewallEnv>()
   .get(
