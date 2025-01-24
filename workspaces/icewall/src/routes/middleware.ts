@@ -5,7 +5,7 @@ import { Lucia } from "../libs/core.ts";
 import { DrizzleSQLiteAdapter } from "../libs/adapter-sqlite.ts";
 import { verifyRequestOrigin } from "../libs/request.ts";
 import { isLocal } from "../libs/utils.ts";
-import type { IcewallEnv } from "../types.ts";
+import type { IcewallEnv } from "../env.ts";
 
 /** Middleware for pages to be protected by the authwall */
 export const icewallMiddleware = createMiddleware<IcewallEnv>(async (c, next) => {

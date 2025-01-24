@@ -6,7 +6,7 @@ import { getCookie, setCookie } from "hono/cookie";
 import { IcewallUsersTable } from "../db/schema/user.ts";
 import { generateId } from "../libs/crypto.ts";
 import { isLocal } from "../libs/utils.ts";
-import type { IcewallEnv } from "../types.ts";
+import type { IcewallEnv } from "../env.ts";
 
 type GitHubUser = {
   id: number;

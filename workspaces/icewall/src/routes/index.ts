@@ -3,7 +3,7 @@ import { middleware } from "./middleware.ts";
 import { ui } from "./ui.tsx";
 import { github } from "./github.ts";
 
-import type { IcewallEnv } from "../types.ts";
+import type { IcewallEnv } from "../env.ts";
 
 export const icewallAPIs = new Hono<IcewallEnv>()
   .use("/*", middleware)
