@@ -3,14 +3,14 @@
 import { eq, lte } from "drizzle-orm";
 import { IcewallUsersTable, type IcewallUser } from "../db/schema/user.ts";
 import { IcewallSessionsTable, type IcewallSession } from "../db/schema/session.ts";
-import type { MySqlDatabase } from "drizzle-orm/mysql-core";
+import type { MySqlDatabase, MySqlQueryResultHKT, PreparedQueryHKTBase } from "drizzle-orm/mysql-core";
 import type { Adapter } from "./database.ts";
 
 export class DrizzleMySQLAdapter implements Adapter {
-  private db: MySqlDatabase<any, any, any>;
+  private db: MySqlDatabase<MySqlQueryResultHKT, PreparedQueryHKTBase>;
 
   constructor(
-    db: MySqlDatabase<any, any, any>,
+    db: MySqlDatabase<MySqlQueryResultHKT, PreparedQueryHKTBase>,
   ) {
     this.db = db;
   }
