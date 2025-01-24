@@ -1,6 +1,6 @@
 import { createMiddleware } from "hono/factory";
 import { drizzle } from "drizzle-orm/d1";
-import { getUser } from "../index.ts";
+import { getUser } from "../libs.ts";
 import { Lucia } from "../libs/core.ts";
 import { DrizzleSQLiteAdapter } from "../libs/adapter-sqlite.ts";
 import { verifyRequestOrigin } from "../libs/request.ts";
