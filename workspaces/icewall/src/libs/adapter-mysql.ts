@@ -16,11 +16,15 @@ export class DrizzleMySQLAdapter implements Adapter {
   }
 
   public async deleteSession(sessionId: IcewallSession["id"]): Promise<void> {
-    await this.db.delete(IcewallSessionsTable).where(eq(IcewallSessionsTable.id, sessionId));
+    await this.db
+      .delete(IcewallSessionsTable)
+      .where(eq(IcewallSessionsTable.id, sessionId));
   }
 
   public async deleteUserSessions(userId: IcewallUser["id"]): Promise<void> {
-    await this.db.delete(IcewallSessionsTable).where(eq(IcewallSessionsTable.userId, userId));
+    await this.db
+      .delete(IcewallSessionsTable)
+      .where(eq(IcewallSessionsTable.userId, userId));
   }
 
   public async getSessionAndUser(
@@ -51,11 +55,13 @@ export class DrizzleMySQLAdapter implements Adapter {
   }
 
   public async setSession(session: IcewallSession): Promise<void> {
-    await this.db.insert(IcewallSessionsTable).values({
-      id: session.id,
-      userId: session.userId,
-      expiresAt: session.expiresAt,
-    });
+    await this.db
+      .insert(IcewallSessionsTable)
+      .values({
+        id: session.id,
+        userId: session.userId,
+        expiresAt: session.expiresAt,
+      });
   }
 
   public async updateSessionExpiration(sessionId: IcewallSession["id"], expiresAt: IcewallSession["expiresAt"]): Promise<void> {
@@ -68,6 +74,8 @@ export class DrizzleMySQLAdapter implements Adapter {
   }
 
   public async deleteExpiredSessions(): Promise<void> {
-    await this.db.delete(IcewallSessionsTable).where(lte(IcewallSessionsTable.expiresAt, new Date()));
+    await this.db
+      .delete(IcewallSessionsTable)
+      .where(lte(IcewallSessionsTable.expiresAt, new Date()));
   }
 }
