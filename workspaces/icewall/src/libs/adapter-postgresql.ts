@@ -3,14 +3,14 @@
 import { eq, lte } from "drizzle-orm";
 import { IcewallUsersTable, type IcewallUser } from "../db/schema/user.ts";
 import { IcewallSessionsTable, type IcewallSession } from "../db/schema/session.ts";
-import type { PgDatabase } from "drizzle-orm/pg-core";
+import type { PgDatabase, PgQueryResultHKT } from "drizzle-orm/pg-core";
 import type { Adapter } from "./database.ts";
 
 export class DrizzlePostgreSQLAdapter implements Adapter {
-  private db: PgDatabase<any, any, any>;
+  private db: PgDatabase<PgQueryResultHKT>;
 
   constructor(
-    db: PgDatabase<any, any, any>,
+    db: PgDatabase<PgQueryResultHKT>,
   ) {
     this.db = db;
   }
