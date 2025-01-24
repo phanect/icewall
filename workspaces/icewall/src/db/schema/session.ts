@@ -4,7 +4,7 @@ import type { InferSelectModel } from "drizzle-orm";
 
 export const IcewallSessionsTable = table("IcewallSessions", {
   id: text().primaryKey(),
-  fresh: boolean().notNull(),
+  fresh: boolean().default(true),
   expiresAt: timestamp().notNull(),
   userId: text()
     .notNull()
