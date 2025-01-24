@@ -14,11 +14,15 @@ export class DrizzleSQLiteAdapter implements Adapter {
   }
 
   public async deleteSession(sessionId: IcewallSession["id"]): Promise<void> {
-    await this.db.delete(IcewallSessionsTable).where(eq(IcewallSessionsTable.id, sessionId));
+    await this.db
+      .delete(IcewallSessionsTable)
+      .where(eq(IcewallSessionsTable.id, sessionId));
   }
 
   public async deleteUserSessions(userId: IcewallUser["id"]): Promise<void> {
-    await this.db.delete(IcewallSessionsTable).where(eq(IcewallSessionsTable.userId, userId));
+    await this.db
+      .delete(IcewallSessionsTable)
+      .where(eq(IcewallSessionsTable.userId, userId));
   }
 
   public async getSessionAndUser(
