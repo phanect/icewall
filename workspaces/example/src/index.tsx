@@ -1,9 +1,9 @@
 import { Hono } from "hono";
-import { authRoutes, authProtection, isAuthenticated, getUser, type IcewallEnv } from "icewall";
+import { icewallAPIs, icewallMiddleware, isAuthenticated, getUser, type IcewallEnv } from "icewall";
 
 const app = new Hono<IcewallEnv>()
-  .route("/", authRoutes)
-  .use("/dashboard", authProtection)
+  .route("/", icewallAPIs)
+  .use("/dashboard", icewallMiddleware)
   // When the login process has completed, users are redirected to /auth/postlogin.
   // Redirect again to any URL you like here.
   .get("/auth/postlogin", async (c) => c.redirect("/dashboard"))
