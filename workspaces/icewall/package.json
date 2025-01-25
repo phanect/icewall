@@ -39,7 +39,7 @@
   },
   "scripts": {
     "dev": "tsup --watch",
-    "build": "tsup",
+    "build": "pnpm run prepare && tsup",
     "test": "tsx tests/mysql.ts && tsx tests/postgresql.ts && tsx tests/sqlite.ts && vitest run",
     "release": "pnpm publish --access=public",
     "prepare": "tsx ./scripts/prepare.ts"
