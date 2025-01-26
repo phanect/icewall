@@ -1,6 +1,6 @@
 import { deepStrictEqual } from "node:assert/strict";
 import { generateId } from "../../src/libs/crypto.ts";
-import type { Adapter } from "../../src/libs/database.ts";
+import type { DrizzleAdapter } from "../../src/libs/adapter.ts";
 import type { IcewallSession } from "../../src/db/schema/session.ts";
 import type { IcewallUser } from "../../src/db/schema/user.ts";
 
@@ -11,7 +11,7 @@ export const databaseUser: IcewallUser = {
   githubDisplayId: null,
 };
 
-export async function testAdapter(adapter: Adapter) {
+export async function testAdapter(adapter: DrizzleAdapter) {
   console.log("\n\x1B[38;5;63;1m[start]  \x1B[0mRunning adapter tests\x1B[0m\n");
   const databaseSession: IcewallSession = {
     userId: databaseUser.id,
