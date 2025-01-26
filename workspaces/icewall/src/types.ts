@@ -4,7 +4,7 @@ import type { IcewallSession } from "./db/schema/session.ts";
 import type { DrizzleD1Database } from "drizzle-orm/d1";
 import type { Lucia } from "./libs/core.ts";
 
-export type IcewallEnv = {
+export type IcewallEnv = Env & {
   Variables: {
     drizzle: DrizzleD1Database;
     lucia: Lucia;
@@ -20,4 +20,4 @@ export type IcewallEnv = {
     GITHUB_CLIENT_ID?: string;
     GITHUB_CLIENT_SECRET?: string;
   };
-} & Env;
+};
