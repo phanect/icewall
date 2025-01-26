@@ -4,11 +4,7 @@ import { IcewallSessionsTable, type IcewallSession } from "../db/schema/session.
 import type { Database } from "../db/dbms.ts";
 
 export class DrizzleAdapter {
-  private db: Database;
-
-  constructor(db: Database) {
-    this.db = db;
-  }
+  constructor(private db: Database) {}
 
   public async deleteSession(sessionId: IcewallSession["id"]): Promise<void> {
     await this.db
