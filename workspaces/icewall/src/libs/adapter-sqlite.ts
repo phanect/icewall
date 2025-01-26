@@ -28,35 +28,20 @@ export class DrizzleSQLiteAdapter implements Adapter {
   public async getSessionAndUser(
     sessionId: string
   ): Promise<[session: IcewallSession | undefined, user: IcewallUser | undefined]> {
-    // https://github.com/drizzle-team/drizzle-orm/issues/555
-    const [ databaseSession, databaseUser ] = await Promise.all([
-      this.getSession(sessionId),
-      this.getUserFromSessionId(sessionId),
-    ]);
-    return [ databaseSession, databaseUser ];
-  }
-
-  private async getSession(sessionId: string): Promise<IcewallSession | undefined> {
     const result = await this.db
-      .select()
-      .from(IcewallSessionsTable)
-      .where(eq(IcewallSessionsTable.id, sessionId));
-    if (result.length !== 1) {
-      return undefined;
-    }
-    return result[0];
-  }
-
-  private async getUserFromSessionId(sessionId: string): Promise<IcewallUser | undefined> {
-    const result = await this.db
-      .select(getTableColumns(IcewallUsersTable))
-      .from(IcewallSessionsTable)
+      .select({
+        user: IcewallUsersTable,
+        session: IcewallSessionsTable,
+      }).from(IcewallSessionsTable)
       .where(eq(IcewallSessionsTable.id, sessionId))
       .innerJoin(IcewallUsersTable, eq(IcewallSessionsTable.userId, IcewallUsersTable.id));
     if (result.length !== 1) {
-      return undefined;
+      return [ undefined, undefined ];
     }
-    return result[0];
+    return [
+      result[0].session,
+      result[0].user,
+    ];
   }
 
   public async getUserSessions(userId: IcewallUser["id"]): Promise<IcewallSession[]> {
