@@ -2,7 +2,7 @@ import { createMiddleware } from "hono/factory";
 import { drizzle } from "drizzle-orm/d1";
 import { getUser } from "../libs.ts";
 import { Lucia } from "../libs/core.ts";
-import { DrizzleSQLiteAdapter } from "../libs/adapter-sqlite.ts";
+import { DrizzleAdapter } from "../libs/adapter.ts";
 import { verifyRequestOrigin } from "../libs/request.ts";
 import { isLocal } from "../libs/utils.ts";
 import type { IcewallEnv } from "../env.ts";
@@ -38,7 +38,7 @@ binding: "D1"
 
   const db = drizzle(c.env.D1);
   const lucia = new Lucia(
-    new DrizzleSQLiteAdapter(db),
+    new DrizzleAdapter(db),
     {
       sessionCookie: {
         attributes: {

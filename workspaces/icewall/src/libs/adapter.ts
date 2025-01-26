@@ -1,17 +1,12 @@
-// @ts-nocheck TODO
-/* eslint-disable */
 import { eq, lte } from "drizzle-orm";
 import { IcewallUsersTable, type IcewallUser } from "../db/schema/user.ts";
 import { IcewallSessionsTable, type IcewallSession } from "../db/schema/session.ts";
-import type { PgDatabase, PgQueryResultHKT } from "drizzle-orm/pg-core";
-import type { Adapter } from "./database.ts";
+import type { Database } from "../db/dbms.ts";
 
-export class DrizzlePostgreSQLAdapter implements Adapter {
-  private db: PgDatabase<PgQueryResultHKT>;
+export class DrizzleAdapter {
+  private db: Database;
 
-  constructor(
-    db: PgDatabase<PgQueryResultHKT>,
-  ) {
+  constructor(db: Database) {
     this.db = db;
   }
 
@@ -34,8 +29,7 @@ export class DrizzlePostgreSQLAdapter implements Adapter {
       .select({
         user: IcewallUsersTable,
         session: IcewallSessionsTable,
-      })
-      .from(IcewallSessionsTable)
+      }).from(IcewallSessionsTable)
       .where(eq(IcewallSessionsTable.id, sessionId))
       .innerJoin(IcewallUsersTable, eq(IcewallSessionsTable.userId, IcewallUsersTable.id));
     if (result.length !== 1) {
