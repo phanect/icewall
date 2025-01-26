@@ -3,18 +3,18 @@ import { CookieController } from "./cookie.ts";
 import { generateIdFromEntropySize } from "./crypto.ts";
 import type { IcewallUser } from "../db/schema/user.ts";
 import type { IcewallSession } from "../db/schema/session.ts";
-import type { Adapter } from "./database.ts";
+import type { DrizzleAdapter } from "./adapter.ts";
 import type { Cookie, CookieAttributes } from "./cookie.ts";
 
 export class Lucia {
-  private adapter: Adapter;
+  private adapter: DrizzleAdapter;
   private sessionExpiresIn: TimeSpan;
   private sessionCookieController: CookieController;
 
   public readonly sessionCookieName: string;
 
   constructor(
-    adapter: Adapter,
+    adapter: DrizzleAdapter,
     options?: {
       sessionExpiresIn?: TimeSpan;
       sessionCookie?: SessionCookieOptions;
