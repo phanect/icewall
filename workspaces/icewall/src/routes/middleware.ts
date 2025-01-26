@@ -38,7 +38,7 @@ binding: "D1"
 
   const db = drizzle(c.env.D1);
   const lucia = new Lucia(
-    new DrizzleAdapter(db),
+    db,
     {
       sessionCookie: {
         attributes: {

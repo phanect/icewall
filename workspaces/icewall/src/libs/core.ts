@@ -1,10 +1,11 @@
+import { DrizzleAdapter } from "./adapter.ts";
 import { TimeSpan, createDate, isWithinExpirationDate } from "./date.ts";
 import { CookieController } from "./cookie.ts";
 import { generateIdFromEntropySize } from "./crypto.ts";
 import type { IcewallUser } from "../db/schema/user.ts";
 import type { IcewallSession } from "../db/schema/session.ts";
-import type { DrizzleAdapter } from "./adapter.ts";
 import type { Cookie, CookieAttributes } from "./cookie.ts";
+import type { Database } from "../db/dbms.ts";
 
 export class Lucia {
   private adapter: DrizzleAdapter;
@@ -14,13 +15,13 @@ export class Lucia {
   public readonly sessionCookieName: string;
 
   constructor(
-    adapter: DrizzleAdapter,
+    db: Database,
     options?: {
       sessionExpiresIn?: TimeSpan;
       sessionCookie?: SessionCookieOptions;
     }
   ) {
-    this.adapter = adapter;
+    this.adapter = new DrizzleAdapter(db);
     this.sessionExpiresIn = options?.sessionExpiresIn ?? new TimeSpan(30, "d");
     this.sessionCookieName = options?.sessionCookie?.name ?? "auth_session";
     let sessionCookieExpiresIn = this.sessionExpiresIn;
