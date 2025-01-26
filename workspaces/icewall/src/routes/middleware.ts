@@ -2,20 +2,34 @@ import { createMiddleware } from "hono/factory";
 import { drizzle } from "drizzle-orm/d1";
 import { getUser } from "../libs.ts";
 import { Lucia } from "../libs/core.ts";
-import { DrizzleAdapter } from "../libs/adapter.ts";
 import { verifyRequestOrigin } from "../libs/request.ts";
 import { isLocal } from "../libs/utils.ts";
 import type { IcewallEnv } from "../env.ts";
+import type { UserPropsTable } from "../db/user-props.ts";
 
-/** Middleware for pages to be protected by the authwall */
-export const icewallMiddleware = createMiddleware<IcewallEnv>(async (c, next) => {
-  const user = getUser(c, { ifLoggedOut: "returnUndefined" });
-  if (user) {
-    return next();
-  } else {
-    return c.redirect("/auth/login");
-  }
-});
+export type IcewallMiddlewareOptions = {
+  userPropsTable: UserPropsTable;
+};
+
+/**
+ * Middleware for pages to be protected by the authwall
+ * @param options - Options
+ * @param options.userPropsTable - User-defined UserProps table instance.
+ * @returns Icewall middleware
+ */
+export const icewallMiddleware = (options?: IcewallMiddlewareOptions) =>
+  createMiddleware<IcewallEnv>(async (c, next) => {
+    if (options?.userPropsTable) {
+      c.set("userPropsTable", options.userPropsTable);
+    }
+
+    const user = getUser(c, { ifLoggedOut: "returnUndefined" });
+    if (user) {
+      return next();
+    } else {
+      return c.redirect("/auth/login");
+    }
+  });
 
 /** Middleware to be used internally */
 export const middleware = createMiddleware<IcewallEnv>(async (c, next) => {
@@ -36,6 +50,7 @@ binding: "D1"
 `);
   }
 
+  const userPropsTable = c.get("userPropsTable");
   const db = drizzle(c.env.D1);
   const lucia = new Lucia(
     db,
@@ -45,6 +60,7 @@ binding: "D1"
           secure: !isLocal(c),
         },
       },
+      userPropsTable,
     }
   );
   c.set("drizzle", db);

@@ -6,6 +6,7 @@ import type { IcewallUser } from "../db/schema/user.ts";
 import type { IcewallSession } from "../db/schema/session.ts";
 import type { Cookie, CookieAttributes } from "./cookie.ts";
 import type { Database } from "../db/dbms.ts";
+import type { UserPropsTable } from "../db/user-props.ts";
 
 export class Lucia {
   private adapter: DrizzleAdapter;
@@ -19,9 +20,12 @@ export class Lucia {
     options?: {
       sessionExpiresIn?: TimeSpan;
       sessionCookie?: SessionCookieOptions;
+      userPropsTable?: UserPropsTable;
     }
   ) {
-    this.adapter = new DrizzleAdapter(db);
+    this.adapter = new DrizzleAdapter(db, {
+      userPropsTable: options?.userPropsTable,
+    });
     this.sessionExpiresIn = options?.sessionExpiresIn ?? new TimeSpan(30, "d");
     this.sessionCookieName = options?.sessionCookie?.name ?? "auth_session";
     let sessionCookieExpiresIn = this.sessionExpiresIn;

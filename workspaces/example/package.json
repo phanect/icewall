@@ -22,6 +22,7 @@
     "release:migrate": "wrangler d1 migrations apply icewall-example"
   },
   "dependencies": {
+    "drizzle-orm": "^0.38.3",
     "hono": "^4.6.9",
     "icewall": "workspace:*"
   },

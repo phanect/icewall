@@ -1,9 +1,12 @@
 import { Hono } from "hono";
 import { icewallAPIs, icewallMiddleware, isAuthenticated, getUser, type IcewallEnv } from "icewall";
+import { UserPropsTable } from "./schema.ts";
 
 const app = new Hono<IcewallEnv>()
   .route("/", icewallAPIs)
-  .use("/dashboard", icewallMiddleware)
+  .use("/dashboard", icewallMiddleware({
+    userPropsTable: UserPropsTable,
+  }))
   // When the login process has completed, users are redirected to /auth/postlogin.
   // Redirect again to any URL you like here.
   .get("/auth/postlogin", async (c) => c.redirect("/dashboard"))
@@ -44,10 +47,10 @@ const app = new Hono<IcewallEnv>()
           <title>Login status</title>
         </head>
         <body>
-          <h1>Hi, { user.email }!</h1>
+          <h1>Hi, { user.name }!</h1>
           <p>
             This page is protected by Icewall. You need to login to view this page.<br />
-            Your user ID is { user.id }.
+            Your email is { user.email }.
           </p>
           <a href="/auth/logout">Sign out</a>
         </body>

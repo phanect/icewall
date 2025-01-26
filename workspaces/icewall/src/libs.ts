@@ -2,6 +2,8 @@ import type { Context, Input } from "hono";
 import type { IcewallUser } from "./db/schema/user.ts";
 import type { IcewallEnv } from "./env.ts";
 
+export { defineIcewallUserPropsTable } from "./db/user-props.ts";
+
 export type GetUserOptions = {
   ifLoggedOut: "throw" | "returnUndefined";
 };
