@@ -28,7 +28,7 @@ const app = new Hono<IcewallEnv>()
           </p>
 
           <p>
-            <a href="/dashboard">User dashboard (authentication required)</a>
+            <a href="/dashboard">User dashboard (auth required, to be implemented by library users)</a>
           </p>
         </body>
       </html>
