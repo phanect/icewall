@@ -44,7 +44,7 @@ const app = new Hono<IcewallEnv>()
           <title>Login status</title>
         </head>
         <body>
-          <h1>Hi, { user.username }!</h1>
+          <h1>Hi, { user.email }!</h1>
           <p>
             This page is protected by Icewall. You need to login to view this page.<br />
             Your user ID is { user.id }.

@@ -11,6 +11,7 @@ import type { IcewallEnv } from "../env.ts";
 type GitHubUser = {
   id: number;
   login: string;
+  email: string;
 };
 
 export const github = new Hono<IcewallEnv>()
@@ -131,7 +132,8 @@ export const github = new Hono<IcewallEnv>()
       await drizzle.insert(IcewallUsersTable).values({
         id: userId,
         githubId: githubUser.id,
-        username: githubUser.login,
+        githubDisplayId: githubUser.login,
+        email: githubUser.email,
       });
 
       const session = await lucia.createSession(userId);
