@@ -6,8 +6,9 @@ import type { IcewallUser } from "../../src/db/schema/user.ts";
 
 export const databaseUser: IcewallUser = {
   id: generateId(15),
-  username: generateId(15),
+  email: `${ generateId(7) }@example.com`,
   githubId: null,
+  githubDisplayId: null,
 };
 
 export async function testAdapter(adapter: Adapter) {
