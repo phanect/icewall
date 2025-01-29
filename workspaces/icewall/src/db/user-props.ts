@@ -1,24 +1,12 @@
 import { IcewallUsersTable } from "./schema/user.ts";
 import {
-  integer,
   table,
   text,
   type ColumnBuilderBase,
   type dialect,
   type TableExtraConfigValue,
-  type TableWithColumns,
-  type TextBuilderInitial,
 } from "./dbms.ts";
 import type { BuildColumns } from "drizzle-orm";
-
-export type UserPropsTable = TableWithColumns<{
-  name: "IcewallUserProps";
-  schema: undefined;
-  columns: BuildColumns<"IcewallUserProps", {
-    userId: TextBuilderInitial<"", [string, ...string[]], undefined>;
-  }, dialect>;
-  dialect: dialect;
-}>;
 
 /**
  * Define a IcewallUserProps table schema.
@@ -46,3 +34,5 @@ export const defineIcewallUserPropsTable = <TColumnsMap extends Record<string, C
       .references(() => IcewallUsersTable.id),
   }, extraConfig);
 };
+
+export type UserPropsTable = ReturnType<typeof defineIcewallUserPropsTable>;

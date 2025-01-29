@@ -7,10 +7,8 @@ export {
   sqliteTable as table,
   text,
   integer,
-  type SQLiteTableWithColumns as TableWithColumns,
   type SQLiteColumnBuilderBase as ColumnBuilderBase,
   type SQLiteTableExtraConfigValue as TableExtraConfigValue,
-  type SQLiteTextBuilderInitial as TextBuilderInitial,
 } from "drizzle-orm/sqlite-core";
 
 export const boolean = (): ReturnType<typeof integer<"boolean">> => integer({ mode: "boolean" });
