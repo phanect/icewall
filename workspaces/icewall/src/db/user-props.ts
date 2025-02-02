@@ -6,7 +6,7 @@ import {
   type dialect,
   type TableExtraConfigValue,
 } from "./dbms.ts";
-import type { BuildColumns } from "drizzle-orm";
+import type { BuildColumns, ColumnBuilderBaseConfig, ColumnDataType } from "drizzle-orm";
 
 /**
  * Define a IcewallUserProps table schema.
@@ -14,7 +14,7 @@ import type { BuildColumns } from "drizzle-orm";
  * @param extraConfig - extraConfig of the table.
  * @returns Table object.
  */
-export const defineIcewallUserPropsTable = <TColumnsMap extends Record<string, ColumnBuilderBase>>(
+export const defineIcewallUserPropsTable = <TColumnsMap extends Record<string, ColumnBuilderBase<ColumnBuilderBaseConfig<ColumnDataType, string>>>>(
   columns: TColumnsMap,
   extraConfig?: (
     self: BuildColumns<"IcewallUserProps", TColumnsMap, dialect>,

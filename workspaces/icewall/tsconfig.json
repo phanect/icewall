@@ -7,7 +7,9 @@
     "types": [
       "@cloudflare/workers-types"
     ],
-    "jsxImportSource": "hono/jsx"
+    "jsxImportSource": "hono/jsx",
+    "pretty": true,
+    "noErrorTruncation": true
   },
   "include": [
     "**/*.ts",
