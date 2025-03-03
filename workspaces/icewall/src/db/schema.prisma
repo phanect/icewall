@@ -1,0 +1,20 @@
+// Schema for IcedGate
+// DO NOT EDIT MANUALLY
+// This file should be gitignored
+
+model IcedGateUser {
+  id          String    @id
+  username    String    @unique
+  githubId    Int?      @unique
+  authSession IcedGateSession[]
+}
+
+model IcedGateSession {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+  fresh     Boolean
+  user      IcedGateUser @relation(references: [ id ], fields: [ userId ], onDelete: Cascade)
+
+  @@index([ userId ])
+}
