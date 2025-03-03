@@ -1,4 +1,11 @@
 ALTER TABLE `IcewallUsers` RENAME COLUMN "username" TO "email";--> statement-breakpoint
+CREATE TABLE `IcewallUserProps` (
+	`name` text,
+	`id` text PRIMARY KEY NOT NULL,
+	`userId` text NOT NULL,
+	FOREIGN KEY (`userId`) REFERENCES `IcewallUsers`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
 DROP INDEX `IcewallUsers_username_unique`;--> statement-breakpoint
 ALTER TABLE `IcewallUsers` ADD `githubDisplayId` text;--> statement-breakpoint
 CREATE UNIQUE INDEX `IcewallUsers_email_unique` ON `IcewallUsers` (`email`);--> statement-breakpoint

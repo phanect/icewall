@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "27b097a0-3dce-4b7d-a353-4d07dd8b08a4",
+  "id": "ce612281-2cda-41d2-aa02-562471fa14c3",
   "prevId": "5ddb65a0-10b9-4fcb-8aef-d3182e8a71d6",
   "tables": {
     "IcewallSessions": {
@@ -113,6 +113,51 @@
         }
       },
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "IcewallUserProps": {
+      "name": "IcewallUserProps",
+      "columns": {
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "IcewallUserProps_userId_IcewallUsers_id_fk": {
+          "name": "IcewallUserProps_userId_IcewallUsers_id_fk",
+          "tableFrom": "IcewallUserProps",
+          "tableTo": "IcewallUsers",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
