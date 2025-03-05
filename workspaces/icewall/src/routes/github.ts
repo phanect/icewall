@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { env } from "hono/adapter";
 import { getCookie, setCookie } from "hono/cookie";
-import { IcewallUsersTable } from "../db/schema/user.ts";
+import { IcewallUsersTable } from "../db/schema.ts";
 import { generateId } from "../libs/crypto.ts";
 import { isLocal } from "../libs/utils.ts";
 import type { IcewallEnv } from "../env.ts";

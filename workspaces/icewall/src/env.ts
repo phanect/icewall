@@ -1,5 +1,5 @@
 import type { Env } from "hono";
-import type { IcewallUser } from "./db/schema/user.ts";
+import type { IcewallUser } from "./db/schema.ts";
 import type { IcewallSession } from "./db/schema/session.ts";
 import type { DrizzleD1Database } from "drizzle-orm/d1";
 import type { Lucia } from "./libs/core.ts";

@@ -2,7 +2,7 @@ import { deepStrictEqual } from "node:assert/strict";
 import { generateId } from "../../src/libs/crypto.ts";
 import type { DrizzleAdapter } from "../../src/libs/adapter.ts";
 import type { IcewallSession } from "../../src/db/schema/session.ts";
-import type { IcewallUser } from "../../src/db/schema/user.ts";
+import type { IcewallUser } from "../../src/db/schema.ts";
 
 export const databaseUser: IcewallUser = {
   id: generateId(15),

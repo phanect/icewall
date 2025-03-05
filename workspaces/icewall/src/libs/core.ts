@@ -2,7 +2,7 @@ import { DrizzleAdapter } from "./adapter.ts";
 import { TimeSpan, createDate, isWithinExpirationDate } from "./date.ts";
 import { CookieController } from "./cookie.ts";
 import { generateIdFromEntropySize } from "./crypto.ts";
-import type { IcewallUser } from "../db/schema/user.ts";
+import type { IcewallUser } from "../db/schema.ts";
 import type { IcewallSession } from "../db/schema/session.ts";
 import type { Cookie, CookieAttributes } from "./cookie.ts";
 import type { Database } from "../db/dbms.ts";
