@@ -1,5 +1,5 @@
 import { eq, lte } from "drizzle-orm";
-import { IcewallUsersTable, type IcewallUser } from "../db/schema/user.ts";
+import { IcewallUsersTable, type IcewallUser } from "../db/schema.ts";
 import { IcewallSessionsTable, type IcewallSession } from "../db/schema/session.ts";
 import type { Database } from "../db/dbms.ts";
 

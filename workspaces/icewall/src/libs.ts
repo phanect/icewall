@@ -1,5 +1,5 @@
 import type { Context, Input } from "hono";
-import type { IcewallUser } from "./db/schema/user.ts";
+import type { IcewallUser } from "./db/schema.ts";
 import type { IcewallEnv } from "./env.ts";
 
 export type GetUserOptions = {
