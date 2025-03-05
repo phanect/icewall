@@ -11,6 +11,11 @@
     "url": "https://github.com/pilcrowonpaper"
   }],
   "private": true,
+  "homepage": "https://github.com/phanect/icewall",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/phanect/icewall.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "pnpm run dev:migrate && wrangler dev",
