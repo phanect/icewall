@@ -1,1 +1,1 @@
-export * from "icewall/schema";
+export * from "@icewall/core/schema";

@@ -1,5 +1,11 @@
 import { Hono } from "hono";
-import { icewallAPIs, icewallMiddleware, isAuthenticated, getUser, type IcewallEnv } from "icewall";
+import {
+  icewallAPIs,
+  icewallMiddleware,
+  isAuthenticated,
+  getUser,
+  type IcewallEnv,
+} from "@icewall/core";
 
 const app = new Hono<IcewallEnv>()
   .route("/", icewallAPIs)
