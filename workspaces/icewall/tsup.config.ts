@@ -4,6 +4,7 @@ export default defineConfig({
   entry: {
     index: "src/index.ts",
     schema: "src/schema.ts",
+    server: "src/server.ts",
   },
   target: [
     "chrome131", // For Cloudflare Workers
