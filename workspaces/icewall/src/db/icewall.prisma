@@ -1,0 +1,21 @@
+// Schema for Icewall
+// DO NOT EDIT MANUALLY
+// This file should be gitignored
+
+model IcewallUser {
+  id              String @id
+  email           String @unique
+  githubId        Int?   @unique
+  githubDisplayId String @unique
+  authSession     IcewallSession[]
+}
+
+model IcewallSession {
+  id        String   @id
+  fresh     Boolean  @default(true)
+  expiresAt DateTime
+  userId    String
+  user      IcewallUser @relation(references: [ id ], fields: [ userId ], onDelete: Cascade)
+
+  @@index([ userId ])
+}
