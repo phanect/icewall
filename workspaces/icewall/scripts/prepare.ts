@@ -13,6 +13,17 @@ const copyDbmsTs = async () => {
   );
 };
 
+const copyDrizzleTs = async () => {
+  // TODO read dialect from user configuration
+  const dialect: "sqlite" | "sqlite-d1" = "sqlite";
+
+  const src = join(import.meta.dirname, `../src/db/drizzle.${ dialect }.ts`);
+  const dest = join(import.meta.dirname, "../src/db/drizzle.ts");
+
+  await rm(dest, { force: true });
+  await copyFile(src, dest);
+};
+
 const copyIcons = async () => {
   const services = [
     "Google",
@@ -49,5 +60,6 @@ const copyIcons = async () => {
 
 await Promise.all([
   copyDbmsTs(),
+  copyDrizzleTs(),
   copyIcons(),
 ]);

@@ -1,8 +1,7 @@
 import { createMiddleware } from "hono/factory";
-import { drizzle } from "drizzle-orm/d1";
+import { getDrizzle } from "../db/drizzle.ts";
 import { getUser } from "../libs.ts";
 import { Lucia } from "../libs/core.ts";
-import { DrizzleAdapter } from "../libs/adapter.ts";
 import { verifyRequestOrigin } from "../libs/request.ts";
 import { isLocal } from "../libs/utils.ts";
 import type { IcewallEnv } from "../env.ts";
@@ -27,16 +26,8 @@ export const middleware = createMiddleware<IcewallEnv>(async (c, next) => {
     }
   }
 
-  if (!c.env.D1) {
-    throw new Error(`\`D1\` is not set as a Cloudflare D1 binding.
-Set the following config in wrangler.toml.
+  const db = getDrizzle(c);
 
-[[d1_databases]]
-binding: "D1"
-`);
-  }
-
-  const db = drizzle(c.env.D1);
   const lucia = new Lucia(
     db,
     {
