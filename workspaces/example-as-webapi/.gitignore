@@ -1,0 +1,4 @@
+# wrangler.json will be auto-generated from wrangler.config.json and wrangler.secrets.toml
+wrangler.json
+# Write secrets in this file
+wrangler.secrets.json

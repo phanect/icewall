@@ -1,0 +1,38 @@
+{
+  // Some secrets written in .env will be added to this wrangler.config.jsonc
+  // and wrangler.json will be generated.
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "icewall-example",
+  "main": "src/index.tsx",
+  "compatibility_date": "2024-11-13",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+
+  "route": {
+    "pattern": "icewall.phanective.org/*",
+    "zone_name": "icewall.phanective.org"
+  },
+
+  "d1_databases": [{
+    "binding": "D1",
+    "database_name": "icewall-example",
+    "preview_database_id": "local-icewall-example"
+    // Following properties are added from environmental variables
+    // "database_id": "00000000-0000-0000-00000000",
+  }],
+
+  "env": {
+    "staging": {
+      "name": "icewall-preview",
+      "route": {
+        "pattern": "icewall-preview.phanective.org/*",
+        "zone_name": "icewall-preview.phanective.org"
+      }
+    }
+  },
+
+  "dev": {
+    "port": 3000
+  }
+}
