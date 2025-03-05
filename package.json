@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "dev": "pnpm run build && lerna run dev --stream --parallel",
-    "build": "(cd ./workspaces/icewall && pnpm run build) && (cd ./workspaces/example && pnpm run build)",
+    "build": "(cd ./workspaces/core && pnpm run build) && (cd ./workspaces/example && pnpm run build)",
     "lint": "lerna exec -- tsc --noEmit && eslint",
     "fix": "eslint --fix",
     "release": "lerna run release --stream",
