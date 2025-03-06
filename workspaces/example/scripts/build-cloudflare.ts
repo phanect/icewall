@@ -1,30 +1,21 @@
 import { existsSync as exists } from "node:fs";
-import { readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { env } from "node:process";
-import JSONC from "jsonc-parser";
 import "dotenv/config";
 
 const generateWranglerJson = async () => {
-  const configStr = (await readFile(join(import.meta.dirname, "../wrangler.config.jsonc"))).toString();
-  const config = JSONC.parse(configStr) as {
-    d1_databases?: {
-      database_id?: string;
-    }[];
-    [key: string]: unknown;
-  };
+  const wranglerJsonDir = join(import.meta.dirname, "../.wrangler/deploy/");
 
-  if (!config.d1_databases) {
-    config.d1_databases = [{}];
-  } else if (!config.d1_databases[0]) {
-    config.d1_databases[0] = {};
-  }
-
-  config.d1_databases[0].database_id = env.CLOUDFLARE_DATABASE_ID ?? undefined;
-
+  await mkdir(wranglerJsonDir, { recursive: true });
   await writeFile(
-    join(import.meta.dirname, "../wrangler.json"),
-    JSON.stringify(config, undefined, 2),
+    join(wranglerJsonDir, "config.json"),
+    JSON.stringify({
+      configPath: "../../wrangler.jsonc", // relative path from .wrangler/deploy/config.json
+      d1_databases: [{
+        database_id: env.CLOUDFLARE_DATABASE_ID ?? undefined,
+      }],
+    }, undefined, 2),
   );
 };
 
