@@ -1,0 +1,11 @@
+/node_modules
+/scripts
+/tests
+.gitignore
+tsconfig.json
+tsup.config.ts
+vitest.config.ts
+
+# Do not npmignore src/
+# When the library users encounter an error in Icewall code,
+# The stacktrace may point a .ts file as a cause thanks to sourcemaps.

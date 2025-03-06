@@ -1,0 +1,38 @@
+{
+  "name": "@icewall/client",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Jumpei Ogawa",
+    "url": "https://phanective.org"
+  },
+  "homepage": "https://github.com/phanect/icewall",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/phanect/icewall.git"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "release": "pnpm publish --access=public"
+  },
+  "devDependencies": {
+    "icewall": "workspace:*"
+  },
+  "engines": {
+    "node": "20.x || >=22.x",
+    "npm": ">=9.x",
+    "pnpm": ">=9.x"
+  }
+}
