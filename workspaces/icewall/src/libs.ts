@@ -1,4 +1,5 @@
 import type { Context, Input } from "hono";
+import type { Config as DrizzleConfig } from "drizzle-kit";
 import type { IcewallUser } from "./db/schema/user.ts";
 import type { IcewallEnv } from "./env.ts";
 
@@ -32,3 +33,6 @@ export function getUser(
 };
 
 export const isAuthenticated = (c: Context<IcewallEnv, string, Input>): boolean => !!c.get("user");
+
+export type Config = Omit<DrizzleConfig, "schema">;
+export const defineConfig = (config: Config) => config;

@@ -50,12 +50,15 @@
     "prepare": "tsx ./scripts/prepare.ts"
   },
   "dependencies": {
+    "@drizzle-team/brocli": "0.11.0",
     "@noble/hashes": "^1.7.0",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
+    "@phanect/utils": "^1.5.0",
     "@types/pg": "^8.11.10",
     "arctic": "^3.1.2",
-    "drizzle-orm": "0.40.0"
+    "drizzle-orm": "0.40.0",
+    "jsonc-parser": "^3.3.1"
   },
   "peerDependencies": {
     "@libsql/client": "^0.14.0",

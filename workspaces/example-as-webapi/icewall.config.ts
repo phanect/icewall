@@ -15,7 +15,6 @@ if (
 }
 
 export default defineConfig({
-  schema: "./src/schema.ts",
   // default ./drizzle directory is not recognized by D1 due to Wrangler's bug?
   out: "./migrations",
   dialect: "sqlite",
