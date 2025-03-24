@@ -50,10 +50,10 @@
     "@oslojs/encoding": "^1.1.0",
     "@types/pg": "^8.11.10",
     "arctic": "^3.1.2",
-    "drizzle-orm": "^0.40.0"
+    "drizzle-orm": "^0.41.0"
   },
   "peerDependencies": {
-    "@libsql/client": "^0.14.0",
+    "@libsql/client": "^0.15.0",
     "better-sqlite3": "^11.7.2",
     "drizzle-kit": "^0.30.1",
     "hono": "^4.1.5",
@@ -79,7 +79,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241022.0",
-    "@libsql/client": "^0.14.0",
+    "@libsql/client": "^0.15.0",
     "@phanect/configs": "latest",
     "@types/node": "^22.8.6",
     "dotenv": "^16.3.1",
