@@ -37,7 +37,7 @@
   "devDependencies": {
     "@lerna-lite/cli": "^3.10.0",
     "@lerna-lite/exec": "^3.10.0",
-    "@lerna-lite/run": "^3.10.0",
+    "@lerna-lite/run": "^4.0.0",
     "@phanect/configs": "latest",
     "@phanect/lint": "latest",
     "@types/node": "^22.0.0",
