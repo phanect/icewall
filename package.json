@@ -35,7 +35,7 @@
     "url": "https://github.com/lucia-auth/lucia"
   },
   "devDependencies": {
-    "@lerna-lite/cli": "^3.10.0",
+    "@lerna-lite/cli": "^4.0.0",
     "@lerna-lite/exec": "^4.0.0",
     "@lerna-lite/run": "^4.0.0",
     "@phanect/configs": "latest",
